@@ -13,6 +13,7 @@
 		848C31971A4DEF640015B9E2 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 848C31951A4DEF640015B9E2 /* Credits.rtf */; };
 		848C319A1A4DEF640015B9E2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 848C31991A4DEF640015B9E2 /* AppDelegate.m */; };
 		848C319D1A4DEF640015B9E2 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 848C319B1A4DEF640015B9E2 /* MainMenu.xib */; };
+		848C31A91A4DFEA60015B9E2 /* AppView.m in Sources */ = {isa = PBXBuildFile; fileRef = 848C31A81A4DFEA60015B9E2 /* AppView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,8 @@
 		848C31981A4DEF640015B9E2 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		848C31991A4DEF640015B9E2 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		848C319C1A4DEF640015B9E2 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		848C31A71A4DFEA60015B9E2 /* AppView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppView.h; sourceTree = "<group>"; };
+		848C31A81A4DFEA60015B9E2 /* AppView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +89,8 @@
 				848C31991A4DEF640015B9E2 /* AppDelegate.m */,
 				848C319B1A4DEF640015B9E2 /* MainMenu.xib */,
 				848C318D1A4DEF640015B9E2 /* Supporting Files */,
+				848C31A71A4DFEA60015B9E2 /* AppView.h */,
+				848C31A81A4DFEA60015B9E2 /* AppView.m */,
 			);
 			path = "Physics Engine";
 			sourceTree = "<group>";
@@ -167,6 +172,7 @@
 			files = (
 				848C31931A4DEF640015B9E2 /* main.m in Sources */,
 				848C319A1A4DEF640015B9E2 /* AppDelegate.m in Sources */,
+				848C31A91A4DFEA60015B9E2 /* AppView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

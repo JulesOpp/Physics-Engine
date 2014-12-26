@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "AppView.h"
 
 @implementation AppDelegate
 
@@ -15,7 +16,11 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     // Hello World
-    // Insert code here to initialize your application
+    [self.window setFrame:CGRectMake(300, 200, 730, 420) display:YES];
+    [self.window setStyleMask:[self.window styleMask] & ~NSResizableWindowMask];
+    AppView *view = [[AppView alloc] initWithFrame:_window.frame];
+    [view setFrameOrigin:NSMakePoint(0, 0)];
+    [self.window.contentView addSubview:view];
 }
 
 @end
