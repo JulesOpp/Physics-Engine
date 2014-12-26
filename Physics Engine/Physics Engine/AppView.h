@@ -9,5 +9,6 @@
 #import <Cocoa/Cocoa.h>
 
 @interface AppView : NSView
+-(void)drawRectangle:(NSRect)aRect:(Rect)bRect;
 
 @end
