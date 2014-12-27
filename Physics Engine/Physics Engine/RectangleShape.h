@@ -19,5 +19,6 @@
 }
 
 -(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) d: (double) e: (double) t: (double) l: (double) b: (double) r;
+-(void) draw;
 
 @end

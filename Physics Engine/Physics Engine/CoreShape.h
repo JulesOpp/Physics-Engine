@@ -24,6 +24,8 @@
 
 -(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) d: (double) e;
 
+-(void) draw;
+
 -(double) getPosX;
 -(double) getPosY;
 -(double) getVelX;

@@ -38,8 +38,9 @@ int numberShapes;
 
 // Main drawing functions - calls other drawers
 -(void)drawRect:(NSRect)dirtyRect {
-    for (int i=0; i<2; i++) {
+    for (int i=0; i<numberShapes; i++) {
         // Draw shapes
+        [shapes[i] draw];
     }
     
     

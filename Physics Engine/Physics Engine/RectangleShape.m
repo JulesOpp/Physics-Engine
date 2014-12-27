@@ -21,5 +21,8 @@
     return self;
 }
 
+-(void) draw {
+    // OVER RIDDEN
+}
 
 @end

@@ -25,6 +25,10 @@
     return self;
 }
 
+-(void) draw {
+    // To be soon
+}
+
 -(double) getPosX { return posX; }
 -(double) getPosY { return posY; }
 -(double) getVelX { return velX; }
