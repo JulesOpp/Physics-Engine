@@ -7,8 +7,10 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "CoreShape.h"
 
 @interface AppView : NSView
+
 -(void)drawRectangle:(NSRect)aRect:(Rect)bRect;
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "AppView.h"
+#import "CoreShape.h"
 
 @implementation AppView
 
@@ -16,19 +17,33 @@ double y;
 double r;
 };
 
+CoreShape *shapes[2];
+int numberShapes;
+
+
 // Initiate all parameters
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
+        numberShapes = 0;
+        for (int i=0; i<2; i++) {
+            shapes[i] = [[CoreShape alloc] init];
+            numberShapes++;
+        }
+        
     }
     return self;
 }
 
 // Main drawing functions - calls other drawers
 -(void)drawRect:(NSRect)dirtyRect {
-    struct circle circle1 = {50,60,10};
+    for (int i=0; i<2; i++) {
+        // Draw shapes
+    }
+    
+    
+    /*struct circle circle1 = {50,60,10};
     struct circle circle2 = {62,70,5};
     [self drawCircle:dirtyRect :circle1];
     [self drawCircle:dirtyRect :circle2];
@@ -38,7 +53,7 @@ double r;
     Rect rect2 = {60,10,50,30};
     if ([self collideRect:rect1 :rect2]) NSLog(@"Collide");
     [self drawRectangle:dirtyRect :rect1];
-    [self drawRectangle:dirtyRect :rect2];
+    [self drawRectangle:dirtyRect :rect2];*/
 }
 
 // Draws rectangle
