@@ -31,7 +31,7 @@ double frameRate;
 }
 
 - (IBAction)refresh:(id)sender {
-    NSLog(@"Hi");
+    //NSLog(@"Hi");
     [view setNeedsDisplay: true];
     
     //if (view->done == true)

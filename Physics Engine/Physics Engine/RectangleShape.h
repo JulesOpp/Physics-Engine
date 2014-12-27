@@ -12,13 +12,11 @@
 @interface RectangleShape : CoreShape
 {
     @private
-    double top;
-    double left;
-    double bottom;
-    double right;
+    double width;
+    double height;
 }
 
--(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) d: (double) e: (double) t: (double) l: (double) b: (double) r;
+-(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) d: (double) e: (double) w: (double) h;
 -(void) draw;
 
 @end

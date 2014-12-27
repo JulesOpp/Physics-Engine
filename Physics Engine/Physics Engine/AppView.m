@@ -8,6 +8,7 @@
 
 #import "AppView.h"
 #import "CoreShape.h"
+#import "RectangleShape.h"
 
 @implementation AppView
 
@@ -28,7 +29,8 @@ int numberShapes;
     if (self) {
         numberShapes = 0;
         for (int i=0; i<2; i++) {
-            shapes[i] = [[CoreShape alloc] init];
+            //shapes[i] = [[CoreShape alloc] init];
+            shapes[i] = [[RectangleShape alloc] init:50 :60 :0 :0 :0 :0 :0 :0: 10: 20];
             numberShapes++;
         }
         
