@@ -35,13 +35,15 @@
 
 -(void) update {
     // OVER RIDDEN
+    // Time = 1/Framerate
     double gravity = -1;
-    [super setAccX:0]; [super setAccY:gravity-[super getDrag]*[super getVelY]];
-    
-    [super setPosX:[super getPosX]+[super getVelX]];
-    [super setPosY:[super getPosY]+[super getVelY]];
-    [super setVelX:[super getVelX]+[super getAccX]*[super getFr]*5];
-    [super setVelY:[super getVelY]+[super getAccY]*[super getFr]*5];
+    double time = 1/[super getFr]/200;
+    [super setAccX:(-1*[super getDrag]*[super getVelX])/2];
+    [super setAccY:(gravity-[super getDrag]*[super getVelY])];
+    [super setPosX:[super getPosX]+[super getVelX]];//*[super getFr]+[super getAccX]/2*time*time];
+    [super setPosY:[super getPosY]+[super getVelY]];//*[super getFr]+[super getAccY]/2*time*time];
+    [super setVelX:[super getVelX]+[super getAccX]];
+    [super setVelY:[super getVelY]+[super getAccY]];
 }
 
 @end

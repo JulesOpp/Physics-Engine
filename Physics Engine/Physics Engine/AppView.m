@@ -19,7 +19,7 @@ double y;
 double r;
 };
 
-CoreShape *shapes[2];
+CoreShape *shapes[3];
 int numberShapes;
 double framerate;
 
@@ -30,9 +30,10 @@ double framerate;
     self = [super initWithFrame:frame];
     if (self) {
         framerate = fr;
-        numberShapes = 2;
-        shapes[0] = [[RectangleShape alloc] init:50:200:3:0:0:-0.1:0.5:0:framerate:10:20];
-        shapes[1] = [[RectangleShape alloc] init:70:200:3:0:0:-0.1:0:0:framerate:10:20];
+        numberShapes = 3;
+        shapes[0] = [[RectangleShape alloc] init:50:400:3:0:0:-0.1:0.5:0:framerate:10:20];
+        shapes[1] = [[RectangleShape alloc] init:70:400:3:0:0:-0.1:0.01:0:framerate:10:20];
+        shapes[2] = [[RectangleShape alloc] init:90:400:3:0:0:-0.1:0.0:0:framerate:10:20];
         //shapes[1] = [[CircleShape alloc] init:30:20:0:0:0:0:0:0:5];
         
         //for (int i=0; i<2; i++) {

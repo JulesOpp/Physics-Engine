@@ -21,7 +21,7 @@ double frameRate;
 {
     frameRate = 0.01;
     
-    [self.window setFrame:CGRectMake(300, 200, 730, 420) display:YES];
+    [self.window setFrame:CGRectMake(300, 200, 750, 500) display:YES];
     [self.window setStyleMask:[self.window styleMask] & ~NSResizableWindowMask];
     view = [[AppView alloc] initWithFr:_window.frame:frameRate];
     [view setFrameOrigin:NSMakePoint(0, 0)];
