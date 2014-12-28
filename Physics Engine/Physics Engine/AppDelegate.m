@@ -19,11 +19,11 @@ double frameRate;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    frameRate = 0.1;
+    frameRate = 0.01;
     
     [self.window setFrame:CGRectMake(300, 200, 730, 420) display:YES];
     [self.window setStyleMask:[self.window styleMask] & ~NSResizableWindowMask];
-    view = [[AppView alloc] initWithFrame:_window.frame];
+    view = [[AppView alloc] initWithFr:_window.frame:frameRate];
     [view setFrameOrigin:NSMakePoint(0, 0)];
     [self.window.contentView addSubview:view];
     

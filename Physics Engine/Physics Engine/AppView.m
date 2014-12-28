@@ -9,6 +9,7 @@
 #import "AppView.h"
 #import "CoreShape.h"
 #import "RectangleShape.h"
+#import "CircleShape.h"
 
 @implementation AppView
 
@@ -20,19 +21,25 @@ double r;
 
 CoreShape *shapes[2];
 int numberShapes;
+double framerate;
 
 
 // Initiate all parameters
-- (id)initWithFrame:(CGRect)frame
+- (id)initWithFr:(CGRect)frame:(double)fr
 {
     self = [super initWithFrame:frame];
     if (self) {
-        numberShapes = 0;
-        for (int i=0; i<2; i++) {
+        framerate = fr;
+        numberShapes = 2;
+        shapes[0] = [[RectangleShape alloc] init:50:200:3:0:0:-0.1:0.5:0:framerate:10:20];
+        shapes[1] = [[RectangleShape alloc] init:70:200:3:0:0:-0.1:0:0:framerate:10:20];
+        //shapes[1] = [[CircleShape alloc] init:30:20:0:0:0:0:0:0:5];
+        
+        //for (int i=0; i<2; i++) {
             //shapes[i] = [[CoreShape alloc] init];
-            shapes[i] = [[RectangleShape alloc] init:50 :60 :0 :0 :0 :0 :0 :0: 10: 20];
-            numberShapes++;
-        }
+            //shapes[i] = [[RectangleShape alloc] init:50 :60 :0 :0 :0 :0 :0 :0: 10: 20];
+            //numberShapes++;
+        //}
         
     }
     return self;
@@ -43,6 +50,7 @@ int numberShapes;
     for (int i=0; i<numberShapes; i++) {
         // Draw shapes
         [shapes[i] draw];
+        [shapes[i] update];
     }
     
     

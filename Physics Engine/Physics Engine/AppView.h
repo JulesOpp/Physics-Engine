@@ -11,6 +11,7 @@
 
 @interface AppView : NSView
 
+- (id)initWithFr:(CGRect)frame:(double)fr;
 -(void)drawRectangle:(NSRect)aRect:(Rect)bRect;
 
 @end

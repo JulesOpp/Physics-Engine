@@ -10,7 +10,7 @@
 
 @implementation CoreShape
 
--(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) d: (double) e {
+-(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) d: (double) e: (double) fr {
     self = [super init];
     if (self) {
         posX = xx;
@@ -21,12 +21,17 @@
         accY = ay;
         drag = d;
         elas = e;
+        framerate = fr;
     }
     return self;
 }
 
 -(void) draw {
-    // To be soon
+    // Must be overridden
+}
+
+-(void) update {
+    // Must be overridden
 }
 
 -(double) getPosX { return posX; }
@@ -37,6 +42,7 @@
 -(double) getAccY { return accY; }
 -(double) getDrag { return drag; }
 -(double) getElas { return elas; }
+-(double) getFr { return framerate; };
 
 -(void) setPosX: (double) x { posX = x; }
 -(void) setPosY: (double) y { posY = y; }

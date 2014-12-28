@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		845126641A4F66DC0035CA5F /* CoreShape.m in Sources */ = {isa = PBXBuildFile; fileRef = 845126631A4F66DC0035CA5F /* CoreShape.m */; };
 		845126781A4F711D0035CA5F /* RectangleShape.m in Sources */ = {isa = PBXBuildFile; fileRef = 845126771A4F711D0035CA5F /* RectangleShape.m */; };
+		8451267B1A4F75730035CA5F /* CircleShape.m in Sources */ = {isa = PBXBuildFile; fileRef = 8451267A1A4F75730035CA5F /* CircleShape.m */; };
 		848C31871A4DEF640015B9E2 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 848C31861A4DEF640015B9E2 /* Cocoa.framework */; };
 		848C31911A4DEF640015B9E2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 848C318F1A4DEF640015B9E2 /* InfoPlist.strings */; };
 		848C31931A4DEF640015B9E2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 848C31921A4DEF640015B9E2 /* main.m */; };
@@ -23,6 +24,8 @@
 		845126631A4F66DC0035CA5F /* CoreShape.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreShape.m; sourceTree = "<group>"; };
 		845126761A4F711D0035CA5F /* RectangleShape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RectangleShape.h; sourceTree = "<group>"; };
 		845126771A4F711D0035CA5F /* RectangleShape.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RectangleShape.m; sourceTree = "<group>"; };
+		845126791A4F75730035CA5F /* CircleShape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleShape.h; sourceTree = "<group>"; };
+		8451267A1A4F75730035CA5F /* CircleShape.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleShape.m; sourceTree = "<group>"; };
 		848C31821A4DEF640015B9E2 /* Physics Engine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Physics Engine.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		848C31861A4DEF640015B9E2 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		848C31891A4DEF640015B9E2 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -101,6 +104,8 @@
 				845126631A4F66DC0035CA5F /* CoreShape.m */,
 				845126761A4F711D0035CA5F /* RectangleShape.h */,
 				845126771A4F711D0035CA5F /* RectangleShape.m */,
+				845126791A4F75730035CA5F /* CircleShape.h */,
+				8451267A1A4F75730035CA5F /* CircleShape.m */,
 			);
 			path = "Physics Engine";
 			sourceTree = "<group>";
@@ -185,6 +190,7 @@
 				848C31A91A4DFEA60015B9E2 /* AppView.m in Sources */,
 				845126641A4F66DC0035CA5F /* CoreShape.m in Sources */,
 				845126781A4F711D0035CA5F /* RectangleShape.m in Sources */,
+				8451267B1A4F75730035CA5F /* CircleShape.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -20,11 +20,14 @@
     
     double drag;
     double elas;
+    
+    double framerate;
 }
 
--(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) d: (double) e;
+-(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) d: (double) e: (double) fr;
 
 -(void) draw;
+-(void) update;
 
 -(double) getPosX;
 -(double) getPosY;
@@ -34,6 +37,7 @@
 -(double) getAccY;
 -(double) getDrag;
 -(double) getElas;
+-(double) getFr;
 
 -(void) setPosX: (double) x;
 -(void) setPosY: (double) y;
