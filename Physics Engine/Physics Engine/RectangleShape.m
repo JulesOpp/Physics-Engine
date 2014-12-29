@@ -52,34 +52,33 @@
     ([super getPosY] <= 0) ? [super setPosY:0] : [super setPosY:[super getPosY]+[super getVelY]*[super getFr]*10];
 }
 
--(void) checkCollision: (CoreShape*) b {
-    switch ([b getType]) {
-        case 1:
-            // Rectangle vs Rectangle
-            
-            // COLLISION DETECT
-            //if (aRect.left > bRect.right || aRect.right < bRect.left) return false;
-            //if (aRect.top < bRect.bottom || aRect.bottom > bRect.top) return false;
-            //return true;
-            
-            // COLLISION SOLVE
-            // posX = something else;
-            // posY = something else;
-            break;
-        case 2:
-            // Rectangle vs Circle
-            
-            // COLLISION DETECT
-            // Magic goes here
-            
-            // COLLISION SOLVE
-            // posX = something else;
-            // posY = something else;
-            break;
-        default:
-            NSLog(@"Something went horribly wrong");
-            break;
-    }
++(void) checkCollisionR:(RectangleShape*)a:(RectangleShape *) b {
+    // Rectangle vs Rectangle
+    
+    // COLLISION DETECT
+    if ([a getPosX]>[b getPosX]+[b getWidth] || [a getPosX]+[a getWidth]<[b getPosX]) return;
+    if ([a getPosY]+[a getHeight]<[b getPosY] || [a getPosY]>[b getPosY]+[b getHeight]) return;
+    
+    NSLog(@"Collision on Rect v Rect");
+    
+    // COLLISION SOLVE
+    // posX = something else;
+    // posY = something else;
 }
+
++(void) checkCollisionC:(RectangleShape*)a:(CircleShape *)b {
+    // Rectangle vs Circle
+    
+    // COLLISION DETECT
+    // Magic goes here
+    
+    // COLLISION SOLVE
+    // posX = something else;
+    // posY = something else;
+}
+
+-(double) getWidth { return width; }
+-(double) getHeight { return height; }
+
 
 @end

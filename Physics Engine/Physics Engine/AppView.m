@@ -35,7 +35,7 @@ int windowHeight;
 		shapes[2] = [[RectangleShape alloc] init:90:400:20:0:0:-0.1:0.2:0.05:0:true:framerate:10:20];
 		
 		shapes[3] = [[CircleShape alloc] init:50:400:20:0:0:-0.1:0:0:0:true:framerate:5];
-		shapes[4] = [[CircleShape alloc] init:110:350:40:20:0:-0.1:0.1:0.1:0:true:framerate:10];
+		shapes[4] = [[CircleShape alloc] init:80:350:40:20:0:-0.1:0.1:0.1:0:true:framerate:10];
         
         shapes[5] = [[RectangleShape alloc] init:20:50:0:0:0:0:0:0:0:false:framerate:700:10];
         shapes[6] = [[CircleShape alloc] init:400:300:0:0:0:0:0:0:0:false:framerate:15];
@@ -52,9 +52,17 @@ int windowHeight;
         [shapes[i] draw];
         [shapes[i] update];
         
-        // TO BE IMPLEMENTED
+        // IGNORE THE WARNING, I KNOW WHAT IM DOING
         for (int j=0; j<numberShapes; j++) {
-            [shapes[i] checkCollision: shapes[j]];
+            if (i == j) { }
+            else if ([shapes[i] getType] == 1 && [shapes[j] getType] == 1)
+                [RectangleShape checkCollisionR:shapes[i] :shapes[j]];
+            else if ([shapes[i] getType] == 1 && [shapes[j] getType] == 2)
+                [RectangleShape checkCollisionC:shapes[i] :shapes[j]];
+            else if ([shapes[i] getType] == 2 && [shapes[j] getType] == 1)
+                [CircleShape checkCollisionR:shapes[i] :shapes[j]];
+            else if ([shapes[i] getType] == 2 && [shapes[j] getType] == 2)
+                [CircleShape checkCollisionC:shapes[i] :shapes[j]];
         }
     }
 }

@@ -48,34 +48,31 @@
 
 }
 
--(void) checkCollision:(CoreShape*) b{
-    switch ([b getType]) {
-        case 1:
-            // Circle vs Rectangle
-            
-            // COLLISION DETECT
-            // Magic goes here
-            
-            // COLLISION SOLVE
-            // posX = something else;
-            // posY = something else;
-            break;
-        case 2:
-            // Circle vs Circle
-            
-            // COLLISION DETECT
-            //double r = a.r + b.r;
-            //r *= r;
-            //return r > pow(a.x - b.x,2) + pow(a.y - b.y,2);
-            
-            // COLLISION SOLVE
-            // posX = something else;
-            // posY = something else;
-            break;
-        default:
-            NSLog(@"Something went horribly wrong");
-            break;
-    }
++(void) checkCollisionR:(CircleShape*)a:(RectangleShape *)b {
+    // Circle vs Rectangle
+    
+    // COLLISION DETECT
+    // Magic goes here
+    
+    // COLLISION SOLVE
+    // posX = something else;
+    // posY = something else;
 }
+
++(void) checkCollisionC:(CircleShape*)a:(CircleShape *)b {
+    // Circle vs Circle
+    
+    // COLLISION DETECT
+    double r = [a getRadius] + [b getRadius];
+    r *= r;
+    if (r <= pow([a getPosX]-[b getPosX],2) + pow([a getPosY]-[b getPosY],2)) return;
+    NSLog(@"Collision on Circle v Circle");
+    
+    // COLLISION SOLVE
+    // posX = something else;
+    // posY = something else;
+}
+
+-(double) getRadius { return radius; }
 
 @end

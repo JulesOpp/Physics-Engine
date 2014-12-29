@@ -36,7 +36,6 @@
 
 -(void) draw;
 -(void) update;
--(void) checkCollision: (CoreShape*) b;
 
 -(double) getPosX;
 -(double) getPosY;

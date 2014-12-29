@@ -37,10 +37,6 @@
     // Must be overridden
 }
 
--(void) checkCollision:(CoreShape *)b {
-    // Must be overridden
-}
-
 -(double) getPosX { return posX; }
 -(double) getPosY { return posY; }
 -(double) getVelX { return velX; }
