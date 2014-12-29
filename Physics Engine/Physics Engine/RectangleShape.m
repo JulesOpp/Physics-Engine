@@ -20,6 +20,7 @@
         width = w;
         height = h;
     }
+    [super setType:1];
     return self;
 }
 
@@ -49,6 +50,36 @@
     
     // THIS IS A TEMPORARY SOLUTION TO KEEP AT BOTTOM
     ([super getPosY] <= 0) ? [super setPosY:0] : [super setPosY:[super getPosY]+[super getVelY]*[super getFr]*10];
+}
+
+-(void) checkCollision: (CoreShape*) b {
+    switch ([b getType]) {
+        case 1:
+            // Rectangle vs Rectangle
+            
+            // COLLISION DETECT
+            //if (aRect.left > bRect.right || aRect.right < bRect.left) return false;
+            //if (aRect.top < bRect.bottom || aRect.bottom > bRect.top) return false;
+            //return true;
+            
+            // COLLISION SOLVE
+            // posX = something else;
+            // posY = something else;
+            break;
+        case 2:
+            // Rectangle vs Circle
+            
+            // COLLISION DETECT
+            // Magic goes here
+            
+            // COLLISION SOLVE
+            // posX = something else;
+            // posY = something else;
+            break;
+        default:
+            NSLog(@"Something went horribly wrong");
+            break;
+    }
 }
 
 @end

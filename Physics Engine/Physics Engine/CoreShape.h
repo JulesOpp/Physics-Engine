@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+//#import "RectangleShape.h"
+//#import "CircleShape.h"
 
 @interface CoreShape : NSObject
 {
@@ -25,19 +27,16 @@
     double framerate;
 
 	BOOL move;
+    
+    int typeShape; // Def:prob error, rect:1, circle:2
 }
 
-//-(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) d: (double) e: (double) fr;
 
-/**
- * Creates a shape object
- * (initializes values)
- *
- */
 -(id) initWithpositionX:(double)xx positionY:(double)xy velocityX:(double)vx velocityY:(double)vy accelerationX:(double)ax accelerationY:(double)ay dragValueX:(double)dx dragValueY:(double)dy elasticity:(double)e canMove:(BOOL)m andFramerate:(double)fr;
 
 -(void) draw;
 -(void) update;
+-(void) checkCollision: (CoreShape*) b;
 
 -(double) getPosX;
 -(double) getPosY;
@@ -50,6 +49,7 @@
 -(double) getElas;
 -(double) getFr;
 -(BOOL) getMove;
+-(int) getType;
 
 -(void) setPosX: (double) x;
 -(void) setPosY: (double) y;
@@ -61,4 +61,6 @@
 -(void) setDragY: (double) d;
 -(void) setElas: (double) e;
 //-(void)setMovingState:(BOOL)choice;//not yet implemented
+
+-(void) setType: (int)t;
 @end

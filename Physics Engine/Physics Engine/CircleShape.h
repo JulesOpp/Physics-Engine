@@ -18,5 +18,6 @@
 -(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) dx: (double) dy: (double) e: (BOOL) m: (double) fr: (double) r;
 -(void) draw;
 -(void) update;
+-(void) checkCollision: (CoreShape*)b;
 
 @end

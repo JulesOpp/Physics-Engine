@@ -37,6 +37,10 @@
     // Must be overridden
 }
 
+-(void) checkCollision:(CoreShape *)b {
+    // Must be overridden
+}
+
 -(double) getPosX { return posX; }
 -(double) getPosY { return posY; }
 -(double) getVelX { return velX; }
@@ -48,6 +52,7 @@
 -(double) getElas { return elas; }
 -(BOOL) getMove { return move; }
 -(double) getFr { return framerate; };
+-(int) getType { return typeShape; }
 
 -(void) setPosX: (double) x { posX = x; }
 -(void) setPosY: (double) y { posY = y; }
@@ -59,4 +64,6 @@
 -(void) setDragY: (double) d { dragY = d; }
 -(void) setElas: (double) e { elas = e; }
 //-(void)setMovingState:(BOOL)choice{movabilty = choice;}
+-(void) setType:(int)t { typeShape = t; }
+
 @end

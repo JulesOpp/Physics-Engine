@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "CoreShape.h"
+#import "CircleShape.h"
 
 @interface RectangleShape : CoreShape
 {
@@ -19,5 +20,6 @@
 -(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) dx: (double) dy: (double) e: (BOOL) m: (double) fr: (double) w: (double) h;
 -(void) draw;
 -(void) update;
+-(void) checkCollision: (CoreShape*) b;
 
 @end
