@@ -73,6 +73,11 @@
     // posY = something else;
 }
 
++(BOOL) checkCoord: (CircleShape*)a:(int)x:(int)y {
+    double r = pow([a getRadius],2);
+    return r > pow([a getPosX]-x,2) + pow([a getPosY]-y,2);
+}
+
 -(double) getRadius { return radius; }
 
 @end

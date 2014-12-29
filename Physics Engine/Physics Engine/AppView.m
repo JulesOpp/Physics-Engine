@@ -18,6 +18,7 @@ int numberShapes;
 double framerate;
 int windowWidth;
 int windowHeight;
+BOOL pausePlay;
 
 // Initiate all parameters
 - (id)initWithFr:(CGRect)frame:(double)fr
@@ -41,6 +42,7 @@ int windowHeight;
         
         windowWidth = frame.size.width;
         windowHeight = frame.size.height;
+        pausePlay = false;
     }
     return self;
 }
@@ -70,7 +72,17 @@ int windowHeight;
 - (void)mouseDown:(NSEvent *)theEvent {
     NSPoint point = [self convertPoint:[theEvent locationInWindow] fromView:nil];
     NSLog(@"%f %f",point.x, point.y);
-    [self display];
+    
+    if (!pausePlay) return;
+    
+    for (int i=0; i<numberShapes; i++) {
+        if ([shapes[i] getType] == 1 && [RectangleShape checkCoord:(RectangleShape*)shapes[i]:point.x:point.y]) {
+            NSLog(@"Object Rect");
+        }
+        else if ([shapes[i] getType] == 2 && [CircleShape checkCoord:(CircleShape*)shapes[i] :point.x :point.y]) {
+            NSLog(@"Object circle");
+        }
+    }
 }
 
 

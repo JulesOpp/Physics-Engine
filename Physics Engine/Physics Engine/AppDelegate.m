@@ -42,8 +42,6 @@ BOOL pausePlay;
       //  [self performSelectorOnMainThread:@selector(stopTimer) withObject:nil waitUntilDone:YES];
 }
 
--(IBAction)pause:(id)sender {
-    pausePlay ^= 1;
-}
+-(IBAction)pause:(id)sender { pausePlay ^= 1; view->pausePlay ^= 1; }
 
 @end

@@ -13,6 +13,7 @@
 {
     @public
     int numberShapes;
+    BOOL pausePlay;
 }
 
 - (id)initWithFr:(CGRect)frame:(double)fr;

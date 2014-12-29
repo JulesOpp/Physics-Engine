@@ -25,6 +25,8 @@
 +(void) checkCollisionR: (CircleShape*)a:(RectangleShape*)b;
 +(void) checkCollisionC: (CircleShape*)a:(CircleShape *)b;
 
++(BOOL) checkCoord: (CircleShape*)a:(int)x:(int)y;
+
 -(double) getRadius;
 
 @end

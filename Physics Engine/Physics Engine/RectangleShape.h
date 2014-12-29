@@ -26,6 +26,8 @@
 +(void) checkCollisionR: (RectangleShape*)a:(RectangleShape*) b;
 +(void) checkCollisionC: (RectangleShape*)a:(CircleShape *)b;
 
++(BOOL) checkCoord: (RectangleShape*)a:(int)x:(int)y;
+
 -(double) getWidth;
 -(double) getHeight;
 

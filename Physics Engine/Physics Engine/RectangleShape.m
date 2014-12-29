@@ -77,6 +77,16 @@
     // posY = something else;
 }
 
++(BOOL) checkCoord: (RectangleShape*)a:(int)x:(int)y {
+    if (x < [a getPosX] || x > [a getPosX] + [a getWidth]) {
+        return false;
+    }
+    if (y < [a getPosY] || y > [a getPosY] + [a getHeight]) {
+        return false;
+    }
+    return true;
+}
+
 -(double) getWidth { return width; }
 -(double) getHeight { return height; }
 
