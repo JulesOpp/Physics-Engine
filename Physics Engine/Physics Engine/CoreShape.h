@@ -18,7 +18,8 @@
     double accX;
     double accY;
     
-    double drag;
+    double dragX;
+    double dragY;
     double elas;
     
     double framerate;
@@ -33,7 +34,7 @@
  * (initializes values)
  *
  */
--(id) initWithpositionX:(double)xx positionY:(double)xy velocityX:(double)vx velocityY:(double)vy accelerationX:(double)ax accelerationY:(double)ay dragValue:(double)d elasticity:(double)e andFramerate:(double)fr;
+-(id) initWithpositionX:(double)xx positionY:(double)xy velocityX:(double)vx velocityY:(double)vy accelerationX:(double)ax accelerationY:(double)ay dragValueX:(double)dx dragValueY:(double)dy elasticity:(double)e andFramerate:(double)fr;
 
 -(void) draw;
 -(void) update;
@@ -44,7 +45,8 @@
 -(double) getVelY;
 -(double) getAccX;
 -(double) getAccY;
--(double) getDrag;
+-(double) getDragX;
+-(double) getDragY;
 -(double) getElas;
 -(double) getFr;
 -(BOOL)canMove;//not yet implemented
@@ -55,7 +57,8 @@
 -(void) setVelY: (double) y;
 -(void) setAccX: (double) x;
 -(void) setAccY: (double) y;
--(void) setDrag: (double) d;
+-(void) setDragX: (double) d;
+-(void) getDragY: (double) d;
 -(void) setElas: (double) e;
 -(void)setMovingState:(BOOL)choice;//not yet implemented
 @end
