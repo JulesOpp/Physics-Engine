@@ -16,7 +16,7 @@
     double height;
 }
 
--(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) dx: (double) dy: (double) e: (double) fr: (double) w: (double) h;
+-(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) dx: (double) dy: (double) e: (BOOL) m: (double) fr: (double) w: (double) h;
 -(void) draw;
 -(void) update;
 

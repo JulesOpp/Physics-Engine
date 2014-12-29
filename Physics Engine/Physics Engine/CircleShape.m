@@ -13,9 +13,9 @@
 // The posX and posY define the center of the circle
 // All else needed is the radius
 
--(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) dx: (double) dy: (double) e: (double) fr: (double) r {
-    //self = [super init:xx :xy :vx :vy :ax :ay :dx :dy :e :fr];
-	self = [super initWithpositionX:xx positionY:xy velocityX:vx velocityY:vy accelerationX:ax accelerationY:ay dragValueX:dx dragValueY:dy elasticity:e andFramerate:fr];
+-(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) dx: (double) dy: (double) e: (BOOL) m: (double) fr: (double) r {
+    //self = [super init:xx :xy :vx :vy :ax :ay :dx :dy :e :m :fr];
+	self = [super initWithpositionX:xx positionY:xy velocityX:vx velocityY:vy accelerationX:ax accelerationY:ay dragValueX:dx dragValueY:dy elasticity:e canMove:m andFramerate:fr];
     if (self) {
         radius = r;
     }
@@ -30,6 +30,8 @@
 
 -(void) update {
     // OVER RIDDEN
+    if (![super getMove]) return;
+
     double gravity = -2;
     [super setAccX:(-1*[super getDragX]*[super getVelX])];
     [super setAccY:(gravity-[super getDragY]*[super getVelY])];

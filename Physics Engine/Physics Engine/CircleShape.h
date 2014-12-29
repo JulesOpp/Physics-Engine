@@ -15,7 +15,7 @@
     double radius;
 }
 
--(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) dx: (double) dy: (double) e: (double) fr: (double) r;
+-(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) dx: (double) dy: (double) e: (BOOL) m: (double) fr: (double) r;
 -(void) draw;
 -(void) update;
 

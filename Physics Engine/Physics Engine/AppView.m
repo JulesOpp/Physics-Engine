@@ -19,7 +19,7 @@ double y;
 double r;
 };
 
-CoreShape *shapes[5];
+CoreShape *shapes[6];
 int numberShapes;
 double framerate;
 int windowWidth;
@@ -32,22 +32,18 @@ int windowHeight;
     self = [super initWithFrame:frame];
     if (self) {
         framerate = fr;
-        numberShapes = 5;
+        numberShapes = 6;
         // [posX,posY,velX,velY,accX,accY,dragX,dragY,elas,fr,(shape dependent)]
         // Drag should be on the order of 0 - 0.3
         
-		shapes[0] = [[RectangleShape alloc] init:50:400:20:0:0:-0.1:0.2:0.1:0:framerate:10:20];
-		shapes[1] = [[RectangleShape alloc] init:70:400:20:0:0:-0.1:0.2:0.2:0:framerate:10:20];
-		shapes[2] = [[RectangleShape alloc] init:90:400:20:0:0:-0.1:0.2:0.05:0:framerate:10:20];
+		shapes[0] = [[RectangleShape alloc] init:50:400:20:0:0:-0.1:0.2:0.1:0:true:framerate:10:20];
+		shapes[1] = [[RectangleShape alloc] init:70:400:20:0:0:-0.1:0.2:0.2:0:true:framerate:10:20];
+		shapes[2] = [[RectangleShape alloc] init:90:400:20:0:0:-0.1:0.2:0.05:0:true:framerate:10:20];
 		
-		shapes[3] = [[CircleShape alloc] init:50:400:20:0:0:-0.1:0:0:0:framerate:5];
-		shapes[4] = [[CircleShape alloc] init:110:350:40:20:0:-0.1:0.1:0.1:0:framerate:10];
+		shapes[3] = [[CircleShape alloc] init:50:400:20:0:0:-0.1:0:0:0:true:framerate:5];
+		shapes[4] = [[CircleShape alloc] init:110:350:40:20:0:-0.1:0.1:0.1:0:true:framerate:10];
         
-        //for (int i=0; i<2; i++) {
-            //shapes[i] = [[CoreShape alloc] init];
-            //shapes[i] = [[RectangleShape alloc] init:50 :60 :0 :0 :0 :0 :0 :0: 10: 20];
-            //numberShapes++;
-        //}
+        shapes[5] = [[RectangleShape alloc] init:20:50:0:0:0:0:0:0:0:false:framerate:700:10];
         
         windowWidth = frame.size.width;
         windowHeight = frame.size.height;
@@ -60,6 +56,11 @@ int windowHeight;
     for (int i=0; i<numberShapes; i++) {
         [shapes[i] draw];
         [shapes[i] update];
+        
+        // TO BE IMPLEMENTED
+        for (int j=0; j<numberShapes; j++) {
+            // [shapes[i] checkCollision: shapes[j]];
+        }
     }
 }
 

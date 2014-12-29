@@ -11,7 +11,7 @@
 @implementation CoreShape
 
 //-(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) d: (double) e: (double) fr {
--(id) initWithpositionX:(double)xx positionY:(double)xy velocityX:(double)vx velocityY:(double)vy accelerationX:(double)ax accelerationY:(double)ay dragValueX:(double)dx dragValueY: (double)dy elasticity:(double)e andFramerate:(double)fr {
+-(id) initWithpositionX:(double)xx positionY:(double)xy velocityX:(double)vx velocityY:(double)vy accelerationX:(double)ax accelerationY:(double)ay dragValueX:(double)dx dragValueY: (double)dy elasticity:(double)e canMove:(BOOL)m andFramerate:(double)fr {
     self = [super init];
     if (self) {
         posX = xx;
@@ -23,6 +23,7 @@
         dragX = dx;
         dragY = dy;
         elas = e;
+        move = m;
         framerate = fr;
     }
     return self;
@@ -45,6 +46,7 @@
 -(double) getDragX { return dragX; }
 -(double) getDragY { return dragY; }
 -(double) getElas { return elas; }
+-(BOOL) getMove { return move; }
 -(double) getFr { return framerate; };
 
 -(void) setPosX: (double) x { posX = x; }
@@ -56,5 +58,5 @@
 -(void) setDragX: (double) d { dragX = d; }
 -(void) setDragY: (double) d { dragY = d; }
 -(void) setElas: (double) e { elas = e; }
--(void)setMovingState:(BOOL)choice{movabilty = choice;}
+//-(void)setMovingState:(BOOL)choice{movabilty = choice;}
 @end
