@@ -19,6 +19,7 @@ double framerate;
 int windowWidth;
 int windowHeight;
 BOOL pausePlay;
+int currentObject;
 
 // Initiate all parameters
 - (id)initWithFr:(CGRect)frame:(double)fr
@@ -27,6 +28,7 @@ BOOL pausePlay;
     if (self) {
         framerate = fr;
         numberShapes = 7;
+        currentObject = 0;
         // [posX,posY,velX,velY,accX,accY,dragX,dragY,elas,fr,(shape dependent)]
         // Drag should be on the order of 0 - 0.3
         
@@ -78,12 +80,16 @@ BOOL pausePlay;
     for (int i=0; i<numberShapes; i++) {
         if ([shapes[i] getType] == 1 && [RectangleShape checkCoord:(RectangleShape*)shapes[i]:point.x:point.y]) {
             NSLog(@"Object Rect");
+            currentObject = i;
         }
         else if ([shapes[i] getType] == 2 && [CircleShape checkCoord:(CircleShape*)shapes[i] :point.x :point.y]) {
             NSLog(@"Object circle");
+            currentObject = i;
         }
     }
 }
 
+-(CoreShape*) getObject: (int) i { return shapes[i]; }
+-(int) getCurrentObject { return currentObject; }
 
 @end

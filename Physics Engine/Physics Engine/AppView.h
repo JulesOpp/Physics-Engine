@@ -14,8 +14,13 @@
     @public
     int numberShapes;
     BOOL pausePlay;
+    
+    @private
+    int currentObject;
 }
 
 - (id)initWithFr:(CGRect)frame:(double)fr;
+-(CoreShape*) getObject: (int) i;
+-(int) getCurrentObject;
 
 @end

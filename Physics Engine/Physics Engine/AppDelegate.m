@@ -13,6 +13,10 @@
 
 @synthesize window = _window;
 @synthesize numShape;
+@synthesize xPosT;
+@synthesize yPosT;
+@synthesize xVelT;
+@synthesize yVelT;
 
 NSTimer *timer;
 AppView *view;
@@ -23,6 +27,7 @@ BOOL pausePlay;
 {
     frameRate = 0.01;
     pausePlay = false;
+    currentObject = 0;
     
     [self.window setFrame:CGRectMake(300, 200, 750, 500) display:YES];
     [self.window setStyleMask:[self.window styleMask] & ~NSResizableWindowMask];
@@ -33,9 +38,24 @@ BOOL pausePlay;
     timer = [NSTimer scheduledTimerWithTimeInterval:frameRate target:self selector:@selector(refresh:) userInfo:nil repeats:YES];
     
     [numShape setStringValue:[NSString stringWithFormat:@"%i", view->numberShapes]];
+    
+    [xPosT setStringValue:[NSString stringWithFormat:@"%f", [[view getObject:currentObject] getPosX]]];
+    [yPosT setStringValue:[NSString stringWithFormat:@"%f", [[view getObject:currentObject] getPosY]]];
+    [xVelT setStringValue:[NSString stringWithFormat:@"%f", [[view getObject:currentObject] getVelX]]];
+    [yVelT setStringValue:[NSString stringWithFormat:@"%f", [[view getObject:currentObject] getVelY]]];
 }
 
 - (IBAction)refresh:(id)sender {
+    // I do this because I don't want to waste time reseting things every time
+    int temp = currentObject;
+    currentObject = [view getCurrentObject];
+    if ( temp != currentObject) {
+        [xPosT setStringValue:[NSString stringWithFormat:@"%f", [[view getObject:currentObject] getPosX]]];
+        [yPosT setStringValue:[NSString stringWithFormat:@"%f", [[view getObject:currentObject] getPosY]]];
+        [xVelT setStringValue:[NSString stringWithFormat:@"%f", [[view getObject:currentObject] getVelX]]];
+        [yVelT setStringValue:[NSString stringWithFormat:@"%f", [[view getObject:currentObject] getVelY]]];
+    }
+    
     if (!pausePlay) [view setNeedsDisplay: true];
     
     //if (view->done == true)

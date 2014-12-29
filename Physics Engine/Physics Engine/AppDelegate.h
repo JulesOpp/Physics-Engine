@@ -13,12 +13,20 @@
 {
     @public
     AppView *view;
+    
+    int currentObject;
+    
     @private
     BOOL pausePlay;
 }
 
 @property (assign) IBOutlet NSWindow *window;
 @property (assign) IBOutlet NSTextField *numShape;
+
+@property (assign) IBOutlet NSTextField *xPosT;
+@property (assign) IBOutlet NSTextField *yPosT;
+@property (assign) IBOutlet NSTextField *xVelT;
+@property (assign) IBOutlet NSTextField *yVelT;
 
 - (IBAction)refresh:(id)sender;
 -(IBAction)pause:(id)sender;
