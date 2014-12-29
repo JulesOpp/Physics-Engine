@@ -14,7 +14,8 @@
 // All else needed is the width and height
 
 -(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) d: (double) e: (double) fr: (double) w: (double) h {
-    self = [super init:xx :xy :vx :vy :ax :ay :d :e: fr];
+    //self = [super init:xx :xy :vx :vy :ax :ay :d :e: fr];
+	self = [super initWithpositionX:xx positionY:xy velocityX:vx velocityY:vy accelerationX:ax accelerationY:ay dragValue:d elasticity:e andFramerate:fr];
     if (self) {
         width = w;
         height = h;

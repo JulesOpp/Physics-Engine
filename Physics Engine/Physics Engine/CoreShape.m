@@ -10,7 +10,8 @@
 
 @implementation CoreShape
 
--(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) d: (double) e: (double) fr {
+//-(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) d: (double) e: (double) fr {
+-(id) initWithpositionX:(double)xx positionY:(double)xy velocityX:(double)vx velocityY:(double)vy accelerationX:(double)ax accelerationY:(double)ay dragValue:(double)d elasticity:(double)e andFramerate:(double)fr {
     self = [super init];
     if (self) {
         posX = xx;
@@ -52,5 +53,5 @@
 -(void) setAccY: (double) y { accY = y; }
 -(void) setDrag: (double) d { drag = d; }
 -(void) setElas: (double) e { elas = e; }
-
+-(void)setMovingState:(BOOL)choice{movabilty = choice;}
 @end

@@ -31,11 +31,12 @@ double framerate;
     if (self) {
         framerate = fr;
         numberShapes = 3;
-        shapes[0] = [[RectangleShape alloc] init:50:400:3:0:0:-0.1:0.5:0:framerate:10:20];
-        shapes[1] = [[RectangleShape alloc] init:70:400:3:0:0:-0.1:0.01:0:framerate:10:20];
-        shapes[2] = [[RectangleShape alloc] init:90:400:3:0:0:-0.1:0.0:0:framerate:10:20];
-        //shapes[1] = [[CircleShape alloc] init:30:20:0:0:0:0:0:0:5];
-        
+		shapes[0] = [[RectangleShape alloc] init:50:400:3:0:0:-0.1:0.5:0:framerate:10:20];
+		shapes[1] = [[RectangleShape alloc] init:70:400:3:0:0:-0.1:0.01:0:framerate:10:20];
+		shapes[2] = [[RectangleShape alloc] init:90:400:3:0:0:-0.1:0.0:0:framerate:10:20];
+		
+		//shapes[1] = [[CircleShape alloc] init:30:20:0:0:0:0:0:0:5];
+		
         //for (int i=0; i<2; i++) {
             //shapes[i] = [[CoreShape alloc] init];
             //shapes[i] = [[RectangleShape alloc] init:50 :60 :0 :0 :0 :0 :0 :0: 10: 20];
