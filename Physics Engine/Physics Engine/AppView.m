@@ -19,7 +19,6 @@ double framerate;
 int windowWidth;
 int windowHeight;
 
-
 // Initiate all parameters
 - (id)initWithFr:(CGRect)frame:(double)fr
 {
@@ -56,13 +55,13 @@ int windowHeight;
         for (int j=0; j<numberShapes; j++) {
             if (i == j) { }
             else if ([shapes[i] getType] == 1 && [shapes[j] getType] == 1)
-                [RectangleShape checkCollisionR:shapes[i] :shapes[j]];
+                [RectangleShape checkCollisionR:(RectangleShape*)shapes[i] :(RectangleShape*)shapes[j]];
             else if ([shapes[i] getType] == 1 && [shapes[j] getType] == 2)
-                [RectangleShape checkCollisionC:shapes[i] :shapes[j]];
+                [RectangleShape checkCollisionC:(RectangleShape*)shapes[i] :(CircleShape*)shapes[j]];
             else if ([shapes[i] getType] == 2 && [shapes[j] getType] == 1)
-                [CircleShape checkCollisionR:shapes[i] :shapes[j]];
+                [CircleShape checkCollisionR:(CircleShape*)shapes[i] :(RectangleShape*)shapes[j]];
             else if ([shapes[i] getType] == 2 && [shapes[j] getType] == 2)
-                [CircleShape checkCollisionC:shapes[i] :shapes[j]];
+                [CircleShape checkCollisionC:(CircleShape*)shapes[i] :(CircleShape*)shapes[j]];
         }
     }
 }
@@ -73,5 +72,6 @@ int windowHeight;
     NSLog(@"%f %f",point.x, point.y);
     [self display];
 }
+
 
 @end

@@ -10,6 +10,10 @@
 #import "CoreShape.h"
 
 @interface AppView : NSView
+{
+    @public
+    int numberShapes;
+}
 
 - (id)initWithFr:(CGRect)frame:(double)fr;
 

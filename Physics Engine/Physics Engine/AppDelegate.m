@@ -12,14 +12,17 @@
 @implementation AppDelegate
 
 @synthesize window = _window;
+@synthesize numShape;
 
 NSTimer *timer;
 AppView *view;
 double frameRate;
+BOOL pausePlay;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     frameRate = 0.01;
+    pausePlay = false;
     
     [self.window setFrame:CGRectMake(300, 200, 750, 500) display:YES];
     [self.window setStyleMask:[self.window styleMask] & ~NSResizableWindowMask];
@@ -28,13 +31,19 @@ double frameRate;
     [self.window.contentView addSubview:view];
     
     timer = [NSTimer scheduledTimerWithTimeInterval:frameRate target:self selector:@selector(refresh:) userInfo:nil repeats:YES];
+    
+    [numShape setStringValue:[NSString stringWithFormat:@"%i", view->numberShapes]];
 }
 
 - (IBAction)refresh:(id)sender {
-    [view setNeedsDisplay: true];
+    if (!pausePlay) [view setNeedsDisplay: true];
     
     //if (view->done == true)
       //  [self performSelectorOnMainThread:@selector(stopTimer) withObject:nil waitUntilDone:YES];
+}
+
+-(IBAction)pause:(id)sender {
+    pausePlay ^= 1;
 }
 
 @end

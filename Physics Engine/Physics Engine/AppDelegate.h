@@ -7,9 +7,20 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "AppView.h"
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
+{
+    @public
+    AppView *view;
+    @private
+    BOOL pausePlay;
+}
 
 @property (assign) IBOutlet NSWindow *window;
+@property (assign) IBOutlet NSTextField *numShape;
+
+- (IBAction)refresh:(id)sender;
+-(IBAction)pause:(id)sender;
 
 @end
