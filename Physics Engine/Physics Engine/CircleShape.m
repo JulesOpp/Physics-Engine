@@ -34,13 +34,15 @@
     [super setAccX:(-1*[super getDragX]*[super getVelX])];
     [super setAccY:(gravity-[super getDragY]*[super getVelY])];
     
+    [super setVelX:[super getVelX]+[super getAccX]*[super getFr]*10];
+    [super setVelY:[super getVelY]+[super getAccY]*[super getFr]*10];
+    
     // TEMPORARY
     ([super getPosX] >= 740) ? [super setPosX:740] : [super setPosX:[super getPosX]+[super getVelX]*[super getFr]*10];
     
     // THIS IS A TEMPORARY SOLUTION TO KEEP AT BOTTOM
     ([super getPosY] <= radius) ? [super setPosY:radius] : [super setPosY:[super getPosY]+[super getVelY]*[super getFr]*10];
-    [super setVelX:[super getVelX]+[super getAccX]*[super getFr]*10];
-    [super setVelY:[super getVelY]+[super getAccY]*[super getFr]*10];
+
 }
 
 @end
