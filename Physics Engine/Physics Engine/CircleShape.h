@@ -8,9 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "CoreShape.h"
-//#import "RectangleShape.h"
 
-@class RectangleShape;
+@class RectangleShape; // @class instead of import
 
 @interface CircleShape : CoreShape
 {

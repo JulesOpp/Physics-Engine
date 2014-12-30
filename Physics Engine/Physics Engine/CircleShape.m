@@ -14,7 +14,6 @@
 // All else needed is the radius
 
 -(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) dx: (double) dy: (double) e: (BOOL) m: (double) fr: (double) r {
-    //self = [super init:xx :xy :vx :vy :ax :ay :dx :dy :e :m :fr];
 	self = [super initWithpositionX:xx positionY:xy velocityX:vx velocityY:vy accelerationX:ax accelerationY:ay dragValueX:dx dragValueY:dy elasticity:e canMove:m andFramerate:fr];
     if (self) {
         radius = r;
@@ -41,15 +40,12 @@
     [super setVelX:[super getVelX]+[super getAccX]*[super getFr]*10];
     [super setVelY:[super getVelY]+[super getAccY]*[super getFr]*10];
     
-    // TEMPORARY
-    ([super getPosX] >= 740) ? [super setPosX:740] : [super setPosX:[super getPosX]+[super getVelX]*[super getFr]*10];
-    if ([super getPosX] <= 10) [super setPosX:10];
-    
-    // THIS IS A TEMPORARY SOLUTION TO KEEP AT BOTTOM
+    // Keep at bottom
     ([super getPosY] <= radius) ? [super setPosY:radius] : [super setPosY:[super getPosY]+[super getVelY]*[super getFr]*10];
 
 }
 
+// Check for Circle v Rect collision
 +(void) checkCollisionR:(CircleShape*)a:(RectangleShape *)b {
     // Circle vs Rectangle
     
@@ -61,6 +57,7 @@
     // posY = something else;
 }
 
+// Check for Circle v Circle collision
 +(void) checkCollisionC:(CircleShape*)a:(CircleShape *)b {
     // Circle vs Circle
     
@@ -75,6 +72,7 @@
     // posY = something else;
 }
 
+// Check if clicked on circle
 +(BOOL) checkCoord: (CircleShape*)a:(int)x:(int)y {
     double r = pow([a getRadius],2);
     return r > pow([a getPosX]-x,2) + pow([a getPosY]-y,2);

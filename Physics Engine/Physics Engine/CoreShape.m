@@ -10,7 +10,7 @@
 
 @implementation CoreShape
 
-//-(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) d: (double) e: (double) fr {
+// The CoreShape is the parent class of all shapes - attributes for (x,y) position, velocity, acceleration, drag, elasticity, ability to move, and framerate and SOON TO BE COLOR
 -(id) initWithpositionX:(double)xx positionY:(double)xy velocityX:(double)vx velocityY:(double)vy accelerationX:(double)ax accelerationY:(double)ay dragValueX:(double)dx dragValueY: (double)dy elasticity:(double)e canMove:(BOOL)m andFramerate:(double)fr {
     self = [super init];
     if (self) {
@@ -30,11 +30,11 @@
 }
 
 -(void) draw:(NSColor*)c {
-    // Must be overridden
+    // Must be overridden by children
 }
 
 -(void) update {
-    // Must be overridden
+    // Must be overridden by children
 }
 
 -(double) getPosX { return posX; }
@@ -60,6 +60,8 @@
 -(void) setDragY: (double) d { dragY = d; }
 -(void) setElas: (double) e { elas = e; }
 //-(void)setMovingState:(BOOL)choice{movabilty = choice;}
+
+// The type is interesting - I needed a was to determine which type of CoreShape object I was using, so rectangles declare their type to be 1 and circles to be 2
 -(void) setType:(int)t { typeShape = t; }
 
 @end

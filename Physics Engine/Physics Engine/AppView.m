@@ -13,23 +13,24 @@
 
 @implementation AppView
 
-CoreShape *shapes[8];
-int numberShapes;
-double framerate;
-int windowWidth;
-int windowHeight;
-BOOL pausePlay;
-int currentObject;
+CoreShape *shapes[8];   // Storage of all the shapes
+int numberShapes;       // The number of shapes
+double framerate;       // The number of seconds/frame
+int windowWidth;        // Width of main window - not utilized
+int windowHeight;       // Height of main window - not utilized
+BOOL pausePlay;         // Whether paused or play
+int currentObject;      // Currently selected object
+
 
 // Initiate all parameters
-- (id)initWithFr:(CGRect)frame:(double)fr
-{
+- (id)initWithFr:(CGRect)frame:(double)fr {
     self = [super initWithFrame:frame];
     if (self) {
         framerate = fr;
         numberShapes = 8;
         currentObject = 0;
-        // [posX,posY,velX,velY,accX,accY,dragX,dragY,elas,fr,(shape dependent)]
+        
+        // [posX,posY,velX,velY,accX,accY,dragX,dragY,elas,canMove,fr,(shape dependent)]
         // Drag should be on the order of 0 - 0.3
         
 		shapes[0] = [[RectangleShape alloc] init:50:400:20:0:0:-0.1:0.2:0.1:0:true:framerate:15:20];
@@ -51,40 +52,43 @@ int currentObject;
     return self;
 }
 
+
 // Main drawing functions - calls other drawers
 -(void)drawRect:(NSRect)dirtyRect {
-    if (pausePlay) {
+    // Don't update if paused
+    if (pausePlay)
         for (int i=0; i<numberShapes; i++)
             (i!=currentObject)?[shapes[i] draw: drawColor]:[shapes[i] draw:[NSColor blueColor]];
-        return;
-    }
-    
-    for (int i=0; i<numberShapes; i++) {
-        (i!=currentObject)?[shapes[i] draw: drawColor]:[shapes[i] draw:[NSColor blueColor]];
-        [shapes[i] update];
-        
-        for (int j=0; j<numberShapes; j++) {
-            if (i == j) { }
-            else if ([shapes[i] getType] == 1 && [shapes[j] getType] == 1)
-                [RectangleShape checkCollisionR:(RectangleShape*)shapes[i] :(RectangleShape*)shapes[j]];
-            else if ([shapes[i] getType] == 1 && [shapes[j] getType] == 2)
-                [RectangleShape checkCollisionC:(RectangleShape*)shapes[i] :(CircleShape*)shapes[j]];
-            else if ([shapes[i] getType] == 2 && [shapes[j] getType] == 1)
-                [CircleShape checkCollisionR:(CircleShape*)shapes[i] :(RectangleShape*)shapes[j]];
-            else if ([shapes[i] getType] == 2 && [shapes[j] getType] == 2)
-                [CircleShape checkCollisionC:(CircleShape*)shapes[i] :(CircleShape*)shapes[j]];
+    else
+        for (int i=0; i<numberShapes; i++) {
+            // Update, draw, collision manage
+            [shapes[i] update];
+            
+            (i!=currentObject)?[shapes[i] draw: drawColor]:[shapes[i] draw:[NSColor blueColor]];
+            
+            for (int j=0; j<numberShapes; j++)
+                if (i == j) { }
+                else if ([shapes[i] getType] == 1 && [shapes[j] getType] == 1)
+                    [RectangleShape checkCollisionR:(RectangleShape*)shapes[i] :(RectangleShape*)shapes[j]];
+                else if ([shapes[i] getType] == 1 && [shapes[j] getType] == 2)
+                    [RectangleShape checkCollisionC:(RectangleShape*)shapes[i] :(CircleShape*)shapes[j]];
+                else if ([shapes[i] getType] == 2 && [shapes[j] getType] == 1)
+                    [CircleShape checkCollisionR:(CircleShape*)shapes[i] :(RectangleShape*)shapes[j]];
+                else if ([shapes[i] getType] == 2 && [shapes[j] getType] == 2)
+                    [CircleShape checkCollisionC:(CircleShape*)shapes[i] :(CircleShape*)shapes[j]];            
         }
-    }
 }
 
-// Debugging tool to log positions on the view
+
+// Debugging tool to log positions on the view and select current object
 - (void)mouseDown:(NSEvent *)theEvent {
     NSPoint point = [self convertPoint:[theEvent locationInWindow] fromView:nil];
     NSLog(@"%f %f",point.x, point.y);
     
     if (!pausePlay) return;
     
-    for (int i=0; i<numberShapes; i++) {
+    // If playing change current objects
+    for (int i=0; i<numberShapes; i++)
         if ([shapes[i] getType] == 1 && [RectangleShape checkCoord:(RectangleShape*)shapes[i]:point.x:point.y]) {
             NSLog(@"Object Rect");
             currentObject = i;
@@ -93,14 +97,13 @@ int currentObject;
             NSLog(@"Object circle");
             currentObject = i;
         }
-    }
 }
 
+// Current object management
 -(CoreShape*) getObject: (int) i { return shapes[i]; }
 -(int) getCurrentObject { return currentObject; }
 
--(void)setColor:(NSColor *)c {
-    drawColor = c;
-}
+// Color management
+-(void)setColor:(NSColor *)c { drawColor = c; }
 
 @end

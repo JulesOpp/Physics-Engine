@@ -14,7 +14,6 @@
 // All else needed is the width and height
 
 -(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) dx: (double) dy: (double) e: (BOOL) m: (double) fr: (double) w: (double) h {
-    //self = [super init:xx :xy :vx :vy :ax :ay :dx :dy :e :m :fr];
 	self = [super initWithpositionX:xx positionY:xy velocityX:vx velocityY:vy accelerationX:ax accelerationY:ay dragValueX:dx dragValueY:dy elasticity:e canMove:m andFramerate:fr];
     if (self) {
         width = w;
@@ -37,7 +36,6 @@
 // THE INPUTTED ACCELERATION DOESNT DO ANYTHING RIGHT NOW
 
 -(void) update {
-    // OVER RIDDEN
     if (![super getMove]) return;
     
     double gravity = -2;
@@ -49,10 +47,11 @@
     
     [super setPosX:[super getPosX]+[super getVelX]*[super getFr]*10];
     
-    // THIS IS A TEMPORARY SOLUTION TO KEEP AT BOTTOM
+    // Keep at bottom
     ([super getPosY] <= 0) ? [super setPosY:0] : [super setPosY:[super getPosY]+[super getVelY]*[super getFr]*10];
 }
 
+// Check for Rect v Rect collision
 +(void) checkCollisionR:(RectangleShape*)a:(RectangleShape *) b {
     // Rectangle vs Rectangle
     
@@ -67,6 +66,7 @@
     // posY = something else;
 }
 
+// Check for Rect v Circle collision
 +(void) checkCollisionC:(RectangleShape*)a:(CircleShape *)b {
     // Rectangle vs Circle
     
@@ -78,13 +78,10 @@
     // posY = something else;
 }
 
+// Check if click on rect
 +(BOOL) checkCoord: (RectangleShape*)a:(int)x:(int)y {
-    if (x < [a getPosX] || x > [a getPosX] + [a getWidth]) {
-        return false;
-    }
-    if (y < [a getPosY] || y > [a getPosY] + [a getHeight]) {
-        return false;
-    }
+    if (x < [a getPosX] || x > [a getPosX] + [a getWidth]) return false;
+    if (y < [a getPosY] || y > [a getPosY] + [a getHeight]) return false;
     return true;
 }
 
