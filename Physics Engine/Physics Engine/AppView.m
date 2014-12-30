@@ -55,12 +55,12 @@ int currentObject;
 -(void)drawRect:(NSRect)dirtyRect {
     if (pausePlay) {
         for (int i=0; i<numberShapes; i++)
-            [shapes[i] draw: drawColor];
+            (i!=currentObject)?[shapes[i] draw: drawColor]:[shapes[i] draw:[NSColor blueColor]];
         return;
     }
     
     for (int i=0; i<numberShapes; i++) {
-        [shapes[i] draw: drawColor];
+        (i!=currentObject)?[shapes[i] draw: drawColor]:[shapes[i] draw:[NSColor blueColor]];
         [shapes[i] update];
         
         for (int j=0; j<numberShapes; j++) {

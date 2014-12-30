@@ -19,6 +19,7 @@
 @synthesize xVelT;
 @synthesize yVelT;
 
+@synthesize pauseT;
 @synthesize color;
 
 NSTimer *timer;
@@ -67,7 +68,8 @@ BOOL pausePlay;
         [yVelT setStringValue:[NSString stringWithFormat:@"%f", [[view getObject:currentObject] getVelY]]];
    }   
     
-    if (!pausePlay) [view setNeedsDisplay: true];
+    //if (!pausePlay) 
+    [view setNeedsDisplay: true];
     
     //if (view->done == true) [self performSelectorOnMainThread:@selector(stopTimer) withObject:nil waitUntilDone:YES];
 }
@@ -75,6 +77,8 @@ BOOL pausePlay;
 -(IBAction)pause:(id)sender { 
     pausePlay ^= 1; 
     view->pausePlay ^= 1; 
+    ([pauseT.title isEqualToString:@"Pause"])?[pauseT setTitle:@"Play"]:[pauseT setTitle:@"Pause"];
+    
     [xPosT setStringValue:[NSString stringWithFormat:@"%f", [[view getObject:currentObject] getPosX]]];
     [yPosT setStringValue:[NSString stringWithFormat:@"%f", [[view getObject:currentObject] getPosY]]];
     [xVelT setStringValue:[NSString stringWithFormat:@"%f", [[view getObject:currentObject] getVelX]]];
