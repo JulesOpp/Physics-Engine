@@ -23,7 +23,8 @@
     return self;
 }
 
--(void) draw {
+-(void) draw:(NSColor*)c {
+    [c setFill];
     CGContextRef context = [[NSGraphicsContext currentContext] graphicsPort];    
     CGContextFillEllipseInRect(context, CGRectMake([super getPosX]-radius, [super getPosY]-radius, 2*radius, 2*radius));    
 }
@@ -42,6 +43,7 @@
     
     // TEMPORARY
     ([super getPosX] >= 740) ? [super setPosX:740] : [super setPosX:[super getPosX]+[super getVelX]*[super getFr]*10];
+    if ([super getPosX] <= 10) [super setPosX:10];
     
     // THIS IS A TEMPORARY SOLUTION TO KEEP AT BOTTOM
     ([super getPosY] <= radius) ? [super setPosY:radius] : [super setPosY:[super getPosY]+[super getVelY]*[super getFr]*10];

@@ -1312,7 +1312,6 @@
 					<string key="NSFrameSize">{480, 360}</string>
 					<reference key="NSSuperview"/>
 					<reference key="NSWindow"/>
-					<reference key="NSNextKeyView"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1280, 778}}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
@@ -1543,7 +1542,6 @@
 							<string key="NSFrame">{{249, 138}, {96, 22}}</string>
 							<reference key="NSSuperview" ref="484984511"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="818727343">
@@ -2375,27 +2373,35 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">xVelT</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="1025093731"/>
-					</object>
-					<int key="connectionID">669</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">yPosT</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="675431332"/>
-					</object>
-					<int key="connectionID">670</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
 						<string key="label">yVelT</string>
 						<reference key="source" ref="976324537"/>
 						<reference key="destination" ref="668293577"/>
 					</object>
 					<int key="connectionID">671</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">xVelT</string>
+						<reference key="source" ref="976324537"/>
+						<reference key="destination" ref="675431332"/>
+					</object>
+					<int key="connectionID">672</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">yPosT</string>
+						<reference key="source" ref="976324537"/>
+						<reference key="destination" ref="1025093731"/>
+					</object>
+					<int key="connectionID">673</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">color</string>
+						<reference key="source" ref="976324537"/>
+						<reference key="destination" ref="1062396956"/>
+					</object>
+					<int key="connectionID">675</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -4595,7 +4601,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">671</int>
+			<int key="maxID">675</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -4617,6 +4623,7 @@
 						</object>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="color">NSColorWell</string>
 						<string key="numShape">NSTextField</string>
 						<string key="window">NSWindow</string>
 						<string key="xPosT">NSTextField</string>
@@ -4625,6 +4632,10 @@
 						<string key="yVelT">NSTextField</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="color">
+							<string key="name">color</string>
+							<string key="candidateClassName">NSColorWell</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="numShape">
 							<string key="name">numShape</string>
 							<string key="candidateClassName">NSTextField</string>

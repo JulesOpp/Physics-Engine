@@ -34,7 +34,7 @@
 
 -(id) initWithpositionX:(double)xx positionY:(double)xy velocityX:(double)vx velocityY:(double)vy accelerationX:(double)ax accelerationY:(double)ay dragValueX:(double)dx dragValueY:(double)dy elasticity:(double)e canMove:(BOOL)m andFramerate:(double)fr;
 
--(void) draw;
+-(void) draw: (NSColor*)c;
 -(void) update;
 
 -(double) getPosX;

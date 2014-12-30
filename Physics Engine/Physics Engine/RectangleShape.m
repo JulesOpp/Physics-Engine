@@ -24,7 +24,8 @@
     return self;
 }
 
--(void) draw {
+-(void) draw:(NSColor*)c {
+    [c setFill];
     NSRectFill(CGRectMake([super getPosX], [super getPosY], width, height));
 }
 

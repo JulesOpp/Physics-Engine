@@ -17,10 +17,12 @@
     
     @private
     int currentObject;
+    NSColor *drawColor;
 }
 
 - (id)initWithFr:(CGRect)frame:(double)fr;
 -(CoreShape*) getObject: (int) i;
 -(int) getCurrentObject;
+-(void) setColor: (NSColor*)c;
 
 @end

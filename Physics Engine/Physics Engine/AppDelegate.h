@@ -28,6 +28,8 @@
 @property (assign) IBOutlet NSTextField *xVelT;
 @property (assign) IBOutlet NSTextField *yVelT;
 
+@property (assign) IBOutlet NSColorWell *color;
+
 - (IBAction)refresh:(id)sender;
 -(IBAction)pause:(id)sender;
 

@@ -20,7 +20,7 @@
 }
 
 -(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) dx: (double) dy: (double) e: (BOOL) m: (double) fr: (double) w: (double) h;
--(void) draw;
+-(void) draw:(NSColor*)c;
 -(void) update;
 
 +(void) checkCollisionR: (RectangleShape*)a:(RectangleShape*) b;

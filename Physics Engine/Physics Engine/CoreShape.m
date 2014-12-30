@@ -29,7 +29,7 @@
     return self;
 }
 
--(void) draw {
+-(void) draw:(NSColor*)c {
     // Must be overridden
 }
 

@@ -13,10 +13,13 @@
 
 @synthesize window = _window;
 @synthesize numShape;
+
 @synthesize xPosT;
 @synthesize yPosT;
 @synthesize xVelT;
 @synthesize yVelT;
+
+@synthesize color;
 
 NSTimer *timer;
 AppView *view;
@@ -43,10 +46,18 @@ BOOL pausePlay;
     [yPosT setStringValue:[NSString stringWithFormat:@"%f", [[view getObject:currentObject] getPosY]]];
     [xVelT setStringValue:[NSString stringWithFormat:@"%f", [[view getObject:currentObject] getVelX]]];
     [yVelT setStringValue:[NSString stringWithFormat:@"%f", [[view getObject:currentObject] getVelY]]];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(xPosChange:) name:NSControlTextDidChangeNotification object:xPosT];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(yPosChange:) name:NSControlTextDidChangeNotification object:yPosT];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(xVelChange:) name:NSControlTextDidChangeNotification object:xVelT];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(yVelChange:) name:NSControlTextDidChangeNotification object:yVelT];
+    
+    [color setColor:[NSColor blackColor]];
 }
 
 - (IBAction)refresh:(id)sender {
-    // I do this because I don't want to waste time reseting things every time
+    [view setColor:[color color]];
+    
     int temp = currentObject;
     currentObject = [view getCurrentObject];
     if ( temp != currentObject) {
@@ -54,14 +65,41 @@ BOOL pausePlay;
         [yPosT setStringValue:[NSString stringWithFormat:@"%f", [[view getObject:currentObject] getPosY]]];
         [xVelT setStringValue:[NSString stringWithFormat:@"%f", [[view getObject:currentObject] getVelX]]];
         [yVelT setStringValue:[NSString stringWithFormat:@"%f", [[view getObject:currentObject] getVelY]]];
-    }
+   }   
     
     if (!pausePlay) [view setNeedsDisplay: true];
     
-    //if (view->done == true)
-      //  [self performSelectorOnMainThread:@selector(stopTimer) withObject:nil waitUntilDone:YES];
+    //if (view->done == true) [self performSelectorOnMainThread:@selector(stopTimer) withObject:nil waitUntilDone:YES];
 }
 
--(IBAction)pause:(id)sender { pausePlay ^= 1; view->pausePlay ^= 1; }
+-(IBAction)pause:(id)sender { 
+    pausePlay ^= 1; 
+    view->pausePlay ^= 1; 
+    [xPosT setStringValue:[NSString stringWithFormat:@"%f", [[view getObject:currentObject] getPosX]]];
+    [yPosT setStringValue:[NSString stringWithFormat:@"%f", [[view getObject:currentObject] getPosY]]];
+    [xVelT setStringValue:[NSString stringWithFormat:@"%f", [[view getObject:currentObject] getVelX]]];
+    [yVelT setStringValue:[NSString stringWithFormat:@"%f", [[view getObject:currentObject] getVelY]]];
+}
+
+- (void)xPosChange:(NSNotification *)notification {
+    [[view getObject:currentObject] setPosX:[xPosT.stringValue doubleValue]];
+    [view setNeedsDisplay: true];
+}
+- (void)yPosChange:(NSNotification *)notification {
+    [[view getObject:currentObject] setPosY:[yPosT.stringValue doubleValue]];
+    [view setNeedsDisplay: true];
+}
+- (void)xVelChange:(NSNotification *)notification {
+    [[view getObject:currentObject] setVelX:[xVelT.stringValue doubleValue]];
+    [view setNeedsDisplay: true];
+}
+- (void)yVelChange:(NSNotification *)notification {
+    [[view getObject:currentObject] setVelY:[yVelT.stringValue doubleValue]];
+    [view setNeedsDisplay: true];
+}
+
+-(IBAction)applicationWillTerminate:(NSNotification *)notification {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 @end

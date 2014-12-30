@@ -13,7 +13,7 @@
 
 @implementation AppView
 
-CoreShape *shapes[7];
+CoreShape *shapes[8];
 int numberShapes;
 double framerate;
 int windowWidth;
@@ -27,7 +27,7 @@ int currentObject;
     self = [super initWithFrame:frame];
     if (self) {
         framerate = fr;
-        numberShapes = 7;
+        numberShapes = 8;
         currentObject = 0;
         // [posX,posY,velX,velY,accX,accY,dragX,dragY,elas,fr,(shape dependent)]
         // Drag should be on the order of 0 - 0.3
@@ -42,6 +42,8 @@ int currentObject;
         shapes[5] = [[RectangleShape alloc] init:20:50:0:0:0:0:0:0:0:false:framerate:700:10];
         shapes[6] = [[CircleShape alloc] init:400:300:0:0:0:0:0:0:0:false:framerate:15];
         
+        shapes[7] = [[CircleShape alloc] init:600:300:-25:0:0:0:0:0:0:true:framerate:10];
+        
         windowWidth = frame.size.width;
         windowHeight = frame.size.height;
         pausePlay = false;
@@ -51,11 +53,16 @@ int currentObject;
 
 // Main drawing functions - calls other drawers
 -(void)drawRect:(NSRect)dirtyRect {
+    if (pausePlay) {
+        for (int i=0; i<numberShapes; i++)
+            [shapes[i] draw: drawColor];
+        return;
+    }
+    
     for (int i=0; i<numberShapes; i++) {
-        [shapes[i] draw];
+        [shapes[i] draw: drawColor];
         [shapes[i] update];
         
-        // IGNORE THE WARNING, I KNOW WHAT IM DOING
         for (int j=0; j<numberShapes; j++) {
             if (i == j) { }
             else if ([shapes[i] getType] == 1 && [shapes[j] getType] == 1)
@@ -91,5 +98,9 @@ int currentObject;
 
 -(CoreShape*) getObject: (int) i { return shapes[i]; }
 -(int) getCurrentObject { return currentObject; }
+
+-(void)setColor:(NSColor *)c {
+    drawColor = c;
+}
 
 @end
