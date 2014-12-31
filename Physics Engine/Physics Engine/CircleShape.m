@@ -34,8 +34,8 @@
     if (![super getMove]) return;
 
     double gravity = -2;
-    [super setAccX:(-1*[super getDragX]*[super getVelX])];
-    [super setAccY:(gravity-[super getDragY]*[super getVelY])];
+    [super setAccX:([super getAccX]-[super getDragX]*[super getVelX])];
+    [super setAccY:([super getAccY]+gravity-[super getDragY]*[super getVelY])];
     
     [super setVelX:[super getVelX]+[super getAccX]*[super getFr]*10];
     [super setVelY:[super getVelY]+[super getAccY]*[super getFr]*10];

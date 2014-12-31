@@ -39,8 +39,8 @@
     if (![super getMove]) return;
     
     double gravity = -2;
-    [super setAccX:(-1*[super getDragX]*[super getVelX])];
-    [super setAccY:(gravity-[super getDragY]*[super getVelY])];
+    [super setAccX:([super getAccX]-[super getDragX]*[super getVelX])];
+    [super setAccY:([super getAccY]+gravity-[super getDragY]*[super getVelY])];
     
     [super setVelX:[super getVelX]+[super getAccX]*[super getFr]*10];
     [super setVelY:[super getVelY]+[super getAccY]*[super getFr]*10];
@@ -62,8 +62,45 @@
     NSLog(@"Collision on Rect v Rect");
     
     // COLLISION SOLVE
-    // posX = something else;
-    // posY = something else;
+    if (![a getMove])
+        [b setVelY:[b getVelY]*[b getElas]*-1];
+    if (![b getMove])
+        [a setVelY:[a getVelY]*[a getElas]*-1];
+    if ([a getMove] && [b getMove]) {
+        // Get distance from midpoints
+        double dx = [a getPosX] + [a getWidth]/2 - [b getPosX] - [b getWidth]/2;
+        double dy = [a getPosY] + [a getHeight]/2 - [b getPosY] - [b getHeight]/2;
+        double adx = fabs(dx);
+        double ady = fabs(dy);
+        
+        // Approaching from corner
+        if (fabs(adx - ady) < 0.1) {
+            
+        }
+        // Approaching from sides
+        else if (adx > ady) {
+            // a on the left
+            if (dx < 0) {
+                [a setVelX:fabs([a getVelX]*[a getElas])*-1];
+                [b setVelX:fabs([b getVelX]*[b getElas])*1];
+            }
+            // a on the right
+            else {
+                [a setVelX:fabs([a getVelX]*[a getElas])*1];    
+                [b setVelX:fabs([b getVelX]*[b getElas])*-1];
+            }
+        }
+        // Approaching from top or bottom
+        else {
+            [a setVelY:[a getVelY]*[a getElas]*-1];
+            [b setVelY:[b getVelY]*[b getElas]*-1];
+        }
+    }
+    
+    if (fabs([a getVelX]) < 0.004) [a setVelX:0];
+    if (fabs([a getVelY]) < 0.004) [a setVelY:0];
+    if (fabs([b getVelX]) < 0.004) [b setVelX:0];
+    if (fabs([b getVelY]) < 0.004) [b setVelY:0];
 }
 
 // Check for Rect v Circle collision
