@@ -13,7 +13,7 @@
 
 @implementation AppView
 
-CoreShape *shapes[9];   // Storage of all the shapes
+CoreShape *shapes[10];   // Storage of all the shapes
 int numberShapes;       // The number of shapes
 double framerate;       // The number of seconds/frame
 int windowWidth;        // Width of main window - not utilized
@@ -27,25 +27,28 @@ int currentObject;      // Currently selected object
     self = [super initWithFrame:frame];
     if (self) {
         framerate = fr;
-        numberShapes = 9;
+        numberShapes = 10;
         currentObject = 0;
         
         // [posX,posY,velX,velY,accX,accY,dragX,dragY,elas,mass,canMove,fr,(shape dependent)]
         // Drag should be on the order of 0 - 0.3
+        // Coefficient of Restitution - elasticity - must be 0-1
         
 		shapes[0] = [[RectangleShape alloc] init:50:400:20:0:0:0:0.2:0.1:1:1:true:framerate:15:20];
-		shapes[1] = [[RectangleShape alloc] init:70:400:20:0:0:0:0.2:0.2:1:1:true:framerate:2:10];
+		shapes[1] = [[RectangleShape alloc] init:70:400:20:0:0:0:0.2:0.2:0.2:1:true:framerate:2:10];
 		shapes[2] = [[RectangleShape alloc] init:200:400:20:0:0:0:0.2:0.05:1:1:true:framerate:10:20];
 		
 		shapes[3] = [[CircleShape alloc] init:50:400:20:0:0:0:0:0:0:1:true:framerate:5];
 		shapes[4] = [[CircleShape alloc] init:80:350:40:20:0:0:0.1:0.1:0:1:true:framerate:10];
         
-        shapes[5] = [[RectangleShape alloc] init:20:50:0:0:0:0:0:0:0:1:false:framerate:700:10];
-        shapes[6] = [[CircleShape alloc] init:400:300:0:0:0:0:0:0:0:1:false:framerate:15];
+        shapes[5] = [[RectangleShape alloc] init:20:50:0:0:0:0:0:0:1:1:false:framerate:700:10];
+        shapes[6] = [[CircleShape alloc] init:400:300:0:0:0:0:0:0:1:1:false:framerate:15];
         
         shapes[7] = [[CircleShape alloc] init:600:300:-25:0:0:0:0:0:0:1:true:framerate:10];
         
         shapes[8] = [[RectangleShape alloc] init:370:400:-20:0:0:0:0.2:0.05:1:1:true:framerate:10:20];
+        
+        shapes[9] = [[RectangleShape alloc] init:150:80:0:0:0:0:0:0:1:1:false:framerate:20:20];
         
         windowWidth = frame.size.width;
         windowHeight = frame.size.height;

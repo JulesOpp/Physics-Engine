@@ -37,8 +37,10 @@
     double gravity = -2;
     //[super setAccX:([super getAccX]-[super getDragX]*[super getVelX])];
     //[super setAccY:([super getAccY]+gravity-[super getDragY]*[super getVelY])];
-    double currentAccX = [super getAccX]-[super getDragX]*[super getVelX];
-    double currentAccY = [super getAccY]+gravity-[super getDragY]*[super getVelY];
+    
+    // Ax = (ma - dv)/m      Ay = (ma - mg - dv)/m
+    double currentAccX = ([super getMass]*[super getAccX]-[super getDragX]*[super getVelX])/[super getMass];
+    double currentAccY = ([super getMass]*[super getAccY]+[super getMass]*gravity-[super getDragY]*[super getVelY])/[super getMass];
     
     if ([super getIgnoreNextUpdate]) {
         currentAccX = 0;

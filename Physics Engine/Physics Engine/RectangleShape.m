@@ -42,8 +42,10 @@
     double gravity = -2;
     //[super setAccX:([super getAccX]-[super getDragX]*[super getVelX])];
     //[super setAccY:([super getAccY]+gravity-[super getDragY]*[super getVelY])];
-    double currentAccX = [super getAccX]-[super getDragX]*[super getVelX];
-    double currentAccY = [super getAccY]+gravity-[super getDragY]*[super getVelY];
+    
+    // Ax = (ma - dv)/m      Ay = (ma - mg - dv)/m
+    double currentAccX = ([super getMass]*[super getAccX]-[super getDragX]*[super getVelX])/[super getMass];
+    double currentAccY = ([super getMass]*[super getAccY]+[super getMass]*gravity-[super getDragY]*[super getVelY])/[super getMass];
     
     if ([super getIgnoreNextUpdate]) {
         currentAccX = 0;
@@ -87,11 +89,35 @@
     
     // COLLISION SOLVE
     if (![a getMove]) {
-        [b setVelY:[b getVelY]*[b getElas]*-1];
+        double dx = ([a getPosX] + [a getWidth]/2 - [b getPosX] - [b getWidth]/2)/[a getWidth];
+        double dy = ([a getPosY] + [a getHeight]/2 - [b getPosY] - [b getHeight]/2)/[a getHeight];
+        double adx = fabs(dx);
+        double ady = fabs(dy);
+        
+        // Side
+        if (adx > ady)
+            [b setVelX:[b getVelX]*[b getElas]*-1];
+        // Top or bottom
+        else
+            [b setVelY:[b getVelY]*[b getElas]*-1];
+        
+        // No gravity sink
         [b setIgnoreNextUpdate:true];
     }
     if (![b getMove]) {
-        [a setVelY:[a getVelY]*[a getElas]*-1];
+        double dx = ([a getPosX] + [a getWidth]/2 - [b getPosX] - [b getWidth]/2)/[b getWidth];
+        double dy = ([a getPosY] + [a getHeight]/2 - [b getPosY] - [b getHeight]/2)/[b getHeight];
+        double adx = fabs(dx);
+        double ady = fabs(dy);
+        
+        // Side
+        if (adx > ady)
+            [a setVelX:[a getVelX]*[a getElas]*-1];
+        // Top or bottom
+        else
+            [a setVelY:[a getVelY]*[a getElas]*-1];
+        
+        // No gravity sink
         [a setIgnoreNextUpdate:true];
     }
     if ([a getMove] && [b getMove]) {
@@ -102,13 +128,13 @@
         double ady = fabs(dy);
         
         // Approaching from corner
-        if (fabs(adx - ady) < 0.1) {
-            
-        }
+        //if (fabs(adx - ady) < 0.1) {
+            // TO BE IMPLEMENTED LATER
+        //}
         // Approaching from sides
-        else if (adx > ady) {
+        if (adx > ady) {
             // a on the left
-            if (dx < 0) {
+            /*if (dx < 0) {
                 [a setVelX:fabs([a getVelX]*[a getElas])*-1];
                 [b setVelX:fabs([b getVelX]*[b getElas])*1];
             }
@@ -116,19 +142,32 @@
             else {
                 [a setVelX:fabs([a getVelX]*[a getElas])*1];    
                 [b setVelX:fabs([b getVelX]*[b getElas])*-1];
-            }
+            }*/
+            // Inelastic collision equation
+            double Va = [a getVelX];
+            double Vb = [b getVelX];
+            
+            // Va = E*Mb*(Vb-Va)+Ma*Va+Mb*Vb / Ma+Mb
+            [a setVelX:([a getElas]*[b getMass]*(Vb-Va)+[a getMass]*Va+[b getMass]*Vb)/([a getMass]+[b getMass])];
+            [b setVelX:([b getElas]*[a getMass]*(Va-Vb)+[a getMass]*Va+[b getMass]*Vb)/([a getMass]+[b getMass])];
         }
         // Approaching from top or bottom
         else {
-            [a setVelY:[a getVelY]*[a getElas]*-1];
-            [b setVelY:[b getVelY]*[b getElas]*-1];
+            //[a setVelY:[a getVelY]*[a getElas]*-1];
+            //[b setVelY:[b getVelY]*[b getElas]*-1];
+            
+            double Va = [a getVelY];
+            double Vb = [b getVelY];
+            
+            [a setVelY:([a getElas]*[b getMass]*(Vb-Va)+[a getMass]*Va+[b getMass]*Vb)/([a getMass]+[b getMass])];
+            [b setVelY:([b getElas]*[a getMass]*(Va-Vb)+[a getMass]*Va+[b getMass]*Vb)/([a getMass]+[b getMass])];
         }
     }
     
-    if (fabs([a getVelX]) < 0.004) [a setVelX:0];
-    if (fabs([a getVelY]) < 0.004) [a setVelY:0];
-    if (fabs([b getVelX]) < 0.004) [b setVelX:0];
-    if (fabs([b getVelY]) < 0.004) [b setVelY:0];
+    if (fabs([a getVelX]) < 0.04) [a setVelX:0];
+    if (fabs([a getVelY]) < 0.04) [a setVelY:0];
+    if (fabs([b getVelX]) < 0.04) [b setVelX:0];
+    if (fabs([b getVelY]) < 0.04) [b setVelY:0];
 }
 
 // Check for Rect v Circle collision
