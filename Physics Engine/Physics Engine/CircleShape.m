@@ -14,8 +14,8 @@
 // The posX and posY define the center of the circle
 // All else needed is the radius
 
--(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) dx: (double) dy: (double) e: (BOOL) m: (double) fr: (double) r {
-	self = [super initWithpositionX:xx positionY:xy velocityX:vx velocityY:vy accelerationX:ax accelerationY:ay dragValueX:dx dragValueY:dy elasticity:e canMove:m andFramerate:fr];
+-(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) dx: (double) dy: (double) e: (double) n: (BOOL) m: (double) fr: (double) r {
+	self = [super initWithpositionX:xx positionY:xy velocityX:vx velocityY:vy accelerationX:ax accelerationY:ay dragValueX:dx dragValueY:dy elasticity:e mass:n canMove:m andFramerate:fr];
     if (self) {
         radius = r;
     }
@@ -65,6 +65,8 @@
     // Keep at bottom
     if ([super getPosY] <= radius) {
         [super setPosY:radius];
+        [super setVelY:0];
+        [super setIgnoreNextUpdate:true];
     }
 
 }
@@ -105,12 +107,27 @@
     double Nx = [a getPosX] - [b getPosX];
     double Ny = [a getPosY] - [b getPosY];
     double NVr = Nx * Vrx + Ny * Vry;
-        
+    
     [a setVelX:[a getVelX] - Nx * NVr / (pow(Nx,2)+pow(Ny,2))];
     [a setVelY:[a getVelY] - Ny * NVr / (pow(Nx,2)+pow(Ny,2))];
     
     [b setVelX:[b getVelX] + Nx * NVr / (pow(Nx,2)+pow(Ny,2))];
     [b setVelY:[b getVelY] + Ny * NVr / (pow(Nx,2)+pow(Ny,2))];
+    
+    // Actual distance
+    double d = sqrt(pow([a getPosX]-[b getPosX],2) + pow([a getPosY]-[b getPosY],2));
+    double pen;
+    
+    // Circles not on top of each other
+    if (d != 0) {
+        pen = r - d;
+    }
+    // Circles on top of each other
+    else {
+        pen = [a getRadius];
+    }
+    
+    //[a setPosX:[a getPosX] + pen];
 }
 
 // Check if clicked on circle

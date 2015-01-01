@@ -14,8 +14,8 @@
 // The posX and posY define the bottom left corner of the rectangle
 // All else needed is the width and height
 
--(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) dx: (double) dy: (double) e: (BOOL) m: (double) fr: (double) w: (double) h {
-	self = [super initWithpositionX:xx positionY:xy velocityX:vx velocityY:vy accelerationX:ax accelerationY:ay dragValueX:dx dragValueY:dy elasticity:e canMove:m andFramerate:fr];
+-(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) dx: (double) dy: (double) e: (double) n: (BOOL) m: (double) fr: (double) w: (double) h {
+	self = [super initWithpositionX:xx positionY:xy velocityX:vx velocityY:vy accelerationX:ax accelerationY:ay dragValueX:dx dragValueY:dy elasticity:e mass:n canMove:m andFramerate:fr];
     if (self) {
         width = w;
         height = h;
@@ -70,6 +70,8 @@
     // Keep at bottom
     if ([super getPosY] <= 0) {
         [super setPosY:0];
+        [super setVelY:0];
+        [super setIgnoreNextUpdate:true];
     }
 }
 

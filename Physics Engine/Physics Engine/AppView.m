@@ -30,22 +30,22 @@ int currentObject;      // Currently selected object
         numberShapes = 9;
         currentObject = 0;
         
-        // [posX,posY,velX,velY,accX,accY,dragX,dragY,elas,canMove,fr,(shape dependent)]
+        // [posX,posY,velX,velY,accX,accY,dragX,dragY,elas,mass,canMove,fr,(shape dependent)]
         // Drag should be on the order of 0 - 0.3
         
-		shapes[0] = [[RectangleShape alloc] init:50:400:20:0:0:0:0.2:0.1:1:true:framerate:15:20];
-		shapes[1] = [[RectangleShape alloc] init:70:400:20:0:0:0:0.2:0.2:1:true:framerate:2:10];
-		shapes[2] = [[RectangleShape alloc] init:200:400:20:0:0:0:0.2:0.05:1:true:framerate:10:20];
+		shapes[0] = [[RectangleShape alloc] init:50:400:20:0:0:0:0.2:0.1:1:1:true:framerate:15:20];
+		shapes[1] = [[RectangleShape alloc] init:70:400:20:0:0:0:0.2:0.2:1:1:true:framerate:2:10];
+		shapes[2] = [[RectangleShape alloc] init:200:400:20:0:0:0:0.2:0.05:1:1:true:framerate:10:20];
 		
-		shapes[3] = [[CircleShape alloc] init:50:400:20:0:0:0:0:0:0:true:framerate:5];
-		shapes[4] = [[CircleShape alloc] init:80:350:40:20:0:0:0.1:0.1:0:true:framerate:10];
+		shapes[3] = [[CircleShape alloc] init:50:400:20:0:0:0:0:0:0:1:true:framerate:5];
+		shapes[4] = [[CircleShape alloc] init:80:350:40:20:0:0:0.1:0.1:0:1:true:framerate:10];
         
-        shapes[5] = [[RectangleShape alloc] init:20:50:0:0:0:0:0:0:0:false:framerate:700:10];
-        shapes[6] = [[CircleShape alloc] init:400:300:0:0:0:0:0:0:0:false:framerate:15];
+        shapes[5] = [[RectangleShape alloc] init:20:50:0:0:0:0:0:0:0:1:false:framerate:700:10];
+        shapes[6] = [[CircleShape alloc] init:400:300:0:0:0:0:0:0:0:1:false:framerate:15];
         
-        shapes[7] = [[CircleShape alloc] init:600:300:-25:0:0:0:0:0:0:true:framerate:10];
+        shapes[7] = [[CircleShape alloc] init:600:300:-25:0:0:0:0:0:0:1:true:framerate:10];
         
-        shapes[8] = [[RectangleShape alloc] init:370:400:-20:0:0:0:0.2:0.05:1:true:framerate:10:20];
+        shapes[8] = [[RectangleShape alloc] init:370:400:-20:0:0:0:0.2:0.05:1:1:true:framerate:10:20];
         
         windowWidth = frame.size.width;
         windowHeight = frame.size.height;

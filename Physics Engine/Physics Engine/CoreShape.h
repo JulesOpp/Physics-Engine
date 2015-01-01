@@ -8,6 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+// Notes on the physics:
+//      Drag is calculated F = -dV where d is a set constant
+//      This is a Stokes' drag, approximating relatively low speeds
+
 @interface CoreShape : NSObject
 {
 @private
@@ -22,6 +26,8 @@
     double dragY;
     double elas;
     
+    double mass;
+    
     double framerate;
 
 	BOOL move;
@@ -31,7 +37,7 @@
 }
 
 
--(id) initWithpositionX:(double)xx positionY:(double)xy velocityX:(double)vx velocityY:(double)vy accelerationX:(double)ax accelerationY:(double)ay dragValueX:(double)dx dragValueY:(double)dy elasticity:(double)e canMove:(BOOL)m andFramerate:(double)fr;
+-(id) initWithpositionX:(double)xx positionY:(double)xy velocityX:(double)vx velocityY:(double)vy accelerationX:(double)ax accelerationY:(double)ay dragValueX:(double)dx dragValueY:(double)dy elasticity:(double)e mass:(double)n canMove:(BOOL)m andFramerate:(double)fr;
 
 -(void) draw: (NSColor*)c;
 -(void) update;
@@ -45,6 +51,7 @@
 -(double) getDragX;
 -(double) getDragY;
 -(double) getElas;
+-(double) getMass;
 -(double) getFr;
 -(BOOL) getMove;
 -(int) getType;
@@ -59,6 +66,7 @@
 -(void) setDragX: (double) d;
 -(void) setDragY: (double) d;
 -(void) setElas: (double) e;
+-(void) setMass: (double) m;
 -(void) setIgnoreNextUpdate: (BOOL) b;
 //-(void)setMovingState:(BOOL)choice;//not yet implemented
 
