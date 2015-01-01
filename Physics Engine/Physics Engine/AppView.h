@@ -25,4 +25,7 @@
 -(int) getCurrentObject;
 -(void) setColor: (NSColor*)c;
 
++(int) getWidth;
++(int) getHeight;
+
 @end

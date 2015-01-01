@@ -108,4 +108,7 @@ int currentObject;      // Currently selected object
 // Color management
 -(void)setColor:(NSColor *)c { drawColor = c; }
 
++(int) getWidth { return windowWidth; }
++(int) getHeight { return windowHeight; }
+
 @end
