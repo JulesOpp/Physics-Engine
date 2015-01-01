@@ -39,11 +39,19 @@
     if (![super getMove]) return;
     
     double gravity = -2;
-    [super setAccX:([super getAccX]-[super getDragX]*[super getVelX])];
-    [super setAccY:([super getAccY]+gravity-[super getDragY]*[super getVelY])];
+    //[super setAccX:([super getAccX]-[super getDragX]*[super getVelX])];
+    //[super setAccY:([super getAccY]+gravity-[super getDragY]*[super getVelY])];
+    double currentAccX = [super getAccX]-[super getDragX]*[super getVelX];
+    double currentAccY = [super getAccY]+gravity-[super getDragY]*[super getVelY];
     
-    [super setVelX:[super getVelX]+[super getAccX]*[super getFr]*10];
-    [super setVelY:[super getVelY]+[super getAccY]*[super getFr]*10];
+    if ([super getIgnoreNextUpdate]) {
+        currentAccX = 0;
+        currentAccY = 0;
+        [super setIgnoreNextUpdate:false];
+    }
+    
+    [super setVelX:[super getVelX]+currentAccX*[super getFr]*10];
+    [super setVelY:[super getVelY]+currentAccY*[super getFr]*10];
     
     [super setPosX:[super getPosX]+[super getVelX]*[super getFr]*10];
     
@@ -62,10 +70,14 @@
     NSLog(@"Collision on Rect v Rect");
     
     // COLLISION SOLVE
-    if (![a getMove])
+    if (![a getMove]) {
         [b setVelY:[b getVelY]*[b getElas]*-1];
-    if (![b getMove])
+        [b setIgnoreNextUpdate:true];
+    }
+    if (![b getMove]) {
         [a setVelY:[a getVelY]*[a getElas]*-1];
+        [a setIgnoreNextUpdate:true];
+    }
     if ([a getMove] && [b getMove]) {
         // Get distance from midpoints
         double dx = [a getPosX] + [a getWidth]/2 - [b getPosX] - [b getWidth]/2;

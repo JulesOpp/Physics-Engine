@@ -25,6 +25,7 @@
         elas = e;
         move = m;
         framerate = fr;
+        ignoreNextUpdate = false;
     }
     return self;
 }
@@ -49,6 +50,7 @@
 -(BOOL) getMove { return move; }
 -(double) getFr { return framerate; };
 -(int) getType { return typeShape; }
+-(BOOL) getIgnoreNextUpdate { return ignoreNextUpdate; }
 
 -(void) setPosX: (double) x { posX = x; }
 -(void) setPosY: (double) y { posY = y; }
@@ -59,6 +61,7 @@
 -(void) setDragX: (double) d { dragX = d; }
 -(void) setDragY: (double) d { dragY = d; }
 -(void) setElas: (double) e { elas = e; }
+-(void) setIgnoreNextUpdate:(BOOL)b { ignoreNextUpdate = b; }
 //-(void)setMovingState:(BOOL)choice{movabilty = choice;}
 
 // The type is interesting - I needed a was to determine which type of CoreShape object I was using, so rectangles declare their type to be 1 and circles to be 2

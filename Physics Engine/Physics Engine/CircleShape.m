@@ -34,11 +34,13 @@
     if (![super getMove]) return;
 
     double gravity = -2;
-    [super setAccX:([super getAccX]-[super getDragX]*[super getVelX])];
-    [super setAccY:([super getAccY]+gravity-[super getDragY]*[super getVelY])];
+    //[super setAccX:([super getAccX]-[super getDragX]*[super getVelX])];
+    //[super setAccY:([super getAccY]+gravity-[super getDragY]*[super getVelY])];
+    double currentAccX = [super getAccX]-[super getDragX]*[super getVelX];
+    double currentAccY = [super getAccY]+gravity-[super getDragY]*[super getVelY];
     
-    [super setVelX:[super getVelX]+[super getAccX]*[super getFr]*10];
-    [super setVelY:[super getVelY]+[super getAccY]*[super getFr]*10];
+    [super setVelX:[super getVelX]+currentAccX*[super getFr]*10];
+    [super setVelY:[super getVelY]+currentAccY*[super getFr]*10];
     
     // Keep at bottom
     ([super getPosY] <= radius) ? [super setPosY:radius] : [super setPosY:[super getPosY]+[super getVelY]*[super getFr]*10];

@@ -25,6 +25,7 @@
     double framerate;
 
 	BOOL move;
+    BOOL ignoreNextUpdate; // To counteract the gravity sink
     
     int typeShape; // Def:prob error, rect:1, circle:2
 }
@@ -47,6 +48,7 @@
 -(double) getFr;
 -(BOOL) getMove;
 -(int) getType;
+-(BOOL) getIgnoreNextUpdate;
 
 -(void) setPosX: (double) x;
 -(void) setPosY: (double) y;
@@ -57,6 +59,7 @@
 -(void) setDragX: (double) d;
 -(void) setDragY: (double) d;
 -(void) setElas: (double) e;
+-(void) setIgnoreNextUpdate: (BOOL) b;
 //-(void)setMovingState:(BOOL)choice;//not yet implemented
 
 -(void) setType: (int)t;
