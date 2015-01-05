@@ -38,13 +38,13 @@ int currentObject;      // Currently selected object
 		shapes[1] = [[RectangleShape alloc] init:70:400:20:0:0:0:0.2:0.2:0.2:1:true:framerate:2:10];
 		shapes[2] = [[RectangleShape alloc] init:200:400:20:0:0:0:0.2:0.05:1:1:true:framerate:10:20];
 		
-		shapes[3] = [[CircleShape alloc] init:50:400:20:0:0:0:0:0:0:1:true:framerate:5];
-		shapes[4] = [[CircleShape alloc] init:80:350:40:20:0:0:0.1:0.1:0:1:true:framerate:10];
+		shapes[3] = [[CircleShape alloc] init:50:400:20:0:0:0:0:0:1:1:true:framerate:5];
+		shapes[4] = [[CircleShape alloc] init:400:400:200:0:0:0:0.1:0:1:1:true:framerate:10];
         
         shapes[5] = [[RectangleShape alloc] init:20:50:0:0:0:0:0:0:1:1:false:framerate:700:10];
         shapes[6] = [[CircleShape alloc] init:400:300:0:0:0:0:0:0:1:1:false:framerate:15];
         
-        shapes[7] = [[CircleShape alloc] init:600:300:-25:0:0:0:0:0:0:1:true:framerate:10];
+        shapes[7] = [[CircleShape alloc] init:470:450:-20:0:0:0:0:0:1:1:true:framerate:10];
         
         shapes[8] = [[RectangleShape alloc] init:370:400:-20:0:0:0:0.2:0.05:1:1:true:framerate:10:20];
         
@@ -78,7 +78,7 @@ int currentObject;      // Currently selected object
                 else if ([shapes[i] getType] == 1 && [shapes[j] getType] == 2)
                     [RectangleShape checkCollisionC:(RectangleShape*)shapes[i] :(CircleShape*)shapes[j]];
                 else if ([shapes[i] getType] == 2 && [shapes[j] getType] == 1)
-                    [CircleShape checkCollisionR:(CircleShape*)shapes[i] :(RectangleShape*)shapes[j]];
+                    [RectangleShape checkCollisionC:(RectangleShape*)shapes[j] :(CircleShape*)shapes[i]];
                 else if ([shapes[i] getType] == 2 && [shapes[j] getType] == 2)
                     [CircleShape checkCollisionC:(CircleShape*)shapes[i] :(CircleShape*)shapes[j]];            
         }
@@ -95,11 +95,11 @@ int currentObject;      // Currently selected object
     // If playing change current objects
     for (int i=0; i<numberShapes; i++)
         if ([shapes[i] getType] == 1 && [RectangleShape checkCoord:(RectangleShape*)shapes[i]:point.x:point.y]) {
-            NSLog(@"Object Rect");
+            NSLog(@"Object Rect %d",i);
             currentObject = i;
         }
         else if ([shapes[i] getType] == 2 && [CircleShape checkCoord:(CircleShape*)shapes[i] :point.x :point.y]) {
-            NSLog(@"Object circle");
+            NSLog(@"Object circle %d",i);
             currentObject = i;
         }
 }

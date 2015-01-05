@@ -8,6 +8,7 @@
 
 #import "RectangleShape.h"
 #import "AppView.h"
+#import "CircleShape.h"
 
 @implementation RectangleShape
 
@@ -95,11 +96,24 @@
         double ady = fabs(dy);
         
         // Side
-        if (adx > ady)
+        if (adx > ady) {
             [b setVelX:[b getVelX]*[b getElas]*-1];
+            
+            // Stop sinking
+            if ([a getPosX]+[a getWidth]>[b getPosX] || [a getPosX]<[b getPosX]+[b getWidth])
+                if ([b getVelX] > 0) [b setPosX:[a getPosX]+[a getWidth]];
+                else [b setPosX:[a getPosX]];
+        }
         // Top or bottom
-        else
+        else {
             [b setVelY:[b getVelY]*[b getElas]*-1];
+            
+            // Stop sinking
+            if ([a getPosY]+[a getHeight]>[b getPosY] || [a getPosY]<[b getPosY]+[b getHeight])
+                if ([b getVelY] > 0) [b setPosY:[a getPosY]+[a getHeight]];
+                else [b setPosY:[a getPosY]];
+
+        }
         
         // No gravity sink
         [b setIgnoreNextUpdate:true];
@@ -111,11 +125,23 @@
         double ady = fabs(dy);
         
         // Side
-        if (adx > ady)
+        if (adx > ady) {
             [a setVelX:[a getVelX]*[a getElas]*-1];
+            
+            // Stop sinking
+            if ([b getPosX]+[b getWidth]>[a getPosX] || [b getPosX]<[a getPosX]+[a getWidth])
+                if ([a getVelX] > 0) [a setPosX:[b getPosX]+[b getWidth]];
+                else [a setPosX:[b getPosX]];
+        }
         // Top or bottom
-        else
+        else {
             [a setVelY:[a getVelY]*[a getElas]*-1];
+            
+            // Stop sinking
+            if ([b getPosY]+[b getHeight]>[a getPosY] || [b getPosY]<[a getPosY]+[a getHeight])
+                if ([a getVelY] > 0) [a setPosY:[b getPosY]+[b getHeight]];
+                else [a setPosY:[b getPosY]];
+        }
         
         // No gravity sink
         [a setIgnoreNextUpdate:true];
@@ -175,11 +201,103 @@
     // Rectangle vs Circle
     
     // COLLISION DETECT
-    // Magic goes here
+    if ([a getPosX]>[b getPosX]+[b getRadius] || [a getPosX]+[a getWidth]<[b getPosX]-[b getRadius]) return;
+    if ([a getPosY]+[a getHeight]<[b getPosY]-[b getRadius] || [a getPosY]>[b getPosY]+[b getRadius]) return;
+    
+    //double r = pow([b getRadius],2);
+    
+    
+    // TO IMPLEMENT, CORNER DETECTION - Right now, circles are interpretted as rects
+    //if (r > pow([b getPosX]-[a getPosX],2)+pow([b getPosY]-[a getPosY],2)) return;
+    //if (r < pow([b getPosX]-[a getPosX]-[a getWidth],2)+pow([b getPosY]-[a getPosY],2)) return;
+    //if (r < pow([b getPosX]-[a getPosX],2)+pow([b getPosY]-[a getPosY]-[a getHeight],2)) return;
+    //if (r < pow([b getPosX]-[a getPosX]-[a getWidth],2)+pow([b getPosY]-[a getPosY]-[a getHeight],2)) return;
+
+    
+    NSLog(@"Collision on Rect v Circle");
+    
     
     // COLLISION SOLVE
-    // posX = something else;
-    // posY = something else;
+    // COLLISION SOLVE
+    if (![a getMove]) {
+        double dx = ([a getPosX] + [a getWidth]/2 - [b getPosX])/[a getWidth];
+        double dy = ([a getPosY] + [a getHeight]/2 - [b getPosY])/[a getHeight];
+        double adx = fabs(dx);
+        double ady = fabs(dy);
+        
+        // Side
+        if (adx > ady)
+            [b setVelX:[b getVelX]*[b getElas]*-1];
+        // Top or bottom
+        else
+            [b setVelY:[b getVelY]*[b getElas]*-1];
+        
+        // No gravity sink
+        [b setIgnoreNextUpdate:true];
+    }
+    if (![b getMove]) {
+        double dx = ([a getPosX] + [a getWidth]/2 - [b getPosX])/[b getRadius]/2;
+        double dy = ([a getPosY] + [a getHeight]/2 - [b getPosY])/[b getRadius]/2;
+        double adx = fabs(dx);
+        double ady = fabs(dy);
+        
+        // Side
+        if (adx > ady)
+            [a setVelX:[a getVelX]*[a getElas]*-1];
+        // Top or bottom
+        else
+            [a setVelY:[a getVelY]*[a getElas]*-1];
+        
+        // No gravity sink
+        [a setIgnoreNextUpdate:true];
+    }
+    if ([a getMove] && [b getMove]) {
+        // Get distance from midpoints
+        double dx = [a getPosX] + [a getWidth]/2 - [b getPosX];
+        double dy = [a getPosY] + [a getHeight]/2 - [b getPosY];
+        double adx = fabs(dx);
+        double ady = fabs(dy);
+        
+        // Approaching from corner
+        //if (fabs(adx - ady) < 0.1) {
+        // TO BE IMPLEMENTED LATER
+        //}
+        // Approaching from sides
+        if (adx > ady) {
+            // Inelastic collision equation
+            double Va = [a getVelX];
+            double Vb = [b getVelX];
+            
+            // Va = E*Mb*(Vb-Va)+Ma*Va+Mb*Vb / Ma+Mb
+            [a setVelX:([a getElas]*[b getMass]*(Vb-Va)+[a getMass]*Va+[b getMass]*Vb)/([a getMass]+[b getMass])];
+            [b setVelX:([b getElas]*[a getMass]*(Va-Vb)+[a getMass]*Va+[b getMass]*Vb)/([a getMass]+[b getMass])];
+        }
+        // Approaching from top or bottom
+        else {
+            double Va = [a getVelY];
+            double Vb = [b getVelY];
+            
+            [a setVelY:([a getElas]*[b getMass]*(Vb-Va)+[a getMass]*Va+[b getMass]*Vb)/([a getMass]+[b getMass])];
+            [b setVelY:([b getElas]*[a getMass]*(Va-Vb)+[a getMass]*Va+[b getMass]*Vb)/([a getMass]+[b getMass])];
+        }
+    }
+    
+    if (fabs([a getVelX]) < 0.04) [a setVelX:0];
+    if (fabs([a getVelY]) < 0.04) [a setVelY:0];
+    if (fabs([b getVelX]) < 0.04) [b setVelX:0];
+    if (fabs([b getVelY]) < 0.04) [b setVelY:0];
+    
+    /*double Vrx = [a getVelX] - [b getVelX];
+    double Vry = [a getVelY] - [b getVelY];
+    double Nx = [a getPosX] - [b getPosX];
+    double Ny = [a getPosY] - [b getPosY];
+    double NVr = Nx * Vrx + Ny * Vry;
+    
+    [a setVelX:[a getVelX] - Nx * NVr / (pow(Nx,2)+pow(Ny,2))];
+    [a setVelY:[a getVelY] - Ny * NVr / (pow(Nx,2)+pow(Ny,2))];
+    
+    [b setVelX:[b getVelX] + Nx * NVr / (pow(Nx,2)+pow(Ny,2))];
+    [b setVelY:[b getVelY] + Ny * NVr / (pow(Nx,2)+pow(Ny,2))];*/
 }
 
 // Check if click on rect

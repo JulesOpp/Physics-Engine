@@ -73,18 +73,6 @@
 
 }
 
-// Check for Circle v Rect collision
-+(void) checkCollisionR:(CircleShape*)a:(RectangleShape *)b {
-    // Circle vs Rectangle
-    
-    // COLLISION DETECT
-    // Magic goes here
-    
-    // COLLISION SOLVE
-    // posX = something else;
-    // posY = something else;
-}
-
 // Check for Circle v Circle collision
 +(void) checkCollisionC:(CircleShape*)a:(CircleShape *)b {
     // Circle vs Circle
