@@ -88,6 +88,23 @@
     
     NSLog(@"Collision on Rect v Rect");
     
+    /*double Vrx = [a getVelX] - [b getVelX];
+    double Vry = [a getVelY] - [b getVelY];
+    double Nx = [a getPosX] - [b getPosX];
+    double Ny = [a getPosY] - [b getPosY];
+    double NVr = Nx * Vrx + Ny * Vry;
+    
+    double sumMass = [a getMass] + [b getMass];
+    [a setVelX:[a getVelX] - Nx * NVr / (pow(Nx,2)+pow(Ny,2)) * 2 * [b getMass]/sumMass];
+    [a setVelY:[a getVelY] - Ny * NVr / (pow(Nx,2)+pow(Ny,2)) * 2 * [b getMass]/sumMass];
+    
+    [b setVelX:[b getVelX] + Nx * NVr / (pow(Nx,2)+pow(Ny,2)) * 2 * [a getMass]/sumMass];
+    [b setVelY:[b getVelY] + Ny * NVr / (pow(Nx,2)+pow(Ny,2)) * 2 * [a getMass]/sumMass];
+    */
+
+    
+    
+    
     // COLLISION SOLVE
     if (![a getMove]) {
         double dx = ([a getPosX] + [a getWidth]/2 - [b getPosX] - [b getWidth]/2)/[a getWidth];
@@ -98,21 +115,12 @@
         // Side
         if (adx > ady) {
             [b setVelX:[b getVelX]*[b getElas]*-1];
-            
-            // Stop sinking
-            if ([a getPosX]+[a getWidth]>[b getPosX] || [a getPosX]<[b getPosX]+[b getWidth])
-                if ([b getVelX] > 0) [b setPosX:[a getPosX]+[a getWidth]];
-                else [b setPosX:[a getPosX]];
+            [b setPosX:[b getPosX]+adx];
         }
         // Top or bottom
         else {
             [b setVelY:[b getVelY]*[b getElas]*-1];
-            
-            // Stop sinking
-            if ([a getPosY]+[a getHeight]>[b getPosY] || [a getPosY]<[b getPosY]+[b getHeight])
-                if ([b getVelY] > 0) [b setPosY:[a getPosY]+[a getHeight]];
-                else [b setPosY:[a getPosY]];
-
+            [b setPosY:[b getPosY]+ady];
         }
         
         // No gravity sink
@@ -127,20 +135,12 @@
         // Side
         if (adx > ady) {
             [a setVelX:[a getVelX]*[a getElas]*-1];
-            
-            // Stop sinking
-            if ([b getPosX]+[b getWidth]>[a getPosX] || [b getPosX]<[a getPosX]+[a getWidth])
-                if ([a getVelX] > 0) [a setPosX:[b getPosX]+[b getWidth]];
-                else [a setPosX:[b getPosX]];
+            [a setPosX:[a getPosX]+adx];
         }
         // Top or bottom
         else {
             [a setVelY:[a getVelY]*[a getElas]*-1];
-            
-            // Stop sinking
-            if ([b getPosY]+[b getHeight]>[a getPosY] || [b getPosY]<[a getPosY]+[a getHeight])
-                if ([a getVelY] > 0) [a setPosY:[b getPosY]+[b getHeight]];
-                else [a setPosY:[b getPosY]];
+            [a setPosY:[a getPosY]+ady];
         }
         
         // No gravity sink
@@ -176,6 +176,8 @@
             // Va = E*Mb*(Vb-Va)+Ma*Va+Mb*Vb / Ma+Mb
             [a setVelX:([a getElas]*[b getMass]*(Vb-Va)+[a getMass]*Va+[b getMass]*Vb)/([a getMass]+[b getMass])];
             [b setVelX:([b getElas]*[a getMass]*(Va-Vb)+[a getMass]*Va+[b getMass]*Vb)/([a getMass]+[b getMass])];
+            [a setPosX:[a getPosX]+adx/[b getWidth]];
+
         }
         // Approaching from top or bottom
         else {
@@ -187,6 +189,8 @@
             
             [a setVelY:([a getElas]*[b getMass]*(Vb-Va)+[a getMass]*Va+[b getMass]*Vb)/([a getMass]+[b getMass])];
             [b setVelY:([b getElas]*[a getMass]*(Va-Vb)+[a getMass]*Va+[b getMass]*Vb)/([a getMass]+[b getMass])];
+            [a setPosY:[a getPosY]+ady/[b getHeight]];
+
         }
     }
     
@@ -217,7 +221,6 @@
     NSLog(@"Collision on Rect v Circle");
     
     
-    // COLLISION SOLVE
     // COLLISION SOLVE
     if (![a getMove]) {
         double dx = ([a getPosX] + [a getWidth]/2 - [b getPosX])/[a getWidth];
@@ -271,6 +274,7 @@
             // Va = E*Mb*(Vb-Va)+Ma*Va+Mb*Vb / Ma+Mb
             [a setVelX:([a getElas]*[b getMass]*(Vb-Va)+[a getMass]*Va+[b getMass]*Vb)/([a getMass]+[b getMass])];
             [b setVelX:([b getElas]*[a getMass]*(Va-Vb)+[a getMass]*Va+[b getMass]*Vb)/([a getMass]+[b getMass])];
+            [b setPosX:[b getPosX]+adx/[a getWidth]];
         }
         // Approaching from top or bottom
         else {
@@ -279,6 +283,8 @@
             
             [a setVelY:([a getElas]*[b getMass]*(Vb-Va)+[a getMass]*Va+[b getMass]*Vb)/([a getMass]+[b getMass])];
             [b setVelY:([b getElas]*[a getMass]*(Va-Vb)+[a getMass]*Va+[b getMass]*Vb)/([a getMass]+[b getMass])];
+            [b setPosY:[b getPosY]+ady/[a getHeight]];
+
         }
     }
     
