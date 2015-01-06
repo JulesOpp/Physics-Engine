@@ -39,7 +39,7 @@ int currentObject;      // Currently selected object
 		shapes[2] = [[RectangleShape alloc] init:200:400:20:0:0:0:0.2:0.05:1:1:true:framerate:10:20];
 		
 		shapes[3] = [[CircleShape alloc] init:80:400:20:0:0:0:0:0:1:1:true:framerate:5];
-		shapes[4] = [[CircleShape alloc] init:400:400:200:0:0:0:0.1:0:1:1:true:framerate:10];
+		shapes[4] = [[CircleShape alloc] init:400:400:210:0:0:0:0.1:0:1:1:true:framerate:10];
         
         shapes[5] = [[RectangleShape alloc] init:20:50:0:0:0:0:0:0:1:100:false:framerate:700:10];
         shapes[6] = [[CircleShape alloc] init:400:300:0:0:0:0:0:0:1:100:false:framerate:15];

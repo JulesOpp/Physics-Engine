@@ -13,6 +13,8 @@
 
 @synthesize window = _window; // The main window
 @synthesize numShape; // The number of objects currently
+@synthesize textFR; // The framerate for the HUD
+@synthesize stepFR; // Change the framerate
 
 // The physics of the selected object
 @synthesize xPosT;
@@ -47,6 +49,9 @@ BOOL pausePlay; // Boolean determining whether paused or not
     
     // Get the number of shapes - will be changed when becomes dynamic
     [numShape setStringValue:[NSString stringWithFormat:@"%i", view->numberShapes]];
+    
+    // Set the framerate to the label in HUD
+    [textFR setStringValue:[NSString stringWithFormat:@"%.2f", frameRate]];
     
     // Set the initial physics in the child window
     [xPosT setStringValue:[NSString stringWithFormat:@"%f", [[view getObject:currentObject] getPosX]]];
@@ -125,6 +130,14 @@ BOOL pausePlay; // Boolean determining whether paused or not
 // Remove memory leaks on the text box observers - I don't know if this works
 -(IBAction)applicationWillTerminate:(NSNotification *)notification {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+-(IBAction)timerChange:(id)sender {
+    frameRate = 0.01 * [sender integerValue];
+    [timer invalidate];
+    timer = nil;
+    timer = [NSTimer scheduledTimerWithTimeInterval:frameRate target:self selector:@selector(refresh:) userInfo:nil repeats:YES];
+    [textFR setStringValue:[NSString stringWithFormat:@"%.2f", frameRate]];
 }
 
 @end

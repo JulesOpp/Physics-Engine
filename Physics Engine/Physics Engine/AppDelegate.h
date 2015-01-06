@@ -22,6 +22,9 @@
 
 @property (assign) IBOutlet NSWindow *window;
 @property (assign) IBOutlet NSTextField *numShape;
+@property (assign) IBOutlet NSTextField *textFR;
+
+@property (assign) IBOutlet NSStepper *stepFR;
 
 @property (assign) IBOutlet NSTextField *xPosT;
 @property (assign) IBOutlet NSTextField *yPosT;
@@ -33,5 +36,6 @@
 
 - (IBAction)refresh:(id)sender;
 -(IBAction)pause:(id)sender;
+-(IBAction)timerChange:(id)sender;
 
 @end
