@@ -11,7 +11,7 @@
 @implementation CoreShape
 
 // The CoreShape is the parent class of all shapes - attributes for (x,y) position, velocity, acceleration, drag, elasticity, ability to move, and framerate and SOON TO BE COLOR
--(id) initWithpositionX:(double)xx positionY:(double)xy velocityX:(double)vx velocityY:(double)vy accelerationX:(double)ax accelerationY:(double)ay dragValueX:(double)dx dragValueY: (double)dy elasticity:(double)e mass:(double)n canMove:(BOOL)m andFramerate:(double)fr {
+-(id) initWithpositionX:(double)xx positionY:(double)xy velocityX:(double)vx velocityY:(double)vy accelerationX:(double)ax accelerationY:(double)ay dragValueX:(double)dx dragValueY: (double)dy elasticity:(double)e mass:(double)n canMove:(BOOL)m {
     self = [super init];
     if (self) {
         posX = xx;
@@ -25,7 +25,6 @@
         elas = e;
         mass = n;
         move = m;
-        framerate = fr;
         ignoreNextUpdate = false;
     }
     return self;
@@ -50,7 +49,6 @@
 -(double) getElas { return elas; }
 -(double) getMass { return mass; }
 -(BOOL) getMove { return move; }
--(double) getFr { return framerate; };
 -(int) getType { return typeShape; }
 -(BOOL) getIgnoreNextUpdate { return ignoreNextUpdate; }
 
@@ -65,7 +63,6 @@
 -(void) setElas: (double) e { elas = e; }
 -(void) setMass:(double) m { mass = m; }
 -(void) setIgnoreNextUpdate:(BOOL)b { ignoreNextUpdate = b; }
-//-(void)setMovingState:(BOOL)choice{movabilty = choice;}
 
 // The type is interesting - I needed a was to determine which type of CoreShape object I was using, so rectangles declare their type to be 1 and circles to be 2
 -(void) setType:(int)t { typeShape = t; }

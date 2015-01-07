@@ -51,7 +51,7 @@ BOOL pausePlay; // Boolean determining whether paused or not
     [numShape setStringValue:[NSString stringWithFormat:@"%i", view->numberShapes]];
     
     // Set the framerate to the label in HUD
-    [textFR setStringValue:[NSString stringWithFormat:@"%.2f", frameRate]];
+    [textFR setStringValue:[NSString stringWithFormat:@"%.4f", frameRate]];
     
     // Set the initial physics in the child window
     [xPosT setStringValue:[NSString stringWithFormat:@"%f", [[view getObject:currentObject] getPosX]]];
@@ -134,11 +134,11 @@ BOOL pausePlay; // Boolean determining whether paused or not
 }
 
 -(IBAction)timerChange:(id)sender {
-    frameRate = 0.01 * [sender integerValue];
+    frameRate = 0.001 * [sender integerValue];
     [timer invalidate];
     timer = nil;
     timer = [NSTimer scheduledTimerWithTimeInterval:frameRate target:self selector:@selector(refresh:) userInfo:nil repeats:YES];
-    [textFR setStringValue:[NSString stringWithFormat:@"%.2f", frameRate]];
+    [textFR setStringValue:[NSString stringWithFormat:@"%.4f", frameRate]];
 }
 
 +(double)getFrameRate {

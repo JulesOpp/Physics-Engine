@@ -28,8 +28,6 @@
     
     double mass;
     
-    double framerate;
-
 	BOOL move;
     BOOL ignoreNextUpdate; // To counteract the gravity sink
     
@@ -37,7 +35,7 @@
 }
 
 
--(id) initWithpositionX:(double)xx positionY:(double)xy velocityX:(double)vx velocityY:(double)vy accelerationX:(double)ax accelerationY:(double)ay dragValueX:(double)dx dragValueY:(double)dy elasticity:(double)e mass:(double)n canMove:(BOOL)m andFramerate:(double)fr;
+-(id) initWithpositionX:(double)xx positionY:(double)xy velocityX:(double)vx velocityY:(double)vy accelerationX:(double)ax accelerationY:(double)ay dragValueX:(double)dx dragValueY:(double)dy elasticity:(double)e mass:(double)n canMove:(BOOL)m;
 
 -(void) draw: (NSColor*)c;
 -(void) update;
@@ -52,7 +50,6 @@
 -(double) getDragY;
 -(double) getElas;
 -(double) getMass;
--(double) getFr;
 -(BOOL) getMove;
 -(int) getType;
 -(BOOL) getIgnoreNextUpdate;
@@ -68,7 +65,6 @@
 -(void) setElas: (double) e;
 -(void) setMass: (double) m;
 -(void) setIgnoreNextUpdate: (BOOL) b;
-//-(void)setMovingState:(BOOL)choice;//not yet implemented
 
 -(void) setType: (int)t;
 @end

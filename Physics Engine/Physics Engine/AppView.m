@@ -41,21 +41,21 @@ double arrowYf;
         // Drag should be on the order of 0 - 0.3
         // Coefficient of Restitution - elasticity - must be 0-1
         
-		shapes[0] = [[RectangleShape alloc] init:50:400:20:0:0:0:0.2:0.1:1:1:true:framerate:15:20];
-		shapes[1] = [[RectangleShape alloc] init:70:400:20:0:0:0:0.2:0.2:1:1:true:framerate:10:10];
-		shapes[2] = [[RectangleShape alloc] init:200:400:20:0:0:0:0.2:0.05:1:1:true:framerate:10:20];
+		shapes[0] = [[RectangleShape alloc] init:50:400:20:0:0:0:0.2:0.1:1:1:true:15:20];
+		shapes[1] = [[RectangleShape alloc] init:70:400:20:0:0:0:0.2:0.2:1:1:true:10:10];
+		shapes[2] = [[RectangleShape alloc] init:200:400:20:0:0:0:0.2:0.05:1:1:true:10:20];
 		
-		shapes[3] = [[CircleShape alloc] init:80:400:20:0:0:0:0:0:1:1:true:framerate:5];
-		shapes[4] = [[CircleShape alloc] init:400:400:210:0:0:0:0.1:0:1:1:true:framerate:10];
+		shapes[3] = [[CircleShape alloc] init:80:400:20:0:0:0:0:0:1:1:true:5];
+		shapes[4] = [[CircleShape alloc] init:400:400:210:0:0:0:0.1:0:1:1:true:10];
         
-        shapes[5] = [[RectangleShape alloc] init:20:50:0:0:0:0:0:0:1:100:false:framerate:700:10];
-        shapes[6] = [[CircleShape alloc] init:400:300:0:0:0:0:0:0:1:100:false:framerate:15];
+        shapes[5] = [[RectangleShape alloc] init:20:50:0:0:0:0:0:0:1:100:false:700:10];
+        shapes[6] = [[CircleShape alloc] init:400:300:0:0:0:0:0:0:1:100:false:15];
         
-        shapes[7] = [[CircleShape alloc] init:470:450:-20:0:0:0:0:0:1:1:true:framerate:10];
+        shapes[7] = [[CircleShape alloc] init:470:450:-20:0:0:0:0:0:1:1:true:10];
         
-        shapes[8] = [[RectangleShape alloc] init:370:400:-20:0:0:0:0.2:0.05:1:1:true:framerate:10:20];
+        shapes[8] = [[RectangleShape alloc] init:370:400:-20:0:0:0:0.2:0.05:1:1:true:10:20];
         
-        shapes[9] = [[RectangleShape alloc] init:150:80:0:0:0:0:0:0:1:1:true:framerate:20:20];
+        shapes[9] = [[RectangleShape alloc] init:150:80:0:0:0:0:0:0:1:1:true:20:20];
         
         windowWidth = frame.size.width;
         windowHeight = frame.size.height;
