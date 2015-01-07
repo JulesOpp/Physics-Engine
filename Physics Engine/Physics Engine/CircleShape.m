@@ -8,6 +8,7 @@
 
 #import "CircleShape.h"
 #import "AppView.h"
+#import "AppDelegate.h"
 
 @implementation CircleShape
 
@@ -33,6 +34,7 @@
 -(void) update {
     // OVER RIDDEN
     if (![super getMove]) return;
+    double fr = [AppDelegate getFrameRate];
 
     double gravity = -2;
     //[super setAccX:([super getAccX]-[super getDragX]*[super getVelX])];
@@ -48,11 +50,11 @@
         [super setIgnoreNextUpdate:false];
     }
     
-    [super setVelX:[super getVelX]+currentAccX*[super getFr]*10];
-    [super setVelY:[super getVelY]+currentAccY*[super getFr]*10];
+    [super setVelX:[super getVelX]+currentAccX*fr*10];
+    [super setVelY:[super getVelY]+currentAccY*fr*10];
     
-    [super setPosX:[super getPosX]+[super getVelX]*[super getFr]*10];
-    [super setPosY:[super getPosY]+[super getVelY]*[super getFr]*10];
+    [super setPosX:[super getPosX]+[super getVelX]*fr*10];
+    [super setPosY:[super getPosY]+[super getVelY]*fr*10];
 
     // Bounce
     if ([super getPosY] < 0 && [super getVelY] < 0)
@@ -81,7 +83,7 @@
     double r = [a getRadius] + [b getRadius]; // Needed distance
     r *= r;
     if (r <= pow([a getPosX]-[b getPosX],2) + pow([a getPosY]-[b getPosY],2)) return;
-    NSLog(@"Collision on Circle v Circle");
+    //NSLog(@"Collision on Circle v Circle");
     
     // COLLISION SOLVE - http://en.wikipedia.org/wiki/Elastic_collision
     // Angle-free collisions

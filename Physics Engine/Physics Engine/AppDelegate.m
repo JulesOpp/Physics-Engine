@@ -130,6 +130,7 @@ BOOL pausePlay; // Boolean determining whether paused or not
 // Remove memory leaks on the text box observers - I don't know if this works
 -(IBAction)applicationWillTerminate:(NSNotification *)notification {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [timer invalidate];
 }
 
 -(IBAction)timerChange:(id)sender {
@@ -138,6 +139,10 @@ BOOL pausePlay; // Boolean determining whether paused or not
     timer = nil;
     timer = [NSTimer scheduledTimerWithTimeInterval:frameRate target:self selector:@selector(refresh:) userInfo:nil repeats:YES];
     [textFR setStringValue:[NSString stringWithFormat:@"%.2f", frameRate]];
+}
+
++(double)getFrameRate {
+    return frameRate;
 }
 
 @end

@@ -21,6 +21,12 @@ int windowHeight;       // Height of main window - not utilized
 BOOL pausePlay;         // Whether paused or play
 int currentObject;      // Currently selected object
 
+BOOL isDrawingArrow;    // State of arrow
+NSBezierPath * path;    // Arrow
+double arrowXi;
+double arrowYi;
+double arrowXf;
+double arrowYf;
 
 // Initiate all parameters
 - (id)initWithFr:(CGRect)frame:(double)fr {
@@ -29,6 +35,7 @@ int currentObject;      // Currently selected object
         framerate = fr;
         numberShapes = 10;
         currentObject = 0;
+        isDrawingArrow = false;
         
         // [posX,posY,velX,velY,accX,accY,dragX,dragY,elas,mass,canMove,fr,(shape dependent)]
         // Drag should be on the order of 0 - 0.3
@@ -61,6 +68,7 @@ int currentObject;      // Currently selected object
 // Main drawing functions - calls other drawers
 -(void)drawRect:(NSRect)dirtyRect {
     // Don't update if paused
+    
     if (pausePlay)
         for (int i=0; i<numberShapes; i++)
             (i!=currentObject)?[shapes[i] draw: drawColor]:[shapes[i] draw:[NSColor blueColor]];
@@ -82,13 +90,33 @@ int currentObject;      // Currently selected object
                 else if ([shapes[i] getType] == 2 && [shapes[j] getType] == 2)
                     [CircleShape checkCollisionC:(CircleShape*)shapes[i] :(CircleShape*)shapes[j]];            
         }
+    if (isDrawingArrow) {
+        NSLog(@"Draw");
+        
+        path = [NSBezierPath bezierPath];
+        [path moveToPoint:CGPointMake(arrowXi, arrowYi)];
+        [path lineToPoint:CGPointMake(arrowXf, arrowYf)];
+        [path setLineWidth: 4];
+        
+        [[NSColor whiteColor] set];
+        [path fill];
+        
+        [[NSColor grayColor] set]; 
+        [path stroke];
+    }
 }
-
 
 // Debugging tool to log positions on the view and select current object
 - (void)mouseDown:(NSEvent *)theEvent {
     NSPoint point = [self convertPoint:[theEvent locationInWindow] fromView:nil];
     NSLog(@"%f %f",point.x, point.y);
+    
+    isDrawingArrow = true;
+    NSLog(@"Down");
+    arrowXi = point.x;
+    arrowYi = point.y;
+    arrowXf = point.x;
+    arrowYf = point.y;
     
     if (!pausePlay) return;
     
@@ -102,6 +130,24 @@ int currentObject;      // Currently selected object
             NSLog(@"Object circle %d",i);
             currentObject = i;
         }
+}
+
+-(void)mouseDragged:(NSEvent *)theEvent {
+    NSPoint point = [self convertPoint:[theEvent locationInWindow] fromView:nil];
+    arrowXf = point.x;
+    arrowYf = point.y;
+}
+
+-(void)mouseUp:(NSEvent *)theEvent {
+    isDrawingArrow = false;
+    NSLog(@"Up");
+    NSPoint point = [self convertPoint:[theEvent locationInWindow] fromView:nil];
+    arrowXf = point.x;
+    arrowYf = point.y;
+    
+    // UPDATE VELOCITY VECTOR
+    [shapes[currentObject] setVelX:arrowXf-arrowXi];
+    [shapes[currentObject] setVelY:arrowYf-arrowYi];
 }
 
 // Current object management

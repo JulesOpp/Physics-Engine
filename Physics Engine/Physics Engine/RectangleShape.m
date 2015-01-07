@@ -9,6 +9,7 @@
 #import "RectangleShape.h"
 #import "AppView.h"
 #import "CircleShape.h"
+#import "AppDelegate.h"
 
 @implementation RectangleShape
 
@@ -39,6 +40,7 @@
 
 -(void) update {
     if (![super getMove]) return;
+    double fr = [AppDelegate getFrameRate]; 
     
     double gravity = -2;
     //[super setAccX:([super getAccX]-[super getDragX]*[super getVelX])];
@@ -54,11 +56,11 @@
         [super setIgnoreNextUpdate:false];
     }
     
-    [super setVelX:[super getVelX]+currentAccX*[super getFr]*10];
-    [super setVelY:[super getVelY]+currentAccY*[super getFr]*10];
+    [super setVelX:[super getVelX]+currentAccX*fr*10];
+    [super setVelY:[super getVelY]+currentAccY*fr*10];
     
-    [super setPosX:[super getPosX]+[super getVelX]*[super getFr]*10];
-    [super setPosY:[super getPosY]+[super getVelY]*[super getFr]*10];
+    [super setPosX:[super getPosX]+[super getVelX]*fr*10];
+    [super setPosY:[super getPosY]+[super getVelY]*fr*10];
     
     // Bounce
     if ([super getPosY] < 0 && [super getVelY] < 0)
@@ -86,7 +88,7 @@
     if ([a getPosX]>[b getPosX]+[b getWidth] || [a getPosX]+[a getWidth]<[b getPosX]) return;
     if ([a getPosY]+[a getHeight]<[b getPosY] || [a getPosY]>[b getPosY]+[b getHeight]) return;
     
-    NSLog(@"Collision on Rect v Rect");
+    //NSLog(@"Collision on Rect v Rect");
     
     /*double Vrx = [a getVelX] - [b getVelX];
     double Vry = [a getVelY] - [b getVelY];
@@ -218,7 +220,7 @@
     //if (r < pow([b getPosX]-[a getPosX]-[a getWidth],2)+pow([b getPosY]-[a getPosY]-[a getHeight],2)) return;
 
     
-    NSLog(@"Collision on Rect v Circle");
+    //NSLog(@"Collision on Rect v Circle");
     
     
     // COLLISION SOLVE

@@ -38,4 +38,6 @@
 -(IBAction)pause:(id)sender;
 -(IBAction)timerChange:(id)sender;
 
++(double)getFrameRate;
+
 @end
