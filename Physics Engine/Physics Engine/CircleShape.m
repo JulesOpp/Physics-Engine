@@ -33,7 +33,7 @@
 
 -(void) update {
     // OVER RIDDEN
-    if (![super getMove]) return;
+    if (![super getMove]) { [super setVelX:0]; [super setVelY:0]; return;}
     double fr = [AppDelegate getFrameRate];
 
     double gravity = -2;
@@ -59,11 +59,11 @@
     // Bounce
     if ([super getPosY] < 0 && [super getVelY] < 0)
         [super setVelY:-1*[super getVelY]];
-    if ([super getPosX] < 0 && [super getVelX] < 0)
+    if ([super getPosX]-radius < 0 && [super getVelX] < 0)
         [super setVelX:-1*[super getVelX]];
-    if ([super getPosY] > [AppView getHeight] && [super getVelY] > 0)
+    if ([super getPosY]+radius > [AppView getHeight] && [super getVelY] > 0)
         [super setVelY:-1*[super getVelY]];
-    if ([super getPosX] > [AppView getWidth] && [super getVelX] > 0)
+    if ([super getPosX]+radius > [AppView getWidth] && [super getVelX] > 0)
         [super setVelX:-1*[super getVelX]];
     
     // Keep at bottom
@@ -101,11 +101,11 @@
     double NVr = Nx * Vrx + Ny * Vry;
     
     double sumMass = [a getMass] + [b getMass];
-    [a setVelX:[a getVelX] - Nx * NVr / (pow(Nx,2)+pow(Ny,2)) * 2 * [b getMass]/sumMass];
-    [a setVelY:[a getVelY] - Ny * NVr / (pow(Nx,2)+pow(Ny,2)) * 2 * [b getMass]/sumMass];
+    [a setVelX:[a getVelX] - Nx * NVr / (pow(Nx,2)+pow(Ny,2)) * (1+[a getElas]) * [b getMass]/sumMass];
+    [a setVelY:[a getVelY] - Ny * NVr / (pow(Nx,2)+pow(Ny,2)) * (1+[a getElas]) * [b getMass]/sumMass];
     
-    [b setVelX:[b getVelX] + Nx * NVr / (pow(Nx,2)+pow(Ny,2)) * 2 * [a getMass]/sumMass];
-    [b setVelY:[b getVelY] + Ny * NVr / (pow(Nx,2)+pow(Ny,2)) * 2 * [a getMass]/sumMass];
+    [b setVelX:[b getVelX] + Nx * NVr / (pow(Nx,2)+pow(Ny,2)) * (1+[b getElas]) * [a getMass]/sumMass];
+    [b setVelY:[b getVelY] + Ny * NVr / (pow(Nx,2)+pow(Ny,2)) * (1+[b getElas]) * [a getMass]/sumMass];
     
     // Actual distance
     double d = sqrt(pow([a getPosX]-[b getPosX],2) + pow([a getPosY]-[b getPosY],2));

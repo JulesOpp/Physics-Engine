@@ -41,7 +41,7 @@ double arrowYf;
         // Drag should be on the order of 0 - 0.3
         // Coefficient of Restitution - elasticity - must be 0-1
         
-		shapes[0] = [[RectangleShape alloc] init:50:400:20:0:0:0:0.2:0.1:1:1:true:15:20];
+		shapes[0] = [[RectangleShape alloc] init:374:320:0:0:0:0:0.2:0.1:1:1:true:15:20];
 		shapes[1] = [[RectangleShape alloc] init:70:400:20:0:0:0:0.2:0.2:1:1:true:10:10];
 		shapes[2] = [[RectangleShape alloc] init:200:400:20:0:0:0:0.2:0.05:1:1:true:10:20];
 		

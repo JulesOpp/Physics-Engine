@@ -21,14 +21,20 @@
     if (self) {
         width = w;
         height = h;
+        angle = 0;
     }
     [super setType:1];
     return self;
 }
 
 -(void) draw:(NSColor*)c {
+    NSAffineTransform* xform = [NSAffineTransform transform];
+    //[xform rotateByDegrees:5];
+    //[xform concat];
     [c setFill];
     NSRectFill(CGRectMake([super getPosX], [super getPosY], width, height));
+    //[xform rotateByDegrees:-5];
+    //[xform concat];
 }
 
 // For a step by step calculation
@@ -39,7 +45,7 @@
 // THE INPUTTED ACCELERATION DOESNT DO ANYTHING RIGHT NOW
 
 -(void) update {
-    if (![super getMove]) return;
+    if (![super getMove]) { [super setVelX:0]; [super setVelY:0]; return;}
     double fr = [AppDelegate getFrameRate]; 
     
     double gravity = -2;
@@ -156,9 +162,16 @@
         double ady = fabs(dy);
         
         // Approaching from corner
-        //if (fabs(adx - ady) < 0.1) {
+        if (fabs(adx - ady) < 0.1) {
             // TO BE IMPLEMENTED LATER
-        //}
+            double Va = [a getVelX];
+            double Vb = [b getVelX];
+            
+            // Va = E*Mb*(Vb-Va)+Ma*Va+Mb*Vb / Ma+Mb
+            [a setVelX:([a getElas]*[b getMass]*(Vb-Va)+[a getMass]*Va+[b getMass]*Vb)/([a getMass]+[b getMass])];
+            [b setVelX:([b getElas]*[a getMass]*(Va-Vb)+[a getMass]*Va+[b getMass]*Vb)/([a getMass]+[b getMass])];
+
+        }
         // Approaching from sides
         if (adx > ady) {
             // a on the left
@@ -207,23 +220,71 @@
     // Rectangle vs Circle
     
     // COLLISION DETECT
-    if ([a getPosX]>[b getPosX]+[b getRadius] || [a getPosX]+[a getWidth]<[b getPosX]-[b getRadius]) return;
-    if ([a getPosY]+[a getHeight]<[b getPosY]-[b getRadius] || [a getPosY]>[b getPosY]+[b getRadius]) return;
+    //if ([a getPosX]>[b getPosX]+[b getRadius] || [a getPosX]+[a getWidth]<[b getPosX]-[b getRadius]) return;
+    //if ([a getPosY]+[a getHeight]<[b getPosY]-[b getRadius] || [a getPosY]>[b getPosY]+[b getRadius]) return;
     
     //double r = pow([b getRadius],2);
     
-    
     // TO IMPLEMENT, CORNER DETECTION - Right now, circles are interpretted as rects
-    //if (r > pow([b getPosX]-[a getPosX],2)+pow([b getPosY]-[a getPosY],2)) return;
-    //if (r < pow([b getPosX]-[a getPosX]-[a getWidth],2)+pow([b getPosY]-[a getPosY],2)) return;
-    //if (r < pow([b getPosX]-[a getPosX],2)+pow([b getPosY]-[a getPosY]-[a getHeight],2)) return;
-    //if (r < pow([b getPosX]-[a getPosX]-[a getWidth],2)+pow([b getPosY]-[a getPosY]-[a getHeight],2)) return;
+    //if (r < pow([b getPosX]-[a getPosX],2)+pow([b getPosY]-[a getPosY],2) && r < pow([b getPosX]-[a getPosX]-[a getWidth],2)+pow([b getPosY]-[a getPosY],2) && r < pow([b getPosX]-[a getPosX],2)+pow([b getPosY]-[a getPosY]-[a getHeight],2) && r < pow([b getPosX]-[a getPosX]-[a getWidth],2)+pow([b getPosY]-[a getPosY]-[a getHeight],2)) return;
+
+    /////////////////////////////////////////////////////////
+    //http://code.tutsplus.com/tutorials/quick-tip-collision-detection-between-a-circle-and-a-line-segment--active-10632
+    
+    BOOL inter = false;
+    
+    double ax = [a getPosX], ay = [a getPosY], bx = [a getPosX]+[a getWidth],by=[a getPosY];
+    double cx = [b getPosX], cy = [b getPosY], r = [b getRadius];
+    double vecLX = ax - bx, vecLY = ay - by;
+    double magL = sqrt(pow(vecLX,2)+pow(vecLY,2));
+    double vecCX = ax - cx, vecCY = ay - cy;
+    double norX = -1*vecLY, norY = vecLX;
+    double magN = sqrt(pow(norX,2)+pow(norY,2));
+    double onNorm = vecCX*norX/magN + vecCY*norY/magN;
+    double onLine = vecCX*vecLX/magL + vecCY*vecLY/magL;
+    //NSLog(@"%f %f %f %f %f",onNorm, r, (vecLX*vecCX+vecLX+vecCY),onLine,magL);
+    if ((fabs(onNorm) <= r && (vecLX*vecCX + vecLY*vecCY) > 0 && onLine < magL) || ( pow(vecCX,2)+pow(vecCY,2) < pow(r,2) ) ) inter = true;
+    
+    ax = [a getPosX]+[a getWidth], ay = [a getPosY], bx = [a getPosX]+[a getWidth],by=[a getPosY]+[a getHeight];
+    vecLX = ax - bx, vecLY = ay - by;
+    magL = sqrt(pow(vecLX,2)+pow(vecLY,2));
+    vecCX = ax - cx, vecCY = ay - cy;
+    norX = -1*vecLY, norY = vecLX;
+    magN = sqrt(pow(norX,2)+pow(norY,2));
+    onNorm = vecCX*norX/magN + vecCY*norY/magN;
+    onLine = vecCX*vecLX/magL + vecCY*vecLY/magL;
+    if ((fabs(onNorm) <= r && (vecLX*vecCX + vecLY*vecCY) > 0 && onLine < magL) || ( pow(vecCX,2)+pow(vecCY,2) < pow(r,2) ) ) inter = true;
+
+    ax = [a getPosX], ay = [a getPosY]+[a getHeight], bx = [a getPosX]+[a getWidth],by=[a getPosY]+[a getHeight];
+    vecLX = ax - bx, vecLY = ay - by;
+    magL = sqrt(pow(vecLX,2)+pow(vecLY,2));
+    vecCX = ax - cx, vecCY = ay - cy;
+    norX = -1*vecLY, norY = vecLX;
+    magN = sqrt(pow(norX,2)+pow(norY,2));
+    onNorm = vecCX*norX/magN + vecCY*norY/magN;
+    onLine = vecCX*vecLX/magL + vecCY*vecLY/magL;
+    if ((fabs(onNorm) <= r && (vecLX*vecCX + vecLY*vecCY) > 0 && onLine < magL) || ( pow(vecCX,2)+pow(vecCY,2) < pow(r,2) ) ) inter = true;
+    
+    ax = [a getPosX],ay=[a getPosY], bx = [a getPosX],by = [a getPosY]+[a getHeight];
+    vecLX = ax - bx, vecLY = ay - by;
+    magL = sqrt(pow(vecLX,2)+pow(vecLY,2));
+    vecCX = ax - cx, vecCY = ay - cy;
+    norX = -1*vecLY, norY = vecLX;
+    magN = sqrt(pow(norX,2)+pow(norY,2));
+    onNorm = vecCX*norX/magN + vecCY*norY/magN;
+    onLine = vecCX*vecLX/magL + vecCY*vecLY/magL;
+    if ((fabs(onNorm) <= r && (vecLX*vecCX + vecLY*vecCY) > 0 && onLine < magL) || ( pow(vecCX,2)+pow(vecCY,2) < pow(r,2) ) ) inter = true;
 
     
-    //NSLog(@"Collision on Rect v Circle");
+    if (inter == false) return;
     
+    ////////////////////////////////////////////////////////////////////////////
+    
+    NSLog(@"Collision on Rect v Circle");
     
     // COLLISION SOLVE
+    
+    
     if (![a getMove]) {
         double dx = ([a getPosX] + [a getWidth]/2 - [b getPosX])/[a getWidth];
         double dy = ([a getPosY] + [a getHeight]/2 - [b getPosY])/[a getHeight];
@@ -264,11 +325,23 @@
         double ady = fabs(dy);
         
         // Approaching from corner
-        //if (fabs(adx - ady) < 0.1) {
-        // TO BE IMPLEMENTED LATER
-        //}
+        if (fabs(adx - ady) < 0.1) {
+            double Vrx = [a getVelX] - [b getVelX];
+            double Vry = [a getVelY] - [b getVelY];
+            double Nx = [a getPosX] + [a getWidth]/2 - [b getPosX];
+            double Ny = [a getPosY] + [a getHeight]/2 - [b getPosY];
+            double NVr = Nx * Vrx + Ny * Vry;
+            
+            double sumMass = [a getMass] + [b getMass];
+            [a setVelX:[a getVelX] - Nx * NVr / (pow(Nx,2)+pow(Ny,2)) * 2 * [b getMass]/sumMass];
+            [a setVelY:[a getVelY] - Ny * NVr / (pow(Nx,2)+pow(Ny,2)) * 2 * [b getMass]/sumMass];
+            
+            [b setVelX:[b getVelX] + Nx * NVr / (pow(Nx,2)+pow(Ny,2)) * 2 * [a getMass]/sumMass];
+            [b setVelY:[b getVelY] + Ny * NVr / (pow(Nx,2)+pow(Ny,2)) * 2 * [a getMass]/sumMass];
+            
+        }
         // Approaching from sides
-        if (adx > ady) {
+        else if (adx > ady) {
             // Inelastic collision equation
             double Va = [a getVelX];
             double Vb = [b getVelX];

@@ -16,6 +16,7 @@
     @private
     double width;
     double height;
+    double angle;
 }
 
 -(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) dx: (double) dy: (double) e: (double) n: (BOOL) m: (double) w: (double) h;
