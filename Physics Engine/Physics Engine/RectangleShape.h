@@ -20,7 +20,7 @@
     double rotation;
 }
 
--(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) dx: (double) dy: (double) e: (double) n: (BOOL) m: (double) w: (double) h;
+-(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) dx: (double) dy: (double) e: (double) n: (BOOL) m: (double) w: (double) h: (double) a: (double) r;
 -(void) draw:(NSColor*)c;
 -(void) update;
 
@@ -34,7 +34,5 @@
 -(double) getWidth;
 -(double) getHeight;
 -(double) getAngle;
--(void) setAngle: (double) a;
--(void) setRotation: (double) r;
 
 @end

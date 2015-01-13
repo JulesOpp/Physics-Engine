@@ -16,13 +16,13 @@
 // The posX and posY define the bottom left corner of the rectangle
 // All else needed is the width and height
 
--(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) dx: (double) dy: (double) e: (double) n: (BOOL) m: (double) w: (double) h {
+-(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) dx: (double) dy: (double) e: (double) n: (BOOL) m: (double) w: (double) h: (double) a: (double) r {
 	self = [super initWithpositionX:xx positionY:xy velocityX:vx velocityY:vy accelerationX:ax accelerationY:ay dragValueX:dx dragValueY:dy elasticity:e mass:n canMove:m];
     if (self) {
         width = w;
         height = h;
-        angle = 0;
-        rotation = 0;
+        angle = a;
+        rotation = r;
     }
     [super setType:1];
     return self;
@@ -100,8 +100,8 @@
 +(BOOL) checkCollisionR2:(RectangleShape*)a:(RectangleShape *) b {
     // USING THE SEPARATE AXIS THEOREM AND ROTATED RECTANGLES
     // http://www.gamedev.net/page/resources/_/technical/game-programming/2d-rotated-rectangle-collision-r2604
-    //double Ax1 = [a getPosX], Ax2 = Ax1+[a getWidth], Ay1 = [a getPosY], Ay2 =Ay1+[a getHeight];
-    //double Bx1 = [b getPosX], Bx2 = Bx1+[b getWidth], By1 = [b getPosY], By2 =By1+[b getHeight];
+    //double Ax1 = [a getPosX], Ax2 = Ax1+[a getWidth],Ay1 = [a getPosY],Ay2 =Ay1+[a getHeight];
+    //double Bx1 = [b getPosX], Bx2 = Bx1+[b getWidth],By1 = [b getPosY],By2 =By1+[b getHeight];
     
     double Ax1 = cos([a getAngle])*-1*[a getWidth]/2 - sin([a getAngle])*-1*[a getHeight]/2+[a getPosX]+[a getWidth]/2;
     double Ay1 = sin([a getAngle])*-1*[a getWidth]/2 - cos([a getAngle])*-1*[a getHeight]/2+[a getPosY]+[a getHeight]/2;
@@ -572,6 +572,7 @@
             [b setPosY:[b getPosY]+ady/[a getHeight]];
 
         }
+        [a setPosX:[a getPosX]+dx/[b getRadius]];
     }
     
     if (fabs([a getVelX]) < 0.04) [a setVelX:0];
@@ -602,9 +603,6 @@
 -(double) getWidth { return width; }
 -(double) getHeight { return height; }
 -(double) getAngle { return angle; }
-
--(void) setAngle: (double) a { angle = a; }
--(void) setRotation: (double) r { rotation = r; }
 
 
 @end
