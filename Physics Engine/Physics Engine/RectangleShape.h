@@ -17,11 +17,14 @@
     double width;
     double height;
     double angle;
+    double rotation;
 }
 
 -(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) dx: (double) dy: (double) e: (double) n: (BOOL) m: (double) w: (double) h;
 -(void) draw:(NSColor*)c;
 -(void) update;
+
++(BOOL) checkCollisionR2:(RectangleShape*)a:(RectangleShape *) b;
 
 +(void) checkCollisionR: (RectangleShape*)a:(RectangleShape*) b;
 +(void) checkCollisionC: (RectangleShape*)a:(CircleShape *)b;
@@ -30,5 +33,8 @@
 
 -(double) getWidth;
 -(double) getHeight;
+-(double) getAngle;
+-(void) setAngle: (double) a;
+-(void) setRotation: (double) r;
 
 @end

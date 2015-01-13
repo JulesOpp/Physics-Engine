@@ -22,19 +22,28 @@
         width = w;
         height = h;
         angle = 0;
+        rotation = 0;
     }
     [super setType:1];
     return self;
 }
 
--(void) draw:(NSColor*)c {
+-(void) draw:(NSColor*)c {    
     NSAffineTransform* xform = [NSAffineTransform transform];
-    //[xform rotateByDegrees:5];
-    //[xform concat];
+    [xform rotateByDegrees:angle];
+    NSAffineTransform* pointXfrm = [NSAffineTransform transform];
+    [pointXfrm rotateByDegrees:-angle];    //    Needed to get original point in rotated coordinates.
+    double storeX = [super getPosX] + width/2;
+    double storeY = [super getPosY] + height/2;
+    NSPoint oldPoint = [pointXfrm transformPoint:CGPointMake(storeX, storeY)];
+    float x = oldPoint.x - storeX;
+    float y = oldPoint.y - storeY;
+    [xform translateXBy:x yBy:y];    //    Done in the rotated coordinates.
+    [xform concat];
     [c setFill];
     NSRectFill(CGRectMake([super getPosX], [super getPosY], width, height));
-    //[xform rotateByDegrees:-5];
-    //[xform concat];
+    [xform invert];
+    [xform concat];
 }
 
 // For a step by step calculation
@@ -48,6 +57,8 @@
     if (![super getMove]) { [super setVelX:0]; [super setVelY:0]; return;}
     double fr = [AppDelegate getFrameRate]; 
     
+    angle += rotation;
+
     double gravity = -2;
     //[super setAccX:([super getAccX]-[super getDragX]*[super getVelX])];
     //[super setAccY:([super getAccY]+gravity-[super getDragY]*[super getVelY])];
@@ -86,34 +97,214 @@
     }
 }
 
++(BOOL) checkCollisionR2:(RectangleShape*)a:(RectangleShape *) b {
+    // USING THE SEPARATE AXIS THEOREM AND ROTATED RECTANGLES
+    // http://www.gamedev.net/page/resources/_/technical/game-programming/2d-rotated-rectangle-collision-r2604
+    //double Ax1 = [a getPosX], Ax2 = Ax1+[a getWidth], Ay1 = [a getPosY], Ay2 =Ay1+[a getHeight];
+    //double Bx1 = [b getPosX], Bx2 = Bx1+[b getWidth], By1 = [b getPosY], By2 =By1+[b getHeight];
+    
+    double Ax1 = cos([a getAngle])*-1*[a getWidth]/2 - sin([a getAngle])*-1*[a getHeight]/2+[a getPosX]+[a getWidth]/2;
+    double Ay1 = sin([a getAngle])*-1*[a getWidth]/2 - cos([a getAngle])*-1*[a getHeight]/2+[a getPosY]+[a getHeight]/2;
+    double Ax2 = cos([a getAngle])*[a getWidth]/2 - sin([a getAngle])*[a getHeight]/2+[a getPosX]+[a getWidth]/2;
+    double Ay2 = sin([a getAngle])*[a getWidth]/2 - cos([a getAngle])*[a getHeight]/2+[a getPosY]+[a getHeight]/2;
+    
+    double Bx1 = cos([b getAngle])*-1*[b getWidth]/2 - sin([b getAngle])*-1*[b getHeight]/2+[b getPosX]+[b getWidth]/2;
+    double By1 = sin([b getAngle])*-1*[b getWidth]/2 - cos([b getAngle])*-1*[b getHeight]/2+[b getPosY]+[b getHeight]/2;
+    double Bx2 = cos([b getAngle])*[b getWidth]/2 - sin([b getAngle])*[b getHeight]/2+[b getPosX]+[b getWidth]/2;
+    double By2 = sin([b getAngle])*[b getWidth]/2 - cos([b getAngle])*[b getHeight]/2+[b getPosY]+[b getHeight]/2;
+    
+    struct dpoint { double x; double y; };
+    struct dpoint 
+        AUL = {Ax1, Ay2},
+        AUR = {Ax2, Ay2},
+        ALR = {Ax2, Ay1},
+        ALL = {Ax1, Ay1},
+        BLL = {Bx1, By1},
+        BLR = {Bx2, By1},
+        BUL = {Bx1, By2},
+        BUR = {Bx2, By2};
+    struct dpoint 
+        axis1 = {AUR.x-AUL.x, AUR.y-AUL.y},
+        axis2 = {AUR.x-ALR.x, AUR.y-ALR.y},
+        axis3 = {BUL.x-BLL.x, BUL.y-BLL.y},
+        axis4 = {BUL.x-BUR.x, BUL.y-BUR.y};
+    double  axis2M = axis2.x*axis2.x + axis2.y*axis2.y,
+            axis1M = axis1.x*axis1.x + axis1.y*axis1.y,
+            axis3M = axis3.x*axis3.x + axis3.y*axis3.y,
+            axis4M = axis4.x*axis4.x + axis4.y*axis4.y;
+    
+    // Project all points to axis2
+    double temp = (ALR.x*axis2.x + ALR.y*axis2.y) / axis2M;
+    struct dpoint ALR2 = {temp*axis2.x,temp*axis2.y};
+    double ALR_Cross_2 = ALR2.x*axis2.x + ALR2.y*axis2.y;
+    
+    temp = (AUR.x*axis2.x + AUR.y*axis2.y) / axis2M;
+    struct dpoint AUR2 = {temp*axis2.x,temp*axis2.y};
+    double AUR_Cross_2 = AUR2.x*axis2.x + AUR2.y*axis2.y;
+    
+    temp = (BLL.x*axis2.x + BLL.y*axis2.y) / axis2M;
+    struct dpoint BLL2= {temp*axis2.x,temp*axis2.y};
+    double BLL_Cross_2 = BLL2.x*axis2.x + BLL2.y*axis2.y;
+    
+    temp = (BLR.x*axis2.x + BLR.y*axis2.y) / axis2M;
+    struct dpoint BLR2= {temp*axis2.x,temp*axis2.y};
+    double BLR_Cross_2 = BLR2.x*axis2.x + BLR2.y*axis2.y;
+    
+    temp = (BUL.x*axis2.x + BUL.y*axis2.y) / axis2M;
+    struct dpoint BUL2= {temp*axis2.x,temp*axis2.y};
+    double BUL_Cross_2 = BUL2.x*axis2.x + BLR2.y*axis2.y;
+    
+    temp = (BUR.x*axis2.x + BUR.y*axis2.y) / axis2M;
+    struct dpoint BUR2= {temp*axis2.x,temp*axis2.y};
+    double BUR_Cross_2 = BUR2.x*axis2.x + BUR2.y*axis2.y;
+    
+    double Amin2 = MIN(ALR_Cross_2, AUR_Cross_2);
+    double Amax2 = MAX(ALR_Cross_2, AUR_Cross_2);
+    double Bmin2 = MIN(MIN(BLL_Cross_2,BLR_Cross_2),MIN(BUL_Cross_2,BUR_Cross_2));
+    double Bmax2 = MAX(MAX(BLL_Cross_2,BLR_Cross_2),MAX(BUL_Cross_2,BUR_Cross_2));
+    
+    if (Bmin2 <= Amax2 && Bmax2 >= Amin2) {
+        NSLog(@"Overlap on 2");
+    }
+    else {
+        //NSLog(@"no2 %f %f %f %f",Amin2,Amax2,Bmin2,Bmax2);
+        return false;
+    }
+    
+    
+    // Project all points to axis1
+    temp = (AUL.x*axis1.x + AUL.y*axis1.y) / axis1M;
+    struct dpoint AUL1 = {temp*axis1.x,temp*axis1.y};
+    double AUL_Cross_1 = AUL1.x*axis1.x + AUL1.y*axis1.y;
+    
+    temp = (AUR.x*axis1.x + AUR.y*axis1.y) / axis1M;
+    struct dpoint AUR1 = {temp*axis1.x,temp*axis1.y};
+    double AUR_Cross_1 = AUR1.x*axis1.x + AUR1.y*axis1.y;
+    
+    temp = (BLL.x*axis1.x + BLL.y*axis1.y) / axis1M;
+    struct dpoint BLL1 = {temp*axis1.x,temp*axis1.y};
+    double BLL_Cross_1 = BLL1.x*axis1.x + BLL1.y*axis1.y;
+    
+    temp = (BLR.x*axis1.x + BLR.y*axis1.y) / axis1M;
+    struct dpoint BLR1 = {temp*axis1.x,temp*axis1.y};
+    double BLR_Cross_1 = BLR1.x*axis1.x + BLR1.y*axis1.y;
+    
+    temp = (BUL.x*axis1.x + BUL.y*axis1.y) / axis1M;
+    struct dpoint BUL1 = {temp*axis1.x,temp*axis1.y};
+    double BUL_Cross_1 = BUL1.x*axis1.x + BLR1.y*axis1.y;
+    
+    temp = (BUR.x*axis1.x + BUR.y*axis1.y) / axis1M;
+    struct dpoint BUR1 = {temp*axis1.x,temp*axis1.y};
+    double BUR_Cross_1 = BUR1.x*axis1.x + BUR1.y*axis1.y;
+    
+    double Amin1 = MIN(AUL_Cross_1, AUR_Cross_1);
+    double Amax1 = MAX(AUL_Cross_1, AUR_Cross_1);
+    double Bmin1 = MIN(MIN(BLL_Cross_1,BLR_Cross_1),MIN(BUL_Cross_1,BUR_Cross_1));
+    double Bmax1 = MAX(MAX(BLL_Cross_1,BLR_Cross_1),MAX(BUL_Cross_1,BUR_Cross_1));
+    
+    if (Bmin1 <= Amax1 && Bmax1 >= Amin1) {
+        NSLog(@"Overlap on 1");
+    }
+    else {
+        //NSLog(@"no1 %f %f %f %f",Amin1,Amax1,Bmin1,Bmax1);
+        return false;
+    }
+    
+    
+    // Project all points to axis3
+    // ALL, ALR, AUR, AUL, BLL, BUL
+    temp = (BLL.x*axis3.x + BLL.y*axis3.y) / axis3M;
+    struct dpoint BLL3 = {temp*axis3.x,temp*axis3.y};
+    double BLL_Cross_3 = BLL3.x*axis3.x + BLL3.y*axis3.y;
+    
+    temp = (BUL.x*axis3.x + BUL.y*axis3.y) / axis3M;
+    struct dpoint BUL3 = {temp*axis3.x,temp*axis3.y};
+    double BUL_Cross_3 = BUL3.x*axis3.x + BUL3.y*axis3.y;
+    
+    temp = (ALL.x*axis3.x + ALL.y*axis3.y) / axis3M;
+    struct dpoint ALL3= {temp*axis3.x,temp*axis3.y};
+    double ALL_Cross_3 = ALL3.x*axis3.x + ALL3.y*axis3.y;
+    
+    temp = (ALR.x*axis3.x + ALR.y*axis3.y) / axis3M;
+    struct dpoint ALR3= {temp*axis3.x,temp*axis3.y};
+    double ALR_Cross_3 = ALR3.x*axis3.x + ALR3.y*axis3.y;
+    
+    temp = (AUL.x*axis3.x + AUL.y*axis3.y) / axis3M;
+    struct dpoint AUL3= {temp*axis3.x,temp*axis3.y};
+    double AUL_Cross_3 = AUL3.x*axis3.x + AUL3.y*axis3.y;
+    
+    temp = (AUR.x*axis3.x + AUR.y*axis3.y) / axis3M;
+    struct dpoint AUR3= {temp*axis3.x,temp*axis3.y};
+    double AUR_Cross_3 = AUR3.x*axis3.x + AUR3.y*axis3.y;
+    
+    double Bmin3 = MIN(BLL_Cross_3, BUL_Cross_3);
+    double Bmax3 = MAX(BLL_Cross_3, BUL_Cross_3);
+    double Amin3 = MIN(MIN(ALL_Cross_3,ALR_Cross_3),MIN(AUL_Cross_3,AUR_Cross_3));
+    double Amax3 = MAX(MAX(ALL_Cross_3,ALR_Cross_3),MAX(AUL_Cross_3,AUR_Cross_3));
+    
+    if (Bmin3 <= Amax3 && Bmax3 >= Amin3) {
+        NSLog(@"Overlap on 3");
+    }
+    else {
+        //NSLog(@"no3 %f %f %f %f",Amin3,Amax3,Bmin3,Bmax3);
+        return false;
+    }
+
+    
+    // Project all points to axis4
+    // ALL, ALR, AUR, AUL, BUL, BUR
+    temp = (BUR.x*axis4.x + BUR.y*axis4.y) / axis4M;
+    struct dpoint BUR4 = {temp*axis4.x,temp*axis4.y};
+    double BUR_Cross_4 = BUR4.x*axis4.x + BUR4.y*axis4.y;
+    
+    temp = (BUL.x*axis4.x + BUL.y*axis4.y) / axis4M;
+    struct dpoint BUL4 = {temp*axis4.x,temp*axis4.y};
+    double BUL_Cross_4 = BUL4.x*axis4.x + BUL4.y*axis4.y;
+    
+    temp = (ALL.x*axis4.x + ALL.y*axis4.y) / axis4M;
+    struct dpoint ALL4= {temp*axis4.x,temp*axis4.y};
+    double ALL_Cross_4 = ALL4.x*axis4.x + ALL4.y*axis4.y;
+    
+    temp = (ALR.x*axis4.x + ALR.y*axis4.y) / axis4M;
+    struct dpoint ALR4= {temp*axis4.x,temp*axis4.y};
+    double ALR_Cross_4 = ALR4.x*axis4.x + ALR4.y*axis4.y;
+    
+    temp = (AUL.x*axis4.x + AUL.y*axis4.y) / axis4M;
+    struct dpoint AUL4= {temp*axis4.x,temp*axis4.y};
+    double AUL_Cross_4 = AUL4.x*axis4.x + AUL4.y*axis4.y;
+    
+    temp = (AUR.x*axis4.x + AUR.y*axis4.y) / axis4M;
+    struct dpoint AUR4= {temp*axis4.x,temp*axis4.y};
+    double AUR_Cross_4 = AUR4.x*axis4.x + AUR4.y*axis4.y;
+    
+    double Bmin4 = MIN(BUR_Cross_4, BUL_Cross_4);
+    double Bmax4 = MAX(BUR_Cross_4, BUL_Cross_4);
+    double Amin4 = MIN(MIN(ALL_Cross_4,ALR_Cross_4),MIN(AUL_Cross_4,AUR_Cross_4));
+    double Amax4 = MAX(MAX(ALL_Cross_4,ALR_Cross_4),MAX(AUL_Cross_4,AUR_Cross_4));
+    
+    if (Bmin4 <= Amax4 && Bmax4 >= Amin4) {
+        NSLog(@"Overlap on 4");
+    }
+    else {
+        //NSLog(@"no4 %f %f %f %f",Amin4,Amax4,Bmin4,Bmax4);
+        return false;
+    }
+    
+    return true;
+}
+
 // Check for Rect v Rect collision
 +(void) checkCollisionR:(RectangleShape*)a:(RectangleShape *) b {
     // Rectangle vs Rectangle
     
     // COLLISION DETECT
-    if ([a getPosX]>[b getPosX]+[b getWidth] || [a getPosX]+[a getWidth]<[b getPosX]) return;
-    if ([a getPosY]+[a getHeight]<[b getPosY] || [a getPosY]>[b getPosY]+[b getHeight]) return;
+    //if ([a getPosX]>[b getPosX]+[b getWidth] || [a getPosX]+[a getWidth]<[b getPosX]) return;
+    //if ([a getPosY]+[a getHeight]<[b getPosY] || [a getPosY]>[b getPosY]+[b getHeight]) return;
+    
+    if (![RectangleShape checkCollisionR2:a:b]) return;
     
     //NSLog(@"Collision on Rect v Rect");
     
-    /*double Vrx = [a getVelX] - [b getVelX];
-    double Vry = [a getVelY] - [b getVelY];
-    double Nx = [a getPosX] - [b getPosX];
-    double Ny = [a getPosY] - [b getPosY];
-    double NVr = Nx * Vrx + Ny * Vry;
-    
-    double sumMass = [a getMass] + [b getMass];
-    [a setVelX:[a getVelX] - Nx * NVr / (pow(Nx,2)+pow(Ny,2)) * 2 * [b getMass]/sumMass];
-    [a setVelY:[a getVelY] - Ny * NVr / (pow(Nx,2)+pow(Ny,2)) * 2 * [b getMass]/sumMass];
-    
-    [b setVelX:[b getVelX] + Nx * NVr / (pow(Nx,2)+pow(Ny,2)) * 2 * [a getMass]/sumMass];
-    [b setVelY:[b getVelY] + Ny * NVr / (pow(Nx,2)+pow(Ny,2)) * 2 * [a getMass]/sumMass];
-    */
-
-    
-    
-    
-    // COLLISION SOLVE
     if (![a getMove]) {
         double dx = ([a getPosX] + [a getWidth]/2 - [b getPosX] - [b getWidth]/2)/[a getWidth];
         double dy = ([a getPosY] + [a getHeight]/2 - [b getPosY] - [b getHeight]/2)/[a getHeight];
@@ -134,7 +325,7 @@
         // No gravity sink
         [b setIgnoreNextUpdate:true];
     }
-    if (![b getMove]) {
+    else if (![b getMove]) {
         double dx = ([a getPosX] + [a getWidth]/2 - [b getPosX] - [b getWidth]/2)/[b getWidth];
         double dy = ([a getPosY] + [a getHeight]/2 - [b getPosY] - [b getHeight]/2)/[b getHeight];
         double adx = fabs(dx);
@@ -154,6 +345,26 @@
         // No gravity sink
         [a setIgnoreNextUpdate:true];
     }
+    else {
+        double Vrx = [a getVelX] - [b getVelX];
+        double Vry = [a getVelY] - [b getVelY];
+        double Nx = [a getPosX] - [b getPosX];
+        double Ny = [a getPosY] - [b getPosY];
+        double NVr = Nx * Vrx + Ny * Vry;
+        
+        double sumMass = [a getMass] + [b getMass];
+        [a setVelX:[a getVelX] - Nx * NVr / (pow(Nx,2)+pow(Ny,2)) * 2 * [b getMass]/sumMass];
+        [a setVelY:[a getVelY] - Ny * NVr / (pow(Nx,2)+pow(Ny,2)) * 2 * [b getMass]/sumMass];
+        
+        [b setVelX:[b getVelX] + Nx * NVr / (pow(Nx,2)+pow(Ny,2)) * 2 * [a getMass]/sumMass];
+        [b setVelY:[b getVelY] + Ny * NVr / (pow(Nx,2)+pow(Ny,2)) * 2 * [a getMass]/sumMass];
+        
+        double dx = [a getPosX] + [a getWidth]/2 - [b getPosX] - [b getWidth]/2;
+        [a setPosX:[a getPosX]+dx/[b getWidth]];
+    }
+    
+    // COLLISION SOLVE
+    /*
     if ([a getMove] && [b getMove]) {
         // Get distance from midpoints
         double dx = [a getPosX] + [a getWidth]/2 - [b getPosX] - [b getWidth]/2;
@@ -183,7 +394,7 @@
             else {
                 [a setVelX:fabs([a getVelX]*[a getElas])*1];    
                 [b setVelX:fabs([b getVelX]*[b getElas])*-1];
-            }*/
+            }*//*
             // Inelastic collision equation
             double Va = [a getVelX];
             double Vb = [b getVelX];
@@ -207,7 +418,7 @@
             [a setPosY:[a getPosY]+ady/[b getHeight]];
 
         }
-    }
+    }*/
     
     if (fabs([a getVelX]) < 0.04) [a setVelX:0];
     if (fabs([a getVelY]) < 0.04) [a setVelY:0];
@@ -390,6 +601,10 @@
 
 -(double) getWidth { return width; }
 -(double) getHeight { return height; }
+-(double) getAngle { return angle; }
+
+-(void) setAngle: (double) a { angle = a; }
+-(void) setRotation: (double) r { rotation = r; }
 
 
 @end

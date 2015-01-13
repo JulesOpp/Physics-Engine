@@ -15,6 +15,7 @@
 {
 @private
     double radius;
+    double angle;
 }
 
 -(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) dx: (double) dy: (double) e: (double) n: (BOOL) m: (double) r;

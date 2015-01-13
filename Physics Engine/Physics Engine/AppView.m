@@ -49,6 +49,7 @@ double arrowYf;
 		shapes[4] = [[CircleShape alloc] init:400:400:210:0:0:0:0.1:0:1:1:true:10];
         
         shapes[5] = [[RectangleShape alloc] init:20:50:0:0:0:0:0:0:1:100:false:700:10];
+        //shapes[6] = [[RectangleShape alloc] init:370:50:0:0:0:0:0:0:1:100:false:350:10];
         shapes[6] = [[CircleShape alloc] init:400:300:0:0:0:0:0:0:1:100:false:15];
         
         shapes[7] = [[CircleShape alloc] init:470:450:-20:0:0:0:0:0:1:1:true:10];
@@ -56,6 +57,9 @@ double arrowYf;
         shapes[8] = [[RectangleShape alloc] init:370:400:-20:0:0:0:0.2:0.05:1:1:true:10:20];
         
         shapes[9] = [[RectangleShape alloc] init:150:80:0:0:0:0:0:0:1:1:true:20:20];
+        
+        [(RectangleShape*)shapes[0] setAngle: 45];
+        [(RectangleShape*)shapes[0] setRotation:1];
         
         windowWidth = frame.size.width;
         windowHeight = frame.size.height;

@@ -19,15 +19,21 @@
 	self = [super initWithpositionX:xx positionY:xy velocityX:vx velocityY:vy accelerationX:ax accelerationY:ay dragValueX:dx dragValueY:dy elasticity:e mass:n canMove:m];
     if (self) {
         radius = r;
+        angle = 0;      // Im pretty sure the circle's angle can only be 0
     }
     [super setType:2];
     return self;
 }
 
 -(void) draw:(NSColor*)c {
+    NSAffineTransform* xform = [NSAffineTransform transform];
+    [xform rotateByDegrees:angle];
+    [xform concat];
     [c setFill];
     CGContextRef context = [[NSGraphicsContext currentContext] graphicsPort];    
     CGContextFillEllipseInRect(context, CGRectMake([super getPosX]-radius, [super getPosY]-radius, 2*radius, 2*radius));    
+    [xform invert];
+    [xform concat];
 }
 
 
