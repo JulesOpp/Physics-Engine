@@ -103,15 +103,17 @@
     //double Ax1 = [a getPosX], Ax2 = Ax1+[a getWidth],Ay1 = [a getPosY],Ay2 =Ay1+[a getHeight];
     //double Bx1 = [b getPosX], Bx2 = Bx1+[b getWidth],By1 = [b getPosY],By2 =By1+[b getHeight];
     
-    double Ax1 = cos([a getAngle])*-1*[a getWidth]/2 - sin([a getAngle])*-1*[a getHeight]/2+[a getPosX]+[a getWidth]/2;
-    double Ay1 = sin([a getAngle])*-1*[a getWidth]/2 - cos([a getAngle])*-1*[a getHeight]/2+[a getPosY]+[a getHeight]/2;
-    double Ax2 = cos([a getAngle])*[a getWidth]/2 - sin([a getAngle])*[a getHeight]/2+[a getPosX]+[a getWidth]/2;
-    double Ay2 = sin([a getAngle])*[a getWidth]/2 - cos([a getAngle])*[a getHeight]/2+[a getPosY]+[a getHeight]/2;
+    double thetaA = -1*[a getAngle];
+    double thetaB = -1*[b getAngle];
+    double Ax1 = cos(thetaA)*-1*[a getWidth]/2 - sin(thetaA)*-1*[a getHeight]/2+[a getPosX]+[a getWidth]/2;
+    double Ay1 = sin(thetaA)*-1*[a getWidth]/2 - cos(thetaA)*-1*[a getHeight]/2+[a getPosY]+[a getHeight]/2;
+    double Ax2 = cos(thetaA)*[a getWidth]/2 - sin(thetaA)*[a getHeight]/2+[a getPosX]+[a getWidth]/2;
+    double Ay2 = sin(thetaA)*[a getWidth]/2 - cos(thetaA)*[a getHeight]/2+[a getPosY]+[a getHeight]/2;
     
-    double Bx1 = cos([b getAngle])*-1*[b getWidth]/2 - sin([b getAngle])*-1*[b getHeight]/2+[b getPosX]+[b getWidth]/2;
-    double By1 = sin([b getAngle])*-1*[b getWidth]/2 - cos([b getAngle])*-1*[b getHeight]/2+[b getPosY]+[b getHeight]/2;
-    double Bx2 = cos([b getAngle])*[b getWidth]/2 - sin([b getAngle])*[b getHeight]/2+[b getPosX]+[b getWidth]/2;
-    double By2 = sin([b getAngle])*[b getWidth]/2 - cos([b getAngle])*[b getHeight]/2+[b getPosY]+[b getHeight]/2;
+    double Bx1 = cos(thetaB)*-1*[b getWidth]/2 - sin(thetaB)*-1*[b getHeight]/2+[b getPosX]+[b getWidth]/2;
+    double By1 = sin(thetaB)*-1*[b getWidth]/2 - cos(thetaB)*-1*[b getHeight]/2+[b getPosY]+[b getHeight]/2;
+    double Bx2 = cos(thetaB)*[b getWidth]/2 - sin(thetaB)*[b getHeight]/2+[b getPosX]+[b getWidth]/2;
+    double By2 = sin(thetaB)*[b getWidth]/2 - cos(thetaB)*[b getHeight]/2+[b getPosY]+[b getHeight]/2;
     
     struct dpoint { double x; double y; };
     struct dpoint 
@@ -128,12 +130,10 @@
         axis2 = {AUR.x-ALR.x, AUR.y-ALR.y},
         axis3 = {BUL.x-BLL.x, BUL.y-BLL.y},
         axis4 = {BUL.x-BUR.x, BUL.y-BUR.y};
-    double  axis2M = axis2.x*axis2.x + axis2.y*axis2.y,
-            axis1M = axis1.x*axis1.x + axis1.y*axis1.y,
-            axis3M = axis3.x*axis3.x + axis3.y*axis3.y,
-            axis4M = axis4.x*axis4.x + axis4.y*axis4.y;
     
     // Project all points to axis2
+    double  axis2M = axis2.x*axis2.x + axis2.y*axis2.y;
+
     double temp = (ALR.x*axis2.x + ALR.y*axis2.y) / axis2M;
     struct dpoint ALR2 = {temp*axis2.x,temp*axis2.y};
     double ALR_Cross_2 = ALR2.x*axis2.x + ALR2.y*axis2.y;
@@ -152,7 +152,7 @@
     
     temp = (BUL.x*axis2.x + BUL.y*axis2.y) / axis2M;
     struct dpoint BUL2= {temp*axis2.x,temp*axis2.y};
-    double BUL_Cross_2 = BUL2.x*axis2.x + BLR2.y*axis2.y;
+    double BUL_Cross_2 = BUL2.x*axis2.x + BUL2.y*axis2.y;
     
     temp = (BUR.x*axis2.x + BUR.y*axis2.y) / axis2M;
     struct dpoint BUR2= {temp*axis2.x,temp*axis2.y};
@@ -162,17 +162,19 @@
     double Amax2 = MAX(ALR_Cross_2, AUR_Cross_2);
     double Bmin2 = MIN(MIN(BLL_Cross_2,BLR_Cross_2),MIN(BUL_Cross_2,BUR_Cross_2));
     double Bmax2 = MAX(MAX(BLL_Cross_2,BLR_Cross_2),MAX(BUL_Cross_2,BUR_Cross_2));
-    
+        
     if (Bmin2 <= Amax2 && Bmax2 >= Amin2) {
         NSLog(@"Overlap on 2");
     }
     else {
-        //NSLog(@"no2 %f %f %f %f",Amin2,Amax2,Bmin2,Bmax2);
+        NSLog(@"no2 %f %f %f %f",Amin2,Amax2,Bmin2,Bmax2);
         return false;
     }
     
     
     // Project all points to axis1
+    double axis1M = axis1.x*axis1.x + axis1.y*axis1.y;
+
     temp = (AUL.x*axis1.x + AUL.y*axis1.y) / axis1M;
     struct dpoint AUL1 = {temp*axis1.x,temp*axis1.y};
     double AUL_Cross_1 = AUL1.x*axis1.x + AUL1.y*axis1.y;
@@ -191,7 +193,7 @@
     
     temp = (BUL.x*axis1.x + BUL.y*axis1.y) / axis1M;
     struct dpoint BUL1 = {temp*axis1.x,temp*axis1.y};
-    double BUL_Cross_1 = BUL1.x*axis1.x + BLR1.y*axis1.y;
+    double BUL_Cross_1 = BUL1.x*axis1.x + BUL1.y*axis1.y;
     
     temp = (BUR.x*axis1.x + BUR.y*axis1.y) / axis1M;
     struct dpoint BUR1 = {temp*axis1.x,temp*axis1.y};
@@ -206,13 +208,15 @@
         NSLog(@"Overlap on 1");
     }
     else {
-        //NSLog(@"no1 %f %f %f %f",Amin1,Amax1,Bmin1,Bmax1);
+        NSLog(@"no1 %f %f %f %f",Amin1,Amax1,Bmin1,Bmax1);
         return false;
     }
     
     
     // Project all points to axis3
     // ALL, ALR, AUR, AUL, BLL, BUL
+    double axis3M = axis3.x*axis3.x + axis3.y*axis3.y;
+
     temp = (BLL.x*axis3.x + BLL.y*axis3.y) / axis3M;
     struct dpoint BLL3 = {temp*axis3.x,temp*axis3.y};
     double BLL_Cross_3 = BLL3.x*axis3.x + BLL3.y*axis3.y;
@@ -246,13 +250,15 @@
         NSLog(@"Overlap on 3");
     }
     else {
-        //NSLog(@"no3 %f %f %f %f",Amin3,Amax3,Bmin3,Bmax3);
+        NSLog(@"no3 %f %f %f %f",Amin3,Amax3,Bmin3,Bmax3);
         return false;
     }
 
     
     // Project all points to axis4
     // ALL, ALR, AUR, AUL, BUL, BUR
+    double axis4M = axis4.x*axis4.x + axis4.y*axis4.y;
+
     temp = (BUR.x*axis4.x + BUR.y*axis4.y) / axis4M;
     struct dpoint BUR4 = {temp*axis4.x,temp*axis4.y};
     double BUR_Cross_4 = BUR4.x*axis4.x + BUR4.y*axis4.y;
@@ -283,7 +289,7 @@
     double Amax4 = MAX(MAX(ALL_Cross_4,ALR_Cross_4),MAX(AUL_Cross_4,AUR_Cross_4));
     
     if (Bmin4 <= Amax4 && Bmax4 >= Amin4) {
-        NSLog(@"Overlap on 4");
+        //NSLog(@"Overlap on 4");
     }
     else {
         //NSLog(@"no4 %f %f %f %f",Amin4,Amax4,Bmin4,Bmax4);
@@ -444,7 +450,21 @@
     
     BOOL inter = false;
     
-    double ax = [a getPosX], ay = [a getPosY], bx = [a getPosX]+[a getWidth],by=[a getPosY];
+    double thetaA = -1*[a getAngle];
+    double Ax1 = cos(thetaA)*-1*[a getWidth]/2 - sin(thetaA)*-1*[a getHeight]/2+[a getPosX]+[a getWidth]/2;
+    double Ay1 = sin(thetaA)*-1*[a getWidth]/2 - cos(thetaA)*-1*[a getHeight]/2+[a getPosY]+[a getHeight]/2;
+    double Ax2 = cos(thetaA)*[a getWidth]/2 - sin(thetaA)*[a getHeight]/2+[a getPosX]+[a getWidth]/2;
+    double Ay2 = sin(thetaA)*[a getWidth]/2 - cos(thetaA)*[a getHeight]/2+[a getPosY]+[a getHeight]/2;
+        
+    struct dpoint { double x; double y; };
+    struct dpoint 
+    AUL = {Ax1, Ay2},
+    AUR = {Ax2, Ay2},
+    ALR = {Ax2, Ay1},
+    ALL = {Ax1, Ay1};
+    
+    //double ax = [a getPosX], ay = [a getPosY], bx = [a getPosX]+[a getWidth],by=[a getPosY];
+    double ax = ALL.x, ay = ALL.y, bx = ALR.x, by = ALR.y;
     double cx = [b getPosX], cy = [b getPosY], r = [b getRadius];
     double vecLX = ax - bx, vecLY = ay - by;
     double magL = sqrt(pow(vecLX,2)+pow(vecLY,2));
@@ -456,7 +476,8 @@
     //NSLog(@"%f %f %f %f %f",onNorm, r, (vecLX*vecCX+vecLX+vecCY),onLine,magL);
     if ((fabs(onNorm) <= r && (vecLX*vecCX + vecLY*vecCY) > 0 && onLine < magL) || ( pow(vecCX,2)+pow(vecCY,2) < pow(r,2) ) ) inter = true;
     
-    ax = [a getPosX]+[a getWidth], ay = [a getPosY], bx = [a getPosX]+[a getWidth],by=[a getPosY]+[a getHeight];
+    //ax = [a getPosX]+[a getWidth], ay = [a getPosY], bx = [a getPosX]+[a getWidth],by=[a getPosY]+[a getHeight];
+    ax = ALR.x, ay = ALR.y, bx = AUR.x, by = AUR.y;
     vecLX = ax - bx, vecLY = ay - by;
     magL = sqrt(pow(vecLX,2)+pow(vecLY,2));
     vecCX = ax - cx, vecCY = ay - cy;
@@ -466,7 +487,8 @@
     onLine = vecCX*vecLX/magL + vecCY*vecLY/magL;
     if ((fabs(onNorm) <= r && (vecLX*vecCX + vecLY*vecCY) > 0 && onLine < magL) || ( pow(vecCX,2)+pow(vecCY,2) < pow(r,2) ) ) inter = true;
 
-    ax = [a getPosX], ay = [a getPosY]+[a getHeight], bx = [a getPosX]+[a getWidth],by=[a getPosY]+[a getHeight];
+    //ax = [a getPosX], ay = [a getPosY]+[a getHeight], bx = [a getPosX]+[a getWidth],by=[a getPosY]+[a getHeight];
+    ax = AUL.x, ay = AUL.y, bx = AUR.x, by = AUR.y;
     vecLX = ax - bx, vecLY = ay - by;
     magL = sqrt(pow(vecLX,2)+pow(vecLY,2));
     vecCX = ax - cx, vecCY = ay - cy;
@@ -476,7 +498,8 @@
     onLine = vecCX*vecLX/magL + vecCY*vecLY/magL;
     if ((fabs(onNorm) <= r && (vecLX*vecCX + vecLY*vecCY) > 0 && onLine < magL) || ( pow(vecCX,2)+pow(vecCY,2) < pow(r,2) ) ) inter = true;
     
-    ax = [a getPosX],ay=[a getPosY], bx = [a getPosX],by = [a getPosY]+[a getHeight];
+    //ax = [a getPosX],ay=[a getPosY], bx = [a getPosX],by = [a getPosY]+[a getHeight];
+    ax = ALR.x, ay = ALR.y, bx = AUL.x, by = AUL.y;
     vecLX = ax - bx, vecLY = ay - by;
     magL = sqrt(pow(vecLX,2)+pow(vecLY,2));
     vecCX = ax - cx, vecCY = ay - cy;
@@ -494,8 +517,7 @@
     NSLog(@"Collision on Rect v Circle");
     
     // COLLISION SOLVE
-    
-    
+
     if (![a getMove]) {
         double dx = ([a getPosX] + [a getWidth]/2 - [b getPosX])/[a getWidth];
         double dy = ([a getPosY] + [a getHeight]/2 - [b getPosY])/[a getHeight];
@@ -506,13 +528,17 @@
         if (adx > ady)
             [b setVelX:[b getVelX]*[b getElas]*-1];
         // Top or bottom
-        else
+        else {
             [b setVelY:[b getVelY]*[b getElas]*-1];
+            double dy = [a getPosY] + [a getHeight]/2 - [b getPosY];
+            [b setPosY:[b getPosY]+fabs(dy)/[a getHeight]];
+
+        }
         
         // No gravity sink
         [b setIgnoreNextUpdate:true];
     }
-    if (![b getMove]) {
+    /*if (![b getMove]) {
         double dx = ([a getPosX] + [a getWidth]/2 - [b getPosX])/[b getRadius]/2;
         double dy = ([a getPosY] + [a getHeight]/2 - [b getPosY])/[b getRadius]/2;
         double adx = fabs(dx);
@@ -527,10 +553,28 @@
         
         // No gravity sink
         [a setIgnoreNextUpdate:true];
-    }
-    if ([a getMove] && [b getMove]) {
+    }*/
+    //if ([a getMove] && [b getMove]) {
+    else {
+        double Vrx = [a getVelX] - [b getVelX];
+        double Vry = [a getVelY] - [b getVelY];
+        double Nx = [a getPosX] + [a getWidth]/2 - [b getPosX];
+        double Ny = [a getPosY] + [a getHeight]/2 - [b getPosY];
+        double NVr = Nx * Vrx + Ny * Vry;
+        
+        double sumMass = [a getMass] + [b getMass];
+        [a setVelX:[a getVelX] - Nx * NVr / (pow(Nx,2)+pow(Ny,2)) * 2 * [b getMass]/sumMass];
+        [a setVelY:[a getVelY] - Ny * NVr / (pow(Nx,2)+pow(Ny,2)) * 2 * [b getMass]/sumMass];
+        
+        [b setVelX:[b getVelX] + Nx * NVr / (pow(Nx,2)+pow(Ny,2)) * 2 * [a getMass]/sumMass];
+        [b setVelY:[b getVelY] + Ny * NVr / (pow(Nx,2)+pow(Ny,2)) * 2 * [a getMass]/sumMass];
+        
+        
+        double dy = [a getPosY] + [a getHeight]/2 - [b getPosY];
+        [b setPosY:[b getPosY]+fabs(dy)/[a getHeight]];
+
         // Get distance from midpoints
-        double dx = [a getPosX] + [a getWidth]/2 - [b getPosX];
+        /*double dx = [a getPosX] + [a getWidth]/2 - [b getPosX];
         double dy = [a getPosY] + [a getHeight]/2 - [b getPosY];
         double adx = fabs(dx);
         double ady = fabs(dy);
@@ -572,7 +616,7 @@
             [b setPosY:[b getPosY]+ady/[a getHeight]];
 
         }
-        [a setPosX:[a getPosX]+dx/[b getRadius]];
+        [a setPosX:[a getPosX]+dx/[b getRadius]];*/
     }
     
     if (fabs([a getVelX]) < 0.04) [a setVelX:0];
