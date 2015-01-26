@@ -21,6 +21,7 @@
 @synthesize yPosT;
 @synthesize xVelT;
 @synthesize yVelT;
+@synthesize rVelT;
 
 @synthesize pauseT; // The text of the pause button
 @synthesize color; // Reference to the color well
@@ -58,12 +59,14 @@ BOOL pausePlay; // Boolean determining whether paused or not
     [yPosT setStringValue:[NSString stringWithFormat:@"%f", [[view getObject:currentObject] getPosY]]];
     [xVelT setStringValue:[NSString stringWithFormat:@"%f", [[view getObject:currentObject] getVelX]]];
     [yVelT setStringValue:[NSString stringWithFormat:@"%f", [[view getObject:currentObject] getVelY]]];
+    [rVelT setStringValue:[NSString stringWithFormat:@"%f", [[view getObject:currentObject] getRotation]]];
     
     // Observers to determine when the text boxes changed, so the physics can change
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(xPosChange:) name:NSControlTextDidChangeNotification object:xPosT];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(yPosChange:) name:NSControlTextDidChangeNotification object:yPosT];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(xVelChange:) name:NSControlTextDidChangeNotification object:xVelT];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(yVelChange:) name:NSControlTextDidChangeNotification object:yVelT];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rVelChange:) name:NSControlTextDidChangeNotification object:rVelT];
     
     // Initial color black
     [color setColor:[NSColor blackColor]];
@@ -83,6 +86,7 @@ BOOL pausePlay; // Boolean determining whether paused or not
         [yPosT setStringValue:[NSString stringWithFormat:@"%f", [[view getObject:currentObject] getPosY]]];
         [xVelT setStringValue:[NSString stringWithFormat:@"%f", [[view getObject:currentObject] getVelX]]];
         [yVelT setStringValue:[NSString stringWithFormat:@"%f", [[view getObject:currentObject] getVelY]]];
+        [rVelT setStringValue:[NSString stringWithFormat:@"%f", [[view getObject:currentObject] getRotation]]];
    }   
     
     // Call drawRect in the view
@@ -124,6 +128,10 @@ BOOL pausePlay; // Boolean determining whether paused or not
 }
 - (void)yVelChange:(NSNotification *)notification {
     [[view getObject:currentObject] setVelY:[yVelT.stringValue doubleValue]];
+    [view setNeedsDisplay: true];
+}
+- (void)rVelChange:(NSNotification *)notification {
+    [[view getObject:currentObject] setRotation:[rVelT.stringValue doubleValue]];
     [view setNeedsDisplay: true];
 }
 

@@ -11,7 +11,7 @@
 @implementation CoreShape
 
 // The CoreShape is the parent class of all shapes - attributes for (x,y) position, velocity, acceleration, drag, elasticity, ability to move, and framerate and SOON TO BE COLOR
--(id) initWithpositionX:(double)xx positionY:(double)xy velocityX:(double)vx velocityY:(double)vy accelerationX:(double)ax accelerationY:(double)ay dragValueX:(double)dx dragValueY: (double)dy elasticity:(double)e mass:(double)n canMove:(BOOL)m {
+-(id) initWithpositionX:(double)xx positionY:(double)xy velocityX:(double)vx velocityY:(double)vy accelerationX:(double)ax accelerationY:(double)ay dragValueX:(double)dx dragValueY: (double)dy elasticity:(double)e mass:(double)n canMove:(BOOL)m angle:(double)a rotation:(double)r rotAccel:(double)ra {
     self = [super init];
     if (self) {
         posX = xx;
@@ -25,6 +25,9 @@
         elas = e;
         mass = n;
         move = m;
+        angle = a;
+        rotation = r;
+        rotAccel = ra;
         ignoreNextUpdate = false;
     }
     return self;
@@ -51,6 +54,13 @@
 -(BOOL) getMove { return move; }
 -(int) getType { return typeShape; }
 -(BOOL) getIgnoreNextUpdate { return ignoreNextUpdate; }
+
+-(double) getAngle { return angle; }
+-(double) getRotation { return rotation; }
+-(double) getRotAccel { return rotAccel; }
+
+-(void) setAngle:(double)a { angle = a; }
+-(void) setRotation: (double) r { rotation = r; }
 
 -(void) setPosX: (double) x { posX = x; }
 -(void) setPosY: (double) y { posY = y; }

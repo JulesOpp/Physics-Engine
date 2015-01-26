@@ -28,6 +28,10 @@
     
     double mass;
     
+    double angle;
+    double rotation;
+    double rotAccel;
+    
 	BOOL move;
     BOOL ignoreNextUpdate; // To counteract the gravity sink
     
@@ -35,7 +39,7 @@
 }
 
 
--(id) initWithpositionX:(double)xx positionY:(double)xy velocityX:(double)vx velocityY:(double)vy accelerationX:(double)ax accelerationY:(double)ay dragValueX:(double)dx dragValueY:(double)dy elasticity:(double)e mass:(double)n canMove:(BOOL)m;
+-(id) initWithpositionX:(double)xx positionY:(double)xy velocityX:(double)vx velocityY:(double)vy accelerationX:(double)ax accelerationY:(double)ay dragValueX:(double)dx dragValueY:(double)dy elasticity:(double)e mass:(double)n canMove:(BOOL)m angle:(double)a rotation:(double)r rotAccel:(double)ra;
 
 -(void) draw: (NSColor*)c;
 -(void) update;
@@ -53,6 +57,13 @@
 -(BOOL) getMove;
 -(int) getType;
 -(BOOL) getIgnoreNextUpdate;
+
+-(double) getAngle;
+-(double) getRotation;
+-(double) getRotAccel;
+
+-(void) setAngle: (double) a;
+-(void) setRotation: (double) r;
 
 -(void) setPosX: (double) x;
 -(void) setPosY: (double) y;

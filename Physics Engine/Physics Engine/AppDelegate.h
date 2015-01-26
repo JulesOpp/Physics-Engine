@@ -30,6 +30,7 @@
 @property (assign) IBOutlet NSTextField *yPosT;
 @property (assign) IBOutlet NSTextField *xVelT;
 @property (assign) IBOutlet NSTextField *yVelT;
+@property (assign) IBOutlet NSTextField *rVelT;
 
 @property (assign) IBOutlet NSButton *pauseT;
 @property (assign) IBOutlet NSColorWell *color;

@@ -16,13 +16,11 @@
 // The posX and posY define the bottom left corner of the rectangle
 // All else needed is the width and height
 
--(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) dx: (double) dy: (double) e: (double) n: (BOOL) m: (double) w: (double) h: (double) a: (double) r {
-	self = [super initWithpositionX:xx positionY:xy velocityX:vx velocityY:vy accelerationX:ax accelerationY:ay dragValueX:dx dragValueY:dy elasticity:e mass:n canMove:m];
+-(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) dx: (double) dy: (double) e: (double) n: (BOOL) m: (double) w: (double) h: (double) a: (double) r: (double) ra {
+	self = [super initWithpositionX:xx positionY:xy velocityX:vx velocityY:vy accelerationX:ax accelerationY:ay dragValueX:dx dragValueY:dy elasticity:e mass:n canMove:m angle:a rotation:r rotAccel:ra];
     if (self) {
         width = w;
         height = h;
-        angle = a;
-        rotation = r;
     }
     [super setType:1];
     return self;
@@ -30,9 +28,9 @@
 
 -(void) draw:(NSColor*)c {    
     NSAffineTransform* xform = [NSAffineTransform transform];
-    [xform rotateByDegrees:angle];
+    [xform rotateByDegrees:[super getAngle]];
     NSAffineTransform* pointXfrm = [NSAffineTransform transform];
-    [pointXfrm rotateByDegrees:-angle];    //    Needed to get original point in rotated coordinates.
+    [pointXfrm rotateByDegrees:-1*[super getAngle]];    //    Needed to get original point in rotated coordinates.
     double storeX = [super getPosX] + width/2;
     double storeY = [super getPosY] + height/2;
     NSPoint oldPoint = [pointXfrm transformPoint:CGPointMake(storeX, storeY)];
@@ -57,7 +55,11 @@
     if (![super getMove]) { [super setVelX:0]; [super setVelY:0]; return;}
     double fr = [AppDelegate getFrameRate]; 
     
-    angle += rotation;
+    double currentAccR = ([super getMass]*[super getRotAccel] - ([super getDragX]+[super getDragY])/10*[super getRotation])/[super getMass];
+    if ([super getIgnoreNextUpdate])
+        currentAccR = 0;
+    [super setRotation:[super getRotation] + currentAccR*fr*100];
+    [super setAngle:[super getAngle] + [super getRotation]*fr*100];
 
     double gravity = -2;
     //[super setAccX:([super getAccX]-[super getDragX]*[super getVelX])];
@@ -164,10 +166,10 @@
     double Bmax2 = MAX(MAX(BLL_Cross_2,BLR_Cross_2),MAX(BUL_Cross_2,BUR_Cross_2));
         
     if (Bmin2 <= Amax2 && Bmax2 >= Amin2) {
-        NSLog(@"Overlap on 2");
+        //NSLog(@"Overlap on 2");
     }
     else {
-        NSLog(@"no2 %f %f %f %f",Amin2,Amax2,Bmin2,Bmax2);
+        //NSLog(@"no2 %f %f %f %f",Amin2,Amax2,Bmin2,Bmax2);
         return false;
     }
     
@@ -205,10 +207,10 @@
     double Bmax1 = MAX(MAX(BLL_Cross_1,BLR_Cross_1),MAX(BUL_Cross_1,BUR_Cross_1));
     
     if (Bmin1 <= Amax1 && Bmax1 >= Amin1) {
-        NSLog(@"Overlap on 1");
+        //NSLog(@"Overlap on 1");
     }
     else {
-        NSLog(@"no1 %f %f %f %f",Amin1,Amax1,Bmin1,Bmax1);
+        //NSLog(@"no1 %f %f %f %f",Amin1,Amax1,Bmin1,Bmax1);
         return false;
     }
     
@@ -247,10 +249,10 @@
     double Amax3 = MAX(MAX(ALL_Cross_3,ALR_Cross_3),MAX(AUL_Cross_3,AUR_Cross_3));
     
     if (Bmin3 <= Amax3 && Bmax3 >= Amin3) {
-        NSLog(@"Overlap on 3");
+        //NSLog(@"Overlap on 3");
     }
     else {
-        NSLog(@"no3 %f %f %f %f",Amin3,Amax3,Bmin3,Bmax3);
+        //NSLog(@"no3 %f %f %f %f",Amin3,Amax3,Bmin3,Bmax3);
         return false;
     }
 
@@ -352,21 +354,82 @@
         [a setIgnoreNextUpdate:true];
     }
     else {
+        // TO CHANGE
+        //http://www.euclideanspace.com/physics/dynamics/collision/twod/
+        
         double Vrx = [a getVelX] - [b getVelX];
         double Vry = [a getVelY] - [b getVelY];
         double Nx = [a getPosX] - [b getPosX];
         double Ny = [a getPosY] - [b getPosY];
         double NVr = Nx * Vrx + Ny * Vry;
         
-        double sumMass = [a getMass] + [b getMass];
-        [a setVelX:[a getVelX] - Nx * NVr / (pow(Nx,2)+pow(Ny,2)) * 2 * [b getMass]/sumMass];
-        [a setVelY:[a getVelY] - Ny * NVr / (pow(Nx,2)+pow(Ny,2)) * 2 * [b getMass]/sumMass];
+        /////////////////////////////////////////////////////////
         
-        [b setVelX:[b getVelX] + Nx * NVr / (pow(Nx,2)+pow(Ny,2)) * 2 * [a getMass]/sumMass];
-        [b setVelY:[b getVelY] + Ny * NVr / (pow(Nx,2)+pow(Ny,2)) * 2 * [a getMass]/sumMass];
+        //double rAngle = atan2(Ny, Nx)*180/pi;       // r vector to angle in degrees
+        //double roundAngle = round(rAngle*8/360)/8*2*pi;    // To nearest 1/8 circle
+        //double rSize = sqrt(Nx*Nx+Ny*Ny);
+        //double rax = rSize*cos(roundAngle)/2, ray = rSize*sin(roundAngle)/2, rbx = -1*rax, rby = -1*ray;
+        //NSLog(@"%f",roundAngle*180/pi);
+        
+        double ma = [a getMass], mb = [b getMass];
+        double Ia = 1, Ib = 1;
+        double rax = -1*Nx/2, ray = -1*Ny/2, rbx = -1*rax, rby = -1*ray;
+        
+        //double rax = [a getPosX], ray = [a getPosY], rbx = [b getPosX], rby = [b getPosY];
+        
+        double ma2 = ma*ma, mb2 = mb*mb;
+        double maIa = ma*Ia, maIb = ma*Ib, mbIa = mb*Ia, mbIb = mb*Ib;
+        double IaIb = Ia*Ib;
+        double rax2=rax*rax, ray2=ray*ray, rbx2=rbx*rbx, rby2=rby*rby;
+        
+        double Jx;
+        double Jy;
+        
+        
+        /*double k = 1/ma2 + 2/ma/mb + 1/mb2 - rax2/maIa - rbx2/maIb - ray2/maIa - ray2/mbIa - rax2/mbIa - rbx2/mbIb - rby2/maIb - rby2/mbIb + ray2*rbx2/IaIb + rax2*rby2/IaIb - 2*rax*ray*rbx*rby/IaIb;
+        
+        double e1k = (1+ ([a getElas]+[b getElas])/2 )/k;
+        double sec = rax*ray/Ia + rbx*rby/Ib;
+        
+        double Jx = e1k * (Vrx*(1/ma - rax2/Ia + 1/mb - rbx2/Ib) - Vry*(sec));
+        
+        double Jy = e1k * (Vry*(1/ma - ray2/Ia + 1/mb - rby2/Ib) - Vrx*(sec));
+        
+        NSLog(@"%f %f",Jy,Jx);
+         */
+        
+        double Vafx = [a getVelX] - Jx/ma;
+        double Vafy = [a getVelY] - Jy/ma;
+        double Vbfx = [b getVelX] - Jx/mb;
+        double Vbfy = [b getVelY] - Jy/mb;
+        double Waf = [a getRotation] - (Jx*ray - Jy*rax)/Ia;
+        double Wbf = [b getRotation] - (Jx*rby - Jy*rbx)/Ib;
+        
+        NSLog(@"Vi, Vf, %f, %f",[a getVelX],Vafx);
+        
+        [a setVelX:Vafx];
+        [a setVelY:Vafy];
+        [b setVelX:Vbfx];
+        [b setVelY:Vbfy];
+        [a setRotation:Waf];
+        [b setRotation:Wbf];
         
         double dx = [a getPosX] + [a getWidth]/2 - [b getPosX] - [b getWidth]/2;
         [a setPosX:[a getPosX]+dx/[b getWidth]];
+        
+        /////////////////////////////////////////////////////////
+        /*
+        double sumMass = [a getMass] + [b getMass];
+        double elasAvg = ([a getElas] + [b getElas]) / 2;
+        [a setVelX:[a getVelX] - Nx * NVr / (pow(Nx,2)+pow(Ny,2)) * elasAvg * [b getMass]/sumMass];
+        [a setVelY:[a getVelY] - Ny * NVr / (pow(Nx,2)+pow(Ny,2)) * elasAvg * [b getMass]/sumMass];
+        
+        [b setVelX:[b getVelX] + Nx * NVr / (pow(Nx,2)+pow(Ny,2)) * elasAvg * [a getMass]/sumMass];
+        [b setVelY:[b getVelY] + Ny * NVr / (pow(Nx,2)+pow(Ny,2)) * elasAvg * [a getMass]/sumMass];
+        
+        double dx = [a getPosX] + [a getWidth]/2 - [b getPosX] - [b getWidth]/2;
+        [a setPosX:[a getPosX]+dx/[b getWidth]];
+         */
     }
     
     // COLLISION SOLVE
@@ -646,7 +709,5 @@
 
 -(double) getWidth { return width; }
 -(double) getHeight { return height; }
--(double) getAngle { return angle; }
-
 
 @end

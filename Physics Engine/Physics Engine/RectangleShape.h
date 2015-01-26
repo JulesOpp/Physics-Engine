@@ -16,11 +16,9 @@
     @private
     double width;
     double height;
-    double angle;
-    double rotation;
 }
 
--(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) dx: (double) dy: (double) e: (double) n: (BOOL) m: (double) w: (double) h: (double) a: (double) r;
+-(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) dx: (double) dy: (double) e: (double) n: (BOOL) m: (double) w: (double) h: (double) a: (double) r: (double) ra;
 -(void) draw:(NSColor*)c;
 -(void) update;
 
@@ -33,6 +31,5 @@
 
 -(double) getWidth;
 -(double) getHeight;
--(double) getAngle;
 
 @end

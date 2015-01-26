@@ -15,25 +15,26 @@
 // The posX and posY define the center of the circle
 // All else needed is the radius
 
--(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) dx: (double) dy: (double) e: (double) n: (BOOL) m: (double) r {
-	self = [super initWithpositionX:xx positionY:xy velocityX:vx velocityY:vy accelerationX:ax accelerationY:ay dragValueX:dx dragValueY:dy elasticity:e mass:n canMove:m];
+-(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) dx: (double) dy: (double) e: (double) n: (BOOL) m: (double) r: (double) a: (double) rv: (double) ra {
+	self = [super initWithpositionX:xx positionY:xy velocityX:vx velocityY:vy accelerationX:ax accelerationY:ay dragValueX:dx dragValueY:dy elasticity:e mass:n canMove:m angle:a rotation:rv rotAccel:ra];
     if (self) {
         radius = r;
-        angle = 0;      // Im pretty sure the circle's angle can only be 0
     }
     [super setType:2];
     return self;
 }
 
 -(void) draw:(NSColor*)c {
-    NSAffineTransform* xform = [NSAffineTransform transform];
-    [xform rotateByDegrees:angle];
-    [xform concat];
+    // CIRCLES CANT BE DRAWN AT DIFFERENT ANGLES
+    
+    //NSAffineTransform* xform = [NSAffineTransform transform];
+    //[xform rotateByDegrees:[super getAngle]];
+    //[xform concat];
     [c setFill];
     CGContextRef context = [[NSGraphicsContext currentContext] graphicsPort];    
     CGContextFillEllipseInRect(context, CGRectMake([super getPosX]-radius, [super getPosY]-radius, 2*radius, 2*radius));    
-    [xform invert];
-    [xform concat];
+    //[xform invert];
+    //[xform concat];
 }
 
 

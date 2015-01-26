@@ -39,15 +39,15 @@ double arrowYf;
         isDrawingArrow = false;
         
         shapesMut = [NSMutableArray array];
-        [shapesMut addObject:[[RectangleShape alloc] init:500:300:0:0:0:0:0.2:0.1:1:1:true:15:20:45:0]];
-        [shapesMut addObject:[[RectangleShape alloc] init:370:300:0:0:0:0:0.2:0.1:1:1:true:15:20:0:0]];
-        [shapesMut addObject:[[RectangleShape alloc] init:20:50:0:0:0:0:0:0:1:100:false:700:10:0:0]];
+        [shapesMut addObject:[[RectangleShape alloc] init:500:0:0:0:0:0:0.2:0.1:1:1:true:15:20:0:0:0]];
+        [shapesMut addObject:[[RectangleShape alloc] init:370:0:0:0:0:0:0.2:0.1:1:1:true:15:20:0:0:0]];
+        [shapesMut addObject:[[RectangleShape alloc] init:20:50:0:0:0:0:0:0:1:100:false:700:10:0:0:0]];
         
-        [shapesMut addObject:[[CircleShape alloc] init:80:400:20:0:0:0:0:0:1:1:true:5]];
-        [shapesMut addObject:[[CircleShape alloc] init:400:400:210:0:0:0:0.1:0:1:1:true:10]];
-        [shapesMut addObject:[[CircleShape alloc] init:470:450:-20:0:0:0:0:0:1:1:true:10]];
+        //[shapesMut addObject:[[CircleShape alloc] init:80:400:20:0:0:0:0:0:1:1:true:5]];
+        //[shapesMut addObject:[[CircleShape alloc] init:400:400:210:0:0:0:0.1:0:1:1:true:10]];
+        //[shapesMut addObject:[[CircleShape alloc] init:470:450:-20:0:0:0:0:0:1:1:true:10]];
         
-        [shapesMut addObject:[[RectangleShape alloc] init:70:400:20:0:0:0:0.2:0.2:1:1:true:10:10:30:0]];
+        [shapesMut addObject:[[RectangleShape alloc] init:70:400:20:0:0:0:0.2:0.2:1:1:true:10:10:0:0:0]];
         
         // [posX,posY,velX,velY,accX,accY,dragX,dragY,elas,mass,canMove,fr,(shape dependent)]
         // Drag should be on the order of 0 - 0.3
