@@ -382,11 +382,11 @@
         double IaIb = Ia*Ib;
         double rax2=rax*rax, ray2=ray*ray, rbx2=rbx*rbx, rby2=rby*rby;
         
-        double Jx;
-        double Jy;
+        //double Jx;
+        //double Jy;
         
         
-        /*double k = 1/ma2 + 2/ma/mb + 1/mb2 - rax2/maIa - rbx2/maIb - ray2/maIa - ray2/mbIa - rax2/mbIa - rbx2/mbIb - rby2/maIb - rby2/mbIb + ray2*rbx2/IaIb + rax2*rby2/IaIb - 2*rax*ray*rbx*rby/IaIb;
+        double k = 1/ma2 + 2/ma/mb + 1/mb2 - rax2/maIa - rbx2/maIb - ray2/maIa - ray2/mbIa - rax2/mbIa - rbx2/mbIb - rby2/maIb - rby2/mbIb + ray2*rbx2/IaIb + rax2*rby2/IaIb - 2*rax*ray*rbx*rby/IaIb;
         
         double e1k = (1+ ([a getElas]+[b getElas])/2 )/k;
         double sec = rax*ray/Ia + rbx*rby/Ib;
@@ -396,7 +396,7 @@
         double Jy = e1k * (Vry*(1/ma - ray2/Ia + 1/mb - rby2/Ib) - Vrx*(sec));
         
         NSLog(@"%f %f",Jy,Jx);
-         */
+         
         
         double Vafx = [a getVelX] - Jx/ma;
         double Vafy = [a getVelY] - Jy/ma;
