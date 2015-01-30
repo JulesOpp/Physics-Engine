@@ -377,7 +377,7 @@
         
         //double rax = [a getPosX], ray = [a getPosY], rbx = [b getPosX], rby = [b getPosY];
         
-        double ma2 = ma*ma, mb2 = mb*mb;
+        double ma2 = ma*ma, mb2 = mb*mb, mamb = ma*mb;
         double maIa = ma*Ia, maIb = ma*Ib, mbIa = mb*Ia, mbIb = mb*Ib;
         double IaIb = Ia*Ib;
         double rax2=rax*rax, ray2=ray*ray, rbx2=rbx*rbx, rby2=rby*rby;
@@ -386,7 +386,7 @@
         //double Jy;
         
         
-        double k = 1/ma2 + 2/ma/mb + 1/mb2 - rax2/maIa - rbx2/maIb - ray2/maIa - ray2/mbIa - rax2/mbIa - rbx2/mbIb - rby2/maIb - rby2/mbIb + ray2*rbx2/IaIb + rax2*rby2/IaIb - 2*rax*ray*rbx*rby/IaIb;
+        double k = 1/ma2 + 2/mamb + 1/mb2 - rax2/maIa - rbx2/maIb - ray2/maIa - ray2/mbIa - rax2/mbIa - rbx2/mbIb - rby2/maIb - rby2/mbIb + ray2*rbx2/IaIb + rax2*rby2/IaIb - 2*rax*ray*rbx*rby/IaIb;
         
         double e1k = (1+ ([a getElas]+[b getElas])/2 )/k;
         double sec = rax*ray/Ia + rbx*rby/Ib;
@@ -395,17 +395,17 @@
         
         double Jy = e1k * (Vry*(1/ma - ray2/Ia + 1/mb - rby2/Ib) - Vrx*(sec));
         
-        NSLog(@"%f %f",Jy,Jx);
+        //NSLog(@"%f %f",Jy,Jx);
          
         
         double Vafx = [a getVelX] - Jx/ma;
         double Vafy = [a getVelY] - Jy/ma;
-        double Vbfx = [b getVelX] - Jx/mb;
-        double Vbfy = [b getVelY] - Jy/mb;
+        double Vbfx = [b getVelX] + Jx/mb;
+        double Vbfy = [b getVelY] + Jy/mb;
         double Waf = [a getRotation] - (Jx*ray - Jy*rax)/Ia;
         double Wbf = [b getRotation] - (Jx*rby - Jy*rbx)/Ib;
         
-        NSLog(@"Vi, Vf, %f, %f",[a getVelX],Vafx);
+        //NSLog(@"Vi, Vf, %f, %f",[a getVelX],Vafx);
         
         [a setVelX:Vafx];
         [a setVelY:Vafy];

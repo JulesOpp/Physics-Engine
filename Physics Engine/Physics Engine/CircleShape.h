@@ -17,7 +17,7 @@
     double radius;
 }
 
--(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) dx: (double) dy: (double) e: (double) n: (BOOL) m: (double) r: (double) a: (double) r: (double) ra;
+-(id) init: (double) xx: (double) xy: (double) vx: (double) vy: (double) ax: (double) ay: (double) dx: (double) dy: (double) e: (double) n: (BOOL) m: (double) r: (double) a: (double) rv: (double) ra;
 -(void) draw:(NSColor*)c;
 -(void) update;
 
