@@ -361,29 +361,18 @@
         double Vry = [a getVelY] - [b getVelY];
         double Nx = [a getPosX] - [b getPosX];
         double Ny = [a getPosY] - [b getPosY];
-        double NVr = Nx * Vrx + Ny * Vry;
+        //double NVr = Nx * Vrx + Ny * Vry;
         
         /////////////////////////////////////////////////////////
-        
-        //double rAngle = atan2(Ny, Nx)*180/pi;       // r vector to angle in degrees
-        //double roundAngle = round(rAngle*8/360)/8*2*pi;    // To nearest 1/8 circle
-        //double rSize = sqrt(Nx*Nx+Ny*Ny);
-        //double rax = rSize*cos(roundAngle)/2, ray = rSize*sin(roundAngle)/2, rbx = -1*rax, rby = -1*ray;
-        //NSLog(@"%f",roundAngle*180/pi);
         
         double ma = [a getMass], mb = [b getMass];
         double Ia = 1, Ib = 1;
         double rax = -1*Nx/2, ray = -1*Ny/2, rbx = -1*rax, rby = -1*ray;
-        
-        //double rax = [a getPosX], ray = [a getPosY], rbx = [b getPosX], rby = [b getPosY];
-        
+                
         double ma2 = ma*ma, mb2 = mb*mb, mamb = ma*mb;
         double maIa = ma*Ia, maIb = ma*Ib, mbIa = mb*Ia, mbIb = mb*Ib;
         double IaIb = Ia*Ib;
         double rax2=rax*rax, ray2=ray*ray, rbx2=rbx*rbx, rby2=rby*rby;
-        
-        //double Jx;
-        //double Jy;
         
         
         double k = 1/ma2 + 2/mamb + 1/mb2 - rax2/maIa - rbx2/maIb - ray2/maIa - ray2/mbIa - rax2/mbIa - rbx2/mbIb - rby2/maIb - rby2/mbIb + ray2*rbx2/IaIb + rax2*rby2/IaIb - 2*rax*ray*rbx*rby/IaIb;
@@ -394,19 +383,14 @@
         double Jx = e1k * (Vrx*(1/ma - rax2/Ia + 1/mb - rbx2/Ib) - Vry*(sec));
         
         double Jy = e1k * (Vry*(1/ma - ray2/Ia + 1/mb - rby2/Ib) - Vrx*(sec));
-        
-        //NSLog(@"%f %f",Jy,Jx);
-         
-        
+                 
         double Vafx = [a getVelX] - Jx/ma;
         double Vafy = [a getVelY] - Jy/ma;
         double Vbfx = [b getVelX] + Jx/mb;
         double Vbfy = [b getVelY] + Jy/mb;
         double Waf = [a getRotation] - (Jx*ray - Jy*rax)/Ia;
         double Wbf = [b getRotation] - (Jx*rby - Jy*rbx)/Ib;
-        
-        //NSLog(@"Vi, Vf, %f, %f",[a getVelX],Vafx);
-        
+                
         [a setVelX:Vafx];
         [a setVelY:Vafy];
         [b setVelX:Vbfx];
